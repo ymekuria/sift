@@ -1,12 +1,9 @@
 var express = require('express');
-var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 // var session = require('express-session');
 var morgan = require('morgan');
 
 var app = express();
-
-mongoose.connect();
 
 // Middleware. Add below as needed
 
@@ -21,6 +18,8 @@ app.use(express.static(__dirname + '/../client'));// this serves all the static 
 
 var port = process.env.PORT || 5000;
 
-app.listen(port);
+app.listen(port, function() {
+	console.log('Sifting on port= ', port)
+});
 
 module.exports = app;
