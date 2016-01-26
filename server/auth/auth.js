@@ -1,6 +1,7 @@
 var passport = require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var token = require('./authTokens.js');
+var db // = connection to the database
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -20,6 +21,12 @@ passport.use(new GitHubStrategy({
 },
 function(accessToken, refreshToken, profile, done) {
   // TODO: find the user as it is stored in the database
+  var user = {
+    username: req.username,
+    password: req.password,
+    github: true
+  }
+  db.query()
   User.findOrCreate({ githubId: profile.id}, function(err, user) {
     return done(err, user);
   })
