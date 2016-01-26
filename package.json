@@ -1,0 +1,27 @@
+{
+  "name": "Sift",
+  "version": "1.0.0",
+  "description": "HR Thesis Project",
+  "main": "server.js",
+  "engines": {
+    "node": "4.2.2"
+  },
+  "scripts": {
+    "test": "mocha specs/apispec.js",
+    "start": "node server/server.js",
+    "postinstall": "bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/verdantveranda/2015-11-thesis.git"
+  },
+  "author": "Erik, John, Yoni, Zack",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/verdantveranda/2015-11-thesis/issues"
+  },
+  "homepage": "https://github.com/verdantveranda/2015-11-thesis",
+  "dependecies": {
+    
+  }
+}
