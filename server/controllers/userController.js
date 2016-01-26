@@ -2,14 +2,16 @@
 var db // = database connection
 var bcrypt = require('bcrypt-nodejs');
 var SALT_WORK_FACTOR = 10;
+var jwt = require('jwt-simple');
 
 // create the Users table
 db.query('CREATE TABLE users (' +
-  'id int(11) NOT NULL AUTO_INCREMENT, ' +
+  'id INT(11) NOT NULL AUTO_INCREMENT, ' +
   'username VARCHAR(120), ' +
   'password VARCHAR(60)' +
-  'salt VARCHAR(22)'
-  'github VARCHAR(5)', function(err, result) {
+  'salt VARCHAR(22)' +
+  'github VARCHAR(5) DEFAULT false' +
+  'PRIMARY KEY(id)', function(err, result) {
     if (err) { throw new Error(err); }
     console.log('users table created');
 })
@@ -37,7 +39,7 @@ module.exports = {
             user.password = hash;
             user.salt = salt;
 
-            db.query('INSERT INTO users SET ?', user, function(err, response) {
+            db.query('INSERT INTO users (username, password, salt) VALUES (?,?,?)', [user.username, user.password, user.salt], function(err, response) {
               if (err) { throw new Error(err); }
               console.log(response); // TODO: May be able to pull userID from response and send back to client
               res.sendStatus(200);
@@ -54,10 +56,21 @@ module.exports = {
       if (!rows) {
         res.sendStatus(404); // username does not exist
       } else {
-        console.log('Rows: ' + rows);
-        console.log('Fields: ' + fields);
+        var dbPassword = rows.password;
+        bcrypt.compare(req.password, dbPassword, function(err, isMatch) {
+          if (err) { throw new Error(err); }
+          if (!isMatch) {
+            res.sendStatus(401); // invalid username or password
+          } else {
+            var token = jwt.encode(rows.username, 'greenVeranda');
+            res.json({
+              token: token
+            });
+          }
+        })
       }
-  }
+    })
+  },
 
   createGitHubUser: function(req, res) {
 
