@@ -3,7 +3,19 @@ var db // = database connection
 var bcrypt = require('bcrypt-nodejs');
 var SALT_WORK_FACTOR = 10;
 
+// create the Users table
+db.query('CREATE TABLE users (' +
+  'id int(11) NOT NULL AUTO_INCREMENT, ' +
+  'username VARCHAR(120), ' +
+  'password VARCHAR(60)' +
+  'salt VARCHAR(22)'
+  'github VARCHAR(5)', function(err, result) {
+    if (err) { throw new Error(err); }
+    console.log('users table created');
+})
+
 module.exports = {
+
   createLocalUser: function(req, res) {
     var user = {
       username: req.username,
@@ -34,9 +46,20 @@ module.exports = {
         })
       }
     })
-  }, 
+  },
+
+  loginLocalUser: function(req, res) {
+    db.query('SELECT password FROM users WHERE username = ' + req.username, function(err, rows, fields) {
+      if (err) { throw new Error(err); }
+      if (!rows) {
+        res.sendStatus(404); // username does not exist
+      } else {
+        console.log('Rows: ' + rows);
+        console.log('Fields: ' + fields);
+      }
+  }
 
   createGitHubUser: function(req, res) {
-    
+
   }
 }
