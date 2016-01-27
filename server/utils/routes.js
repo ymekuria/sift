@@ -10,7 +10,7 @@ module.exports = function(app, express) {
   app.post('/api/users', userController.createLocalUser);
   app.post('/api/users/login', userController.loginLocalUser);
   app.get('/auth/github', passport.authenticate('github'));
-  app.get('/auth/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
+  app.get('/auth/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) { // TODO: redirect to correct login route
     // Successful authentication, redirect home.
     res.redirect('/');
   });
