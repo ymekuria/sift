@@ -7,7 +7,7 @@
     "node": "4.2.2"
   },
   "scripts": {
-    "test": "mocha specs/apispec.js",
+    "test": "mocha server/spec",
     "start": "node server/server.js",
     "postinstall": "bower install"
   },
@@ -22,10 +22,19 @@
   },
   "homepage": "https://github.com/verdantveranda/2015-11-thesis",
   "dependencies": {
+    "bcrypt": "^0.8.5",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
+    "chai": "^3.4.1",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "jwt-simple": "^0.4.1",
     "morgan": "^1.6.1",
     "nodemon": "^1.8.1",
-    "pg": "^4.4.3"
+    "passport": "^0.3.2",
+    "passport-github": "^1.0.0",
+    "pg": "^4.4.3",
+    "pg-promise": "^3.0.6",
+    "sinon": "^1.17.2"
   }
 }
