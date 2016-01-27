@@ -24,12 +24,11 @@ module.exports = {
     var user = {
       username: req.body.username,
       password: req.body.password,
-      github: false
     };
 
     client.query('SELECT * FROM users WHERE username=($1)', [user.username], function(err, rows) {
       if (err) { throw new Error(err); }
-      if (rows.length > 1) {
+      if (rows.rows.length > 0) {
         res.sendStatus(403); // username exists
       } else {
         bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
@@ -40,11 +39,11 @@ module.exports = {
 
             user.password = hash;
             user.salt = salt;
-            console.log('Salt: ', salt)
 
             client.query('INSERT INTO users (username, password, salt) VALUES ($1, $2, $3)', [user.username, user.password, user.salt], function(err, response) {
               if (err) { throw new Error(err); }
-              console.log(response); // TODO: May be able to pull userID from response and send back to client
+              console.log(response);
+              // TODO: May be able to pull userID from response and send back to client
               res.sendStatus(200);
             })
           })
@@ -54,13 +53,17 @@ module.exports = {
   },
 
   loginLocalUser: function(req, res) {
-    client.query('SELECT password FROM users WHERE username = ' + req.username, function(err, rows, fields) {
+    var username = req.body.username;
+    console.log('Username: ', username)
+
+    client.query('SELECT password FROM users WHERE username=($1)', [username], function(err, rows, fields) {
       if (err) { throw new Error(err); }
-      if (!rows) {
+      if (rows.rows.length === 0) {
         res.sendStatus(404); // username does not exist
       } else {
-        var dbPassword = rows.password;
-        bcrypt.compare(req.password, dbPassword, function(err, isMatch) {
+        console.log('ROWS 64: ', rows)
+        var dbPassword = rows[0].password;
+        bcrypt.compare(req.body.password, dbPassword, function(err, isMatch) {
           if (err) { throw new Error(err); }
           if (!isMatch) {
             res.sendStatus(401); // invalid username or password

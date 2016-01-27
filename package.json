@@ -22,11 +22,6 @@
   },
   "homepage": "https://github.com/verdantveranda/2015-11-thesis",
   "dependencies": {
-    "body-parser": "^1.14.2",
-    "express": "^4.13.4",
-    "morgan": "^1.6.1",
-    "nodemon": "^1.8.1",
-    "pg": "^4.4.3",
     "bcrypt": "^0.8.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
@@ -34,8 +29,10 @@
     "express": "^4.13.4",
     "jwt-simple": "^0.4.1",
     "morgan": "^1.6.1",
+    "nodemon": "^1.8.1",
     "passport-github": "^1.0.0",
     "pg": "^4.4.3",
-    "pg-promise": "^3.0.6"
+    "pg-promise": "^3.0.6",
+    "sinon": "^1.17.2"
   }
 }

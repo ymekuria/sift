@@ -3,7 +3,8 @@ var db = require('../utils/dbconnect.js');
 var request = require('request'); // You might need to npm install the request module!
 var expect = require('../../node_modules/chai/chai').expect;
 var bcrypt = require('bcrypt-nodejs');
-var userController = require('../controllers/userController.js')
+var sinon = require('sinon');
+var userController = require('../controllers/userController.js');
 
 describe("Persistent Node Server", function() {
   var client;
@@ -55,7 +56,7 @@ describe("Persistent Node Server", function() {
     request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users/",
               json: { username: "erikdbrown", password: 'p@ssw0rd' }
-    }, function (error, res, body) {
+    }, function(error, res, body) {
       var queryString = "SELECT * FROM users";
       var queryArgs = [];
 
@@ -68,7 +69,22 @@ describe("Persistent Node Server", function() {
     });
   });
 
-  it("Should store the hashed password to the database", function(done) {
+  it("Should return 403 if a username is already in the database", function(done) {
+    request({ method: "POST",
+              uri: "http://127.0.0.1:5001/api/users/",
+              json: { username: 'erikdbrown', password: 'p@ssw0rd' } 
+    }, function(error, res, body) {
+        request({ method: "POST",
+                  uri: "http://127.0.0.1:5001/api/users/",
+                  json: { username: 'erikdbrown', password: 'p@ssw0rd' } 
+        }, function(error, res, body) {
+          expect(res.statusCode).to.equal(403);
+          done();
+        });
+    })
+  });
+
+  it("Should store a hashed password to the database", function(done) {
       request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users/",
               json: { username: "erikdbrown", password: 'p@ssw0rd' }
@@ -87,12 +103,23 @@ describe("Persistent Node Server", function() {
     });
   });
 
+  it("Should call loginLocalUser when attempting to log in with useranme and password", function(done) {
+    var spy = sinon.spy(userController, 'loginLocalUser');
+    request({ method: "POST",
+              uri: "http://127.0.0.1:5001/api/users/login",
+              json: { username: "erikdbrown", password: 'p@ssw0rd' }
+    }, function() {
+      sinon.assert.calledOnce(spy);
+      done();
+    });
+  });
+
   it("Should return 404 from login if user does not exist", function(done) {
       request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users/login",
               json: { username: "erikdbrown", password: 'p@ssw0rd' }
     }, function (req, res) {
-      expect(res.status).to.equal(404);
+      expect(res.statusCode).to.equal(404);
       done();
     });
   });
