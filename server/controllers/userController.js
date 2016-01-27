@@ -42,7 +42,6 @@ module.exports = {
 
             client.query('INSERT INTO users (username, password, salt) VALUES ($1, $2, $3)', [user.username, user.password, user.salt], function(err, response) {
               if (err) { throw new Error(err); }
-              console.log(response);
               // TODO: May be able to pull userID from response and send back to client
               res.sendStatus(200);
             })
@@ -54,21 +53,20 @@ module.exports = {
 
   loginLocalUser: function(req, res) {
     var username = req.body.username;
-    console.log('Username: ', username)
+    console.log('loginLocalUser was called');
 
     client.query('SELECT password FROM users WHERE username=($1)', [username], function(err, rows, fields) {
       if (err) { throw new Error(err); }
       if (rows.rows.length === 0) {
         res.sendStatus(404); // username does not exist
       } else {
-        console.log('ROWS 64: ', rows)
-        var dbPassword = rows[0].password;
+        var dbPassword = rows.rows[0].password;
         bcrypt.compare(req.body.password, dbPassword, function(err, isMatch) {
           if (err) { throw new Error(err); }
           if (!isMatch) {
             res.sendStatus(401); // invalid username or password
           } else {
-            var token = jwt.encode(rows.username, 'greenVeranda');
+            var token = jwt.encode(username, 'greenVeranda');
             res.json({
               token: token
             });

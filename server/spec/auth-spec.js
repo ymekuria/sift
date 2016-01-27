@@ -6,7 +6,7 @@ var bcrypt = require('bcrypt-nodejs');
 var sinon = require('sinon');
 var userController = require('../controllers/userController.js');
 
-describe("Persistent Node Server", function() {
+describe("Authenticating Users", function() {
   var client;
 
   beforeEach(function(done) {
@@ -18,7 +18,7 @@ describe("Persistent Node Server", function() {
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
-    client.query("DROP TABLE " + UserTablename, done);
+    client.query("DROP TABLE " + UserTablename);
 
     client.query('CREATE TABLE users (' +
       'id SERIAL PRIMARY KEY, ' +
@@ -27,7 +27,7 @@ describe("Persistent Node Server", function() {
       'salt VARCHAR(60),' +
       'github VARCHAR(5) DEFAULT false )', function(err, result) {
       if (err) { throw new Error(err); }
-      console.log('users table created');
+      done();
       })
   });
 
@@ -88,7 +88,7 @@ describe("Persistent Node Server", function() {
       request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users/",
               json: { username: "erikdbrown", password: 'p@ssw0rd' }
-    }, function () {
+    }, function(error, res, body) {
       var queryString = "SELECT * FROM users";
       var queryArgs = [];
 
@@ -103,39 +103,27 @@ describe("Persistent Node Server", function() {
     });
   });
 
-  it("Should call loginLocalUser when attempting to log in with useranme and password", function(done) {
-    var spy = sinon.spy(userController, 'loginLocalUser');
-    request({ method: "POST",
-              uri: "http://127.0.0.1:5001/api/users/login",
-              json: { username: "erikdbrown", password: 'p@ssw0rd' }
-    }, function() {
-      sinon.assert.calledOnce(spy);
-      done();
-    });
-  });
-
   it("Should return 404 from login if user does not exist", function(done) {
       request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users/login",
               json: { username: "erikdbrown", password: 'p@ssw0rd' }
-    }, function (req, res) {
+    }, function(req, res) {
       expect(res.statusCode).to.equal(404);
       done();
     });
   });
 
-  it("Should return a token containing encoded username after login", function(done) {
+  it("Should return a JWT token", function(done) {
     request({ method: "POST",
-              uri: "http://127.0.0.1:5001/api/users/login",
+              uri: "http://127.0.0.1:5001/api/users",
               json: { username: "erikdbrown", password: 'p@ssw0rd' }
             }, function () {
               request({ method: "POST",
-                uri: "http://127.0.0.1:5000/users/login",
+                uri: "http://127.0.0.1:5001/api/users/login",
                 json: { username: "erikdbrown", password: 'p@ssw0rd' }
               }, function(req, res) {
-                expect(res.data.token).to.not.equal(undefined);
-                var username = jwt.decode(res.data.token);
-                expect(username).to.equal('erikdbrown');
+                expect(res.body.token).to.not.equal(undefined);
+                done();
               })
             })
   });

@@ -7,7 +7,7 @@
     "node": "4.2.2"
   },
   "scripts": {
-    "test": "mocha server/tests/server-spec.js",
+    "test": "mocha server/spec",
     "start": "node server/server.js",
     "postinstall": "bower install"
   },
@@ -30,6 +30,7 @@
     "jwt-simple": "^0.4.1",
     "morgan": "^1.6.1",
     "nodemon": "^1.8.1",
+    "passport": "^0.3.2",
     "passport-github": "^1.0.0",
     "pg": "^4.4.3",
     "pg-promise": "^3.0.6",
