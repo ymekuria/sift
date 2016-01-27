@@ -1,6 +1,9 @@
 var pg = require('pg');
+var faker = require('faker');
 
 var db = require('../utils/dbconnect.js');
+var gen = require('../utils/generateData.js');
+
 // var client = new pg.Client(db.connectionString);
 var client = new pg.Client(db.connectionString);
 client.connect();
@@ -13,19 +16,23 @@ module.exports = {
 /////////POST///////////
 
 postUserSchema: function(req, res){
-  
-  var tableData = req.body;
-	//get the username by accessing from the header : res.headers
-	var username = req.query.usr
-  //get the object from req.body, the first value will the title of the table,
-  var tableName = tableData.title;
 
-  //the subsequent ones will be the columns
-	for ( var keys in tableData ) {
-		if( keys !== 'title') {
-			//generate a table with everyname of the user
-		}
-	}
+    var tableData = req.body;
+    var username = req.query.usr;
+    var tableName = tableData.tableName;
+    var fakeData = gen.generateData(req, res);
+
+    console.log('fakeData', fakeData);
+
+    client.query("CREATE TABLE "+tableName+" (Users text);");
+
+
+    for (var key in tableData){
+      if( key !== 'tableName'){
+        var fields = key.split(".");
+        client.query("ALTER TABLE "+ tableName +" ADD COLUMN "+ fields[1] +" text;");
+      }
+    }
 //e.g = {title: "students", name: true, age: true}
 
 //create a table called req.body.title
@@ -33,7 +40,7 @@ postUserSchema: function(req, res){
 //each values in the object 
 //push the table id into the table USERS to the associated username 
 
-	//client.query("CREATE TABLE items(first TEXT);");
+
 
 	res.status(200).send("success");
     // var results = [];
