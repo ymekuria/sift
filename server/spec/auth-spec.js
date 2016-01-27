@@ -20,15 +20,18 @@ describe("Authenticating Users", function() {
      * (or repeated runs of the tests) won't screw each other up: */
     client.query("DROP TABLE " + UserTablename);
 
-    client.query('CREATE TABLE users (' +
+    client.query('CREATE TABLE IF NOT EXISTS users (' +
       'id SERIAL PRIMARY KEY, ' +
       'username VARCHAR(120), ' +
-      'password VARCHAR(60),' +
-      'salt VARCHAR(60),' +
+      'displayName VARCHAR(120), ' +
+      'password VARCHAR(60) DEFAULT null,' +
+      'email VARCHAR(120), ' +
+      'salt VARCHAR(60) DEFAULT null,' +
       'github VARCHAR(5) DEFAULT false )', function(err, result) {
-      if (err) { throw new Error(err); }
-      done();
-      })
+        if (err) { throw new Error(err); }
+        console.log('users table created');
+        done();
+    })
   });
 
   afterEach(function() {
@@ -37,11 +40,12 @@ describe("Authenticating Users", function() {
 
   it("Should write to the database", function(done) {
     user = {
-      username: 'erikdbrown',
+      email: 'erikdbrown@gmail.com',
+      displayName: 'Erik Brown',
       password: 'p@ssw0rd',
       salt: 'Hello Dolly'
     }
-    client.query('INSERT INTO users (username, password, salt) VALUES ($1, $2, $3)', [user.username, user.password, user.salt], function(err, results) {
+    client.query('INSERT INTO users (username, displayName, password, email, salt) VALUES ($1, $2, $3, $4, $5)', [user.email, user.displayName, user.password, user.email, user.salt], function(err, results) {
       if (err) { throw new Error(err); }
       client.query('SELECT * FROM users', function(err, results) {
         expect(results.rows.length).to.equal(1);
@@ -55,14 +59,14 @@ describe("Authenticating Users", function() {
     // Post the user to the chat server.
     request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users/",
-              json: { username: "erikdbrown", password: 'p@ssw0rd' }
+              json: { email: "erikdbrown@gmail.com", first: 'Erik', last: 'Brown', password: 'p@ssw0rd' }
     }, function(error, res, body) {
       var queryString = "SELECT * FROM users";
       var queryArgs = [];
 
       client.query(queryString, queryArgs, function(err, results) {
         expect(results.rows.length).to.equal(1);
-        expect(results.rows[0].username).to.equal("erikdbrown");
+        expect(results.rows[0].username).to.equal("erikdbrown@gmail.com");
 
         done();
       });
@@ -72,11 +76,11 @@ describe("Authenticating Users", function() {
   it("Should return 403 if a username is already in the database", function(done) {
     request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users/",
-              json: { username: 'erikdbrown', password: 'p@ssw0rd' } 
+              json: { email: "erikdbrown@gmail.com", first: 'Erik', last: 'Brown', password: 'p@ssw0rd' }
     }, function(error, res, body) {
         request({ method: "POST",
                   uri: "http://127.0.0.1:5001/api/users/",
-                  json: { username: 'erikdbrown', password: 'p@ssw0rd' } 
+                  json: { email: "erikdbrown@gmail.com", first: 'Erik', last: 'Brown', password: 'p@ssw0rd' }
         }, function(error, res, body) {
           expect(res.statusCode).to.equal(403);
           done();
@@ -87,7 +91,7 @@ describe("Authenticating Users", function() {
   it("Should store a hashed password to the database", function(done) {
       request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users/",
-              json: { username: "erikdbrown", password: 'p@ssw0rd' }
+              json: { email: "erikdbrown@gmail.com", first: 'Erik', last: 'Brown', password: 'p@ssw0rd' }
     }, function(error, res, body) {
       var queryString = "SELECT * FROM users";
       var queryArgs = [];
@@ -106,7 +110,7 @@ describe("Authenticating Users", function() {
   it("Should return 404 from login if user does not exist", function(done) {
       request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users/login",
-              json: { username: "erikdbrown", password: 'p@ssw0rd' }
+              json: { email: "erikdbrown@gmail.com", first: 'Erik', last: 'Brown', password: 'p@ssw0rd' }
     }, function(req, res) {
       expect(res.statusCode).to.equal(404);
       done();
@@ -116,15 +120,23 @@ describe("Authenticating Users", function() {
   it("Should return a JWT token", function(done) {
     request({ method: "POST",
               uri: "http://127.0.0.1:5001/api/users",
-              json: { username: "erikdbrown", password: 'p@ssw0rd' }
+              json: { email: "erikdbrown@gmail.com", first: 'Erik', last: 'Brown', password: 'p@ssw0rd' }
             }, function () {
               request({ method: "POST",
                 uri: "http://127.0.0.1:5001/api/users/login",
-                json: { username: "erikdbrown", password: 'p@ssw0rd' }
+                json: { username: "erikdbrown@gmail.com", password: 'p@ssw0rd' }
               }, function(req, res) {
                 expect(res.body.token).to.not.equal(undefined);
                 done();
               })
             })
   });
+
+  // it("Should return a GitHub authenticated user", function(done) {
+    
+  // });
+
+  // it("Should save GitHub authenticated user to database", function(done) {
+    
+  // });
 });

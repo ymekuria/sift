@@ -11,8 +11,10 @@ client.connect();
 client.query('CREATE TABLE IF NOT EXISTS users (' +
   'id SERIAL PRIMARY KEY, ' +
   'username VARCHAR(120), ' +
-  'password VARCHAR(60),' +
-  'salt VARCHAR(60),' +
+  'displayName VARCHAR(120), ' +
+  'password VARCHAR(60) DEFAULT null,' +
+  'email VARCHAR(120), ' +
+  'salt VARCHAR(60) DEFAULT null,' +
   'github VARCHAR(5) DEFAULT false )', function(err, result) {
     if (err) { throw new Error(err); }
     console.log('users table created');
@@ -20,15 +22,24 @@ client.query('CREATE TABLE IF NOT EXISTS users (' +
 
 module.exports = {
 
-  createLocalUser: function(req, res) {
-    var user = {
-      username: req.body.username,
-      password: req.body.password,
-    };
-
+  isUserInDB: function(user, callback) {
     client.query('SELECT * FROM users WHERE username=($1)', [user.username], function(err, rows) {
       if (err) { throw new Error(err); }
-      if (rows.rows.length > 0) {
+      var inDB = rows.rows.length > 0;
+      callback(inDB);
+    });
+  },
+
+  createLocalUser: function(req, res) {
+    var user = {
+      username: req.body.email,
+      displayName: req.body.first + ' ' + req.body.last,
+      password: req.body.password,
+      email: req.body.email,
+    };
+
+    module.exports.isUserInDB(user, function(inDB) {
+      if (inDB) {
         res.sendStatus(403); // username exists
       } else {
         bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
@@ -40,7 +51,7 @@ module.exports = {
             user.password = hash;
             user.salt = salt;
 
-            client.query('INSERT INTO users (username, password, salt) VALUES ($1, $2, $3)', [user.username, user.password, user.salt], function(err, response) {
+            client.query('INSERT INTO users (username, displayName, password, email, salt) VALUES ($1, $2, $3, $4, $5)', [user.username, user.displayName, user.password, user.email, user.salt], function(err, response) {
               if (err) { throw new Error(err); }
               // TODO: May be able to pull userID from response and send back to client
               res.sendStatus(200);
@@ -76,7 +87,21 @@ module.exports = {
     })
   },
 
-  createGitHubUser: function(req, res) {
+  createGitHubUser: function (profile, callback){
+  // profileObj equals the userinfo that google sends upon signin
+    var user = {};
+    // creates a user object with only the info we want from google
+    user.username = profileObj._json.email;
+    user.displayName = profileObj._json.name;
+    user.email = profileObj._json.email;
+    user.github = true;
 
+    client.query('INSERT INTO users (username, displayName, email, github) VALUES ($1, $2, $3)', [user.username, user.displayName, user.email, user.github], function(err, response) {
+      if (err) { throw new Error(err); }
+      // TODO: May be able to pull userID from response and send back to client
+      res.sendStatus(200);
+    })
+
+    return callback(null, user);
   }
 }
