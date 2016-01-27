@@ -7,7 +7,7 @@
     "node": "4.2.2"
   },
   "scripts": {
-    "test": "mocha specs/apispec.js",
+    "test": "mocha server/tests/server-spec.js",
     "start": "node server/server.js",
     "postinstall": "bower install"
   },
