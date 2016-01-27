@@ -41,9 +41,9 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, done) {
     userController.isUserInDB({ username: profile._json.email }, function(inDB) {
       if (inDB) {
-        console.log('user is in the DB')
-        // TODO: githubAuth.loginGitHubUser(profile, callback)
-        return done();
+        userController.loginGitHubUser(profile, function(err, profile) {
+          return done(err, profile);
+        })
       } else {
         userController.createGitHubUser(profile, function(err, user) {
           return done(err, user);

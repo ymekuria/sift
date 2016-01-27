@@ -87,7 +87,7 @@ module.exports = {
     })
   },
 
-  createGitHubUser: function (profile, callback){
+  createGitHubUser: function (profile, callback) {
   // profileObj equals the userinfo that google sends upon signin
     var user = {
       username: profile._json.email,
@@ -102,5 +102,9 @@ module.exports = {
       console.log('GitHub user created')
       callback(null, user);
     })
+  },
+
+  loginGitHubUser: function(profile, callback) {
+    callback(null, profile);
   }
 }
