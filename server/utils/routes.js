@@ -16,7 +16,9 @@ module.exports = function(app, express) {
   });
  
   // these are the endpoints each user will have access to
-  // app.post('/api/schema');
+
+  app.post('/api/schema:id', db.postUserSchema);
+
 
   // app.get('/api/schema'/***/);
 

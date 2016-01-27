@@ -25,6 +25,7 @@ app.use(passport.session());
 
 require('./utils/routes.js')(app, express);
 
+
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -53,6 +54,7 @@ passport.use(new GitHubStrategy({
 }));
 
 var port = process.env.PORT || 5001;
+
 
 app.listen(port, function() {
 	console.log('Sifting on port= ', port)
