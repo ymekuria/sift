@@ -1,5 +1,5 @@
 // add links to controllers here
-var db = require('../../models/dbconnect.js')
+var db = require('../controllers/dbcontrollers.js');
 
 
 module.exports = function(app, express) {
@@ -9,7 +9,7 @@ module.exports = function(app, express) {
   app.post('/api/users'/***/);
  
   // these are the endpoints each user will have access to
-  app.post('/api/schema' db.post);
+  app.post('/api/schema');
 
   app.get('/api/schema'/***/);
 

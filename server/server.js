@@ -16,7 +16,7 @@ app.use(express.static(__dirname + '/../client'));// this serves all the static 
 //app.use(express.cookieParser('shhhh, very secret'));// used for Auth uncomment when ready
 // app.use(session({secret: 'somesecret'})); // used for Auth
 
-//require('./utils/routes.js')(app, express);
+require('./utils/routes.js')(app, express);
 
 var port = process.env.PORT || 5001;
 
