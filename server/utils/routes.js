@@ -3,7 +3,6 @@ var db = require('../controllers/dbcontrollers.js');
 var userController = require('../controllers/userController.js')
 var passport = require('passport');
 
-
 module.exports = function(app, express) {
 
  // add auth routes here	
