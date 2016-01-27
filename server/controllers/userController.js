@@ -1,17 +1,19 @@
-// TODO: link to database
-var db // = database connection
+var pg = require('pg');
+var db = require('../utils/dbconnect.js');
 var bcrypt = require('bcrypt-nodejs');
 var SALT_WORK_FACTOR = 10;
 var jwt = require('jwt-simple');
 
+var client = new pg.Client(db.connectionString);
+client.connect();
+
 // create the Users table
-db.query('CREATE TABLE users (' +
-  'id INT(11) NOT NULL AUTO_INCREMENT, ' +
+client.query('CREATE TABLE IF NOT EXISTS users (' +
+  'id SERIAL PRIMARY KEY, ' +
   'username VARCHAR(120), ' +
-  'password VARCHAR(60)' +
-  'salt VARCHAR(22)' +
-  'github VARCHAR(5) DEFAULT false' +
-  'PRIMARY KEY(id)', function(err, result) {
+  'password VARCHAR(60),' +
+  'salt VARCHAR(60),' +
+  'github VARCHAR(5) DEFAULT false )', function(err, result) {
     if (err) { throw new Error(err); }
     console.log('users table created');
 })
@@ -20,14 +22,14 @@ module.exports = {
 
   createLocalUser: function(req, res) {
     var user = {
-      username: req.username,
-      password: req.password,
+      username: req.body.username,
+      password: req.body.password,
       github: false
     };
 
-    db.query('SELECT * FROM users WHERE username = ' + user.username, function(err, rows) {
+    client.query('SELECT * FROM users WHERE username=($1)', [user.username], function(err, rows) {
       if (err) { throw new Error(err); }
-      if (rows) {
+      if (rows.length > 1) {
         res.sendStatus(403); // username exists
       } else {
         bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
@@ -38,8 +40,9 @@ module.exports = {
 
             user.password = hash;
             user.salt = salt;
+            console.log('Salt: ', salt)
 
-            db.query('INSERT INTO users (username, password, salt) VALUES (?,?,?)', [user.username, user.password, user.salt], function(err, response) {
+            client.query('INSERT INTO users (username, password, salt) VALUES ($1, $2, $3)', [user.username, user.password, user.salt], function(err, response) {
               if (err) { throw new Error(err); }
               console.log(response); // TODO: May be able to pull userID from response and send back to client
               res.sendStatus(200);
@@ -51,7 +54,7 @@ module.exports = {
   },
 
   loginLocalUser: function(req, res) {
-    db.query('SELECT password FROM users WHERE username = ' + req.username, function(err, rows, fields) {
+    client.query('SELECT password FROM users WHERE username = ' + req.username, function(err, rows, fields) {
       if (err) { throw new Error(err); }
       if (!rows) {
         res.sendStatus(404); // username does not exist
