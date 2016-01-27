@@ -89,19 +89,18 @@ module.exports = {
 
   createGitHubUser: function (profile, callback){
   // profileObj equals the userinfo that google sends upon signin
-    var user = {};
+    var user = {
+      username: profile._json.email,
+      displayName: profile._json.name,
+      email: profile._json.email,
+      github: true
+    };
     // creates a user object with only the info we want from google
-    user.username = profileObj._json.email;
-    user.displayName = profileObj._json.name;
-    user.email = profileObj._json.email;
-    user.github = true;
 
-    client.query('INSERT INTO users (username, displayName, email, github) VALUES ($1, $2, $3)', [user.username, user.displayName, user.email, user.github], function(err, response) {
+    client.query('INSERT INTO users (username, displayName, email, github) VALUES ($1, $2, $3, $4)', [user.username, user.displayName, user.email, user.github], function(err, response) {
       if (err) { throw new Error(err); }
-      // TODO: May be able to pull userID from response and send back to client
-      res.sendStatus(200);
+      console.log('GitHub user created')
+      callback(null, user);
     })
-
-    return callback(null, user);
   }
 }

@@ -25,6 +25,14 @@ app.use(passport.session());
 
 require('./utils/routes.js')(app, express);
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
 passport.use(new GitHubStrategy({
   clientID: token.CLIENT_ID,
   clientSecret: token.CLIENT_SECRET,
@@ -33,11 +41,12 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, done) {
     userController.isUserInDB({ username: profile._json.email }, function(inDB) {
       if (inDB) {
+        console.log('user is in the DB')
         // TODO: githubAuth.loginGitHubUser(profile, callback)
-        return done(err, profile);
+        return done();
       } else {
-        userController.createGitHubUser(profile, function(err, profile) {
-          return done(err, profile);
+        userController.createGitHubUser(profile, function(err, user) {
+          return done(err, user);
         })
       }
     })

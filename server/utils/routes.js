@@ -12,7 +12,6 @@ module.exports = function(app, express) {
   app.post('/api/users/login', userController.loginLocalUser);
   app.get('/auth/github', passport.authenticate('github'));
   app.get('/auth/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
-    console.log(callback)
     // Successful authentication, redirect home.
     res.redirect('/');
   });
