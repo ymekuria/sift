@@ -3,6 +3,8 @@ var faker = require('faker');
 
 var db = require('../utils/dbconnect.js');
 var gen = require('../utils/generateData.js');
+var tableConnections = require('../models/dbTableConnections.js');
+
 
 var client = new pg.Client(db.connectionString);
 client.connect();
@@ -54,124 +56,54 @@ postUserSchema: function(req, res){
   
     }
 
+    client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)',[username, username+"_"+tableName]);
+
+
 	res.status(200).send("success");
 
 },
 
 ///////////GET///////////
 
-//router.get('/api/v1/todos', function(req, res) {
-get: function(req, res){
-
-    var results = [];
-
-    // Get a Postgres client from the connection pool
-    pg.connect(db.connectionString
-        , function(err, client, done) {
-        // Handle connection errors
-        if(err) {
-          done();
-          console.log(err);
-          return res.status(500).json({ success: false, data: err});
-        }
-
-        // SQL Query > Select Data
-        var query = client.query("SELECT * FROM items ORDER BY id ASC;");
-
-        // Stream results back one row at a time
-        query.on('row', function(row) {
-            results.push(row);
-        });
-
-        // After all data is returned, close connection and return results
-        query.on('end', function() {
-            done();
-            return res.json(results);
-        });
-
+getTables: function(req, res){
+    var username = req.query.usr;
+    console.log("username : ",username);
+    client.query("SELECT tablename FROM userstables WHERE username = '"+username+"';", function(err,tableNames){
+        if (err) { throw new Error(err); }
+        console.log(tableNames.rows);
+        res.status(200).json(tableNames.rows);
     });
+},
+
+getOneTable: function(req, res){
+    var usernameTable = req.query.usrTable;
+
 
 },
 
-///////////PUT///////////
 
-//router.put('/api/v1/todos/:todo_id', function(req, res) {
+
+///////////PUT///////////
 put: function(req, res){
     var results = [];
-
-    // Grab data from the URL parameters
-    var id = req.params.todo_id;
-
-    // Grab data from http request
-    var data = {text: req.body.text, complete: req.body.complete};
-
-    // Get a Postgres client from the connection pool
-    pg.connect(db.connectionString
-        , function(err, client, done) {
-        // Handle connection errors
-        if(err) {
-          done();
-          console.log(err);
-          return res.status(500).send(json({ success: false, data: err}));
-        }
-
         // SQL Query > Update Data
         client.query("UPDATE items SET text=($1), complete=($2) WHERE id=($3)", [data.text, data.complete, id]);
 
         // SQL Query > Select Data
         var query = client.query("SELECT * FROM items ORDER BY id ASC");
 
-        // Stream results back one row at a time
-        query.on('row', function(row) {
-            results.push(row);
-        });
-
-        // After all data is returned, close connection and return results
-        query.on('end', function() {
-            done();
-            return res.json(results);
-        });
-    });
 
 },
 
 ///////////DELETE//////////
-
-// router.delete('/api/v1/todos/:todo_id', function(req, res) {
 delete: function(req, res){
     var results = [];
-
-    // Grab data from the URL parameters
-    var id = req.params.todo_id;
-
-
-    // Get a Postgres client from the connection pool
-    pg.connect(db.connectionString
-        , function(err, client, done) {
-        // Handle connection errors
-        if(err) {
-          done();
-          console.log(err);
-          return res.status(500).json({ success: false, data: err});
-        }
-
         // SQL Query > Delete Data
         client.query("DELETE FROM items WHERE id=($1)", [id]);
 
         // SQL Query > Select Data
         var query = client.query("SELECT * FROM items ORDER BY id ASC");
 
-        // Stream results back one row at a time
-        query.on('row', function(row) {
-            results.push(row);
-        });
-
-        // After all data is returned, close connection and return results
-        query.on('end', function() {
-            done();
-            return res.json(results);
-        });
-    });
 
 },
 

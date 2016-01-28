@@ -19,7 +19,7 @@ describe("Posting User Schemas", function() {
      * (or repeated runs of the tests) won't screw each other up: */
     client.query("DROP TABLE " + UserTablename);
 
-    client.query('CREATE TABLE IF NOT EXISTS yoni_test (' +
+    client.query('CREATE TABLE IF NOT EXISTS yoni_test_mytable (' +
       'id SERIAL PRIMARY KEY, ' +
       'firstname VARCHAR(120), ' +
       'lastname VARCHAR(120), ' +
