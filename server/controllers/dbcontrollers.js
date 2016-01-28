@@ -27,8 +27,9 @@ postUserSchema: function(req, res){
     var username = req.query.usr;
     var tableName = tableData.tableName;
     var fakeData = gen.generateData(req, res);
-    var fieldArr = '';
-
+    //var fieldArr = '';
+    var fieldArr = [];
+    
     // creating a new table with no columns 
     client.query("CREATE TABLE IF NOT EXISTS "+username+"_"+tableName+"();");
 
@@ -36,18 +37,18 @@ postUserSchema: function(req, res){
     for (var key in tableData){
       if( key !== 'tableName'){
         var fields = key.split(".");  
-        fieldArr+=fields[1]+",";  
-        var slicedfieldArr = fieldArr.slice(0,fieldArr.length-1);   
+        //fieldArr+=fields[1]+","; 
+        fieldArr.push(fields[1]); 
+        //var slicedfieldArr = fieldArr.slice(0,fieldArr.length-1);   
         client.query("ALTER TABLE "+username+"_"+tableName+" ADD COLUMN "+ fields[1] +" text;");
       }
     }
-    console.log('fieldarr', slicedfieldArr);
-
-
+     
+    var fieldStr = fieldArr.join(",");
     var valueStr = gen.generateValueString(fakeData[0]);
 
     for(var i = 0; i < fakeData.length; i++) {
-      client.query("INSERT INTO "+username+"_"+tableName+"("+slicedfieldArr+") VALUES ("+valueStr+")", fakeData[i], function(err, rows) {
+      client.query("INSERT INTO "+username+"_"+tableName+"("+fieldStr+") VALUES ("+valueStr+")", fakeData[i], function(err, rows) {
         if (err) { throw new Error(err); }
       });
   
