@@ -39,9 +39,8 @@ postUserSchema: function(req, res){
     for (var key in tableData){
       if( key !== 'tableName'){
         var fields = key.split(".");  
-        //fieldArr+=fields[1]+","; 
         fieldArr.push(fields[1]); 
-        //var slicedfieldArr = fieldArr.slice(0,fieldArr.length-1);   
+
         client.query("ALTER TABLE "+username+"_"+tableName+" ADD COLUMN "+ fields[1] +" text;");
       }
     }
@@ -85,6 +84,21 @@ getOneTable: function(req, res){
     });
 
 },
+
+postToTable: function(req, res){
+    var usernameTable = req.query.usrTable;
+    var data = req.body;
+
+
+console.log(usernameTable, data);
+    // client.query("SELECT * FROM "+usernameTable+";", function(err,entireTable){
+    //     if (err) { throw new Error(err); }
+    //     console.log(entireTable.rows);
+    //      res.status(200).json(entireTable.rows);
+    // });
+res.status(200)
+},
+
 
 
 

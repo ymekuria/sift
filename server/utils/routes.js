@@ -19,13 +19,11 @@ module.exports = function(app, express) {
 
   app.post('/api/generateTable:usr', db.postUserSchema);
   app.get('/api/getTables:usr', db.getTables);
+
   app.get('/api/getOneTable:usrTable', db.getOneTable);
-
-  // app.get('/api/schema'/***/);
-
+  app.post('/api/postToTable:usrTable', db.postToTable);
 
   // app.post('/api/:username');
-  // app.get('/api/:username'/***/);
   // app.put('/api/:username'/***/);
   // app.delete('/api/:username'/***/);
 
