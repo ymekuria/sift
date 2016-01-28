@@ -78,6 +78,11 @@ getTables: function(req, res){
 getOneTable: function(req, res){
     var usernameTable = req.query.usrTable;
 
+    client.query("SELECT * FROM "+usernameTable+";", function(err,entireTable){
+        if (err) { throw new Error(err); }
+        console.log(entireTable.rows);
+         res.status(200).json(entireTable.rows);
+    });
 
 },
 
