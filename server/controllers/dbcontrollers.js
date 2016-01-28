@@ -54,30 +54,8 @@ postUserSchema: function(req, res){
       client.query("INSERT INTO "+username+"_"+tableName+" VALUES ("+sliced+");");
     }
 
- 
-//push the table id into the table USERS to the associated username 
-
-
-
 	res.status(200).send("success");
-    // var results = [];
 
-    // // SQL Query > Insert Data
-    // client.query("INSERT INTO items(text, complete) values($1, $2)", [data.text, data.complete]);
-
-    // // SQL Query > Select Data
-    // var query = client.query("SELECT * FROM items ORDER BY id ASC");
-
-    // // Stream results back one row at a time
-    // query.on('row', function(row) {
-    //     results.push(row);
-    // });
-
-    // // After all data is returned, close connection and return results
-    // query.on('end', function() {
-    //     done();
-    //     return res.json(results);
-    // });
 },
 
 ///////////GET///////////
