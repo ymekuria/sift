@@ -7,7 +7,7 @@ module.exports = {
 		var tableData = req.body;
 		var fakeData = [];  	
 
-    for ( var i = 0; i <=5; i++ ) { 
+    for ( var i = 0; i <=500; i++ ) { 
     	var rowData = [];
 			for ( var keys in tableData ) {
 				if( keys !== 'tableName') {
@@ -26,9 +26,15 @@ module.exports = {
 	},
 
 
-	mergeFields: function() {
+	generateValueString: function(fakeDataArr) {
+		var valueStr = '';
+    for ( var i = 1; i <= fakeDataArr.length; i ++ ) {
+       valueStr+='$'+i+','
+    }
+    valueStr =valueStr.slice(0,valueStr.length-1)
 
-
+    return valueStr;
+	
 	}
 
 
