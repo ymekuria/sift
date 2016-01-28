@@ -4,16 +4,22 @@ var faker = require('faker');
 var db = require('../utils/dbconnect.js');
 var gen = require('../utils/generateData.js');
 
-// var client = new pg.Client(db.connectionString);
 var client = new pg.Client(db.connectionString);
 client.connect();
-
-// var client = require('../utils/dbconnect.js')
 
 
 module.exports = {
 
 /////////POST///////////
+
+///SAMPLE QUERY///
+/*
+{"tableName": "mytable",
+    "Name.firstName": "yes",
+    "Name.lastName": "yes",
+    "Address.streetAddress": "yes"
+}
+*/
 
 postUserSchema: function(req, res){
 
@@ -21,33 +27,40 @@ postUserSchema: function(req, res){
     var username = req.query.usr;
     var tableName = tableData.tableName;
     var fakeData = gen.generateData(req, res);
+    var fieldArr = [];
 
-    console.log('fakeData', fakeData);
+    // console.log('fakeData', fakeData);
 
-    client.query("CREATE TABLE "+tableName+" (Users text);");
+    // creating a new table with no columns 
+    client.query("CREATE TABLE IF NOT EXISTS "+username+"_"+tableName+"();");
 
-
+    // adding columns to the table 
     for (var key in tableData){
       if( key !== 'tableName'){
         var fields = key.split(".");
-        client.query("ALTER TABLE "+ tableName +" ADD COLUMN "+ fields[1] +" text;");
+               
+        client.query("ALTER TABLE "+username+"_"+tableName+" ADD COLUMN "+ fields[1] +" text;");
       }
     }
-//e.g = {title: "students", name: true, age: true}
+    //takes all the data, removes the double quotes, adds commas between them, and removes the last comma then
+    //pushes it to the correct table 
+    for(var i = 0; i < fakeData.length; i++){
+      var singled = '';
+      for(var y = 0; y < fakeData[i].length; y++){
+        singled += " " +"'"+  fakeData[i][y] + "'" + ",";
+      }
+      var sliced = singled.slice(0, singled.length-1);
+      console.log(sliced);
+      client.query("INSERT INTO "+username+"_"+tableName+" VALUES ("+sliced+");");
+    }
 
-//create a table called req.body.title
  
-//each values in the object 
 //push the table id into the table USERS to the associated username 
 
 
 
 	res.status(200).send("success");
     // var results = [];
-
-    // // Grab data from http request
-    // var data = {text: req.body.text, complete: false};
-    // // Get a Postgres client from the connection pool
 
     // // SQL Query > Insert Data
     // client.query("INSERT INTO items(text, complete) values($1, $2)", [data.text, data.complete]);
@@ -65,9 +78,6 @@ postUserSchema: function(req, res){
     //     done();
     //     return res.json(results);
     // });
-
-
-
 },
 
 ///////////GET///////////

@@ -7,7 +7,7 @@ module.exports = {
 		var tableData = req.body;
 		var fakeData = [];  	
 
-    for ( var i = 0; i <=50; i++ ) { 
+    for ( var i = 0; i <=5; i++ ) { 
     	var rowData = [];
 			for ( var keys in tableData ) {
 				if( keys !== 'tableName') {
