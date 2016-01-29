@@ -112,24 +112,40 @@ postUserSchema: function(req, res){
 
   },
 
-
-
-
 ///////////PUT///////////
 put: function(req, res){
     var results = [];
         // SQL Query > Update Data
         client.query("UPDATE items SET text=($1), complete=($2) WHERE id=($3)", [data.text, data.complete, id]);
 
-        // SQL Query > Select Data
-        var query = client.query("SELECT * FROM items ORDER BY id ASC");
+
 
 
 },
 
 ///////////DELETE//////////
-delete: function(req, res){
-    var results = [];
+deleteRow: function(req, res){
+    var usernameTable = req.query.usrTable;
+    var fieldData = req.body;
+    var fieldTypeArr = [];
+    var fieldValueArr = []
+
+    // parse the fields to add to query string
+    for ( var key in fieldData ) {
+      var fields = key.split(".");  
+      fieldTypeArr.push(key); 
+      fieldValueArr.push(fieldData[key]);
+    }  
+
+    // stringify to put in query string.
+    var fieldTypeStr = fieldTypeArr.join(",");
+    var valueStr = gen.generateValueString(fieldValueArr);  
+
+    // client.query("DELETE FROM "+usernameTable+" WHERE ("+fieldTypeStr+") VALUES ("+valueStr+")", fieldValueArr, function(err, rows) {
+    //   if (err) { throw new Error(err); }
+    //   console.log('succesfuly posted to '+usernameTable+ '  table');
+    //   res.status(200)
+    // });
         // SQL Query > Delete Data
         client.query("DELETE FROM items WHERE id=($1)", [id]);
 
@@ -139,4 +155,24 @@ delete: function(req, res){
 
 },
 
+deleteTable: function(req, res){
+  var usernameTable = req.body.usrTable;
+
+  client.query('DROP TABLE IF EXISTS ' + usernameTable, function(err, rows) {
+    if (err) { throw new Error(err); }
+    console.log('succesfuly deleted '+usernameTable+ '  table');
+    res.status(200);
+  });
+}
+
 };
+
+
+
+
+
+
+
+
+
+

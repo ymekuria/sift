@@ -24,8 +24,12 @@ module.exports = function(app, express) {
   app.post('/api/postToTable:usrTable', db.postToTable);
 
   // app.post('/api/:username');
-  // app.put('/api/:username'/***/);
-  // app.delete('/api/:username'/***/);
+  // app.put('/api/:username',);
+  // this endpoint deletes the entire table from the database
+  app.delete('/api/deleteTable',db.deleteTable);
+
+  // this endpoint deletes a row from a users 
+  // app.delete('/api/:username',db.deleterow);
 
 }
 
