@@ -112,15 +112,16 @@ postUserSchema: function(req, res){
 
   },
 
-///////////PUT///////////
-put: function(req, res){
-    var results = [];
-        // SQL Query > Update Data
-        client.query("UPDATE items SET text=($1), complete=($2) WHERE id=($3)", [data.text, data.complete, id]);
-
-
-
-
+///////////PUT/////////// updates a row in a column 
+updateValue: function(req, res){
+    var usernameTable = req.body.tableName;
+    var newValue = req.body.newValue; 
+    var oldValue = req.body.oldValue; 
+// console.log("tableName", usernameTable, "newValue",newValue,"oldValue", oldValue);
+    client.query("UPDATE "+usernameTable+" SET firstname = '"+newValue+"' WHERE firstname = '"+oldValue+"'", function(err, data) { 
+     if (err) { throw new Error(err); }
+       res.status(200).send('succesfully modified '+ oldValue + " to " + newValue + " in " + usernameTable);
+    });
 },
 
 ///////////DELETE//////////
@@ -128,26 +129,10 @@ deleteRow: function(req, res){
     var usernameTable = req.body.tableName;
     var columnName = req.body.columnName;
     var value = req.body.value; 
-   
-   console.log('columnName', columnName, 'value', value, 'tableName', usernameTable);
-
-    // parse the fields to add to query string
-    // for ( var key in fieldData ) {
-    //   if ( key !== '' ) {
-    //     var fields = key.split(".");  
-    //     fieldTypeArr.push(key); 
-    //     fieldValueArr.push(fieldData[key]);
-    //   } 
-    // }   
-
-    // // stringify to put in query string.
-    // var fieldTypeStr = fieldTypeArr.join(",");
-    // var valueStr = gen.generateValueString(fieldValueArr);  
 
     client.query("DELETE FROM "+usernameTable+" WHERE "+columnName+ " = '"+ value+"';", function(err, data) { 
      if (err) { throw new Error(err); }
-        console.log('succesfuly deleted ',value);
-        res.status(200).send('succesfuly deleted'+ value);
+       res.status(200).send('succesfully deleted '+ value);
     });
 
 },
@@ -164,13 +149,3 @@ deleteTable: function(req, res){
 }
 
 };
-
-
-
-
-
-
-
-
-
-

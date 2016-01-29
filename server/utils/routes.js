@@ -23,8 +23,7 @@ module.exports = function(app, express) {
   app.get('/api/getOneTable:usrTable', db.getOneTable);
   app.post('/api/postToTable:usrTable', db.postToTable);
 
-  // app.post('/api/:username');
-  // app.put('/api/:username',);
+  app.put('/api/updateValue', db.updateValue);
   // this endpoint deletes the entire table from the database
   app.delete('/api/deleteTable',db.deleteTable);
 
