@@ -30,7 +30,8 @@ module.exports = {
     });
   },
 
-  createLocalUser: function(req, res) {
+  createLocalUser: function(req, res, next) {
+
     var user = {
       username: req.body.email,
       displayName: req.body.displayName,
@@ -53,8 +54,10 @@ module.exports = {
 
             client.query('INSERT INTO users (username, displayName, password, email, salt) VALUES ($1, $2, $3, $4, $5)', [user.username, user.displayName, user.password, user.email, user.salt], function(err, response) {
               if (err) { throw new Error(err); }
-              // TODO: May be able to pull userID from response and send back to client
-              res.sendStatus(200);
+              var token = jwt.encode(user.username, 'greenVeranda');
+              res.json({
+                token: token
+              });
             })
           })
         })
