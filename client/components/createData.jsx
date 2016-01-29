@@ -44,9 +44,7 @@ class DataEntry extends Component {
           region: false,
           height: false,
           width: false
-        },
-
-
+        }
       }
     }
   }

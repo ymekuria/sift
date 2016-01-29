@@ -8,12 +8,8 @@ let styles = {
   margin: '-10'
 }
 
-
 const TopNav = () => (
-  <AppBar
-    style={styles}
-    title="SIFT"
-  />
+  <AppBar style={styles} title="SIFT"/>
 );
 
 export default TopNav;
