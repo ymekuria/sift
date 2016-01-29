@@ -21,7 +21,7 @@ module.exports = {
     "Address.streetAddress": "yes"
 }
 */
-  // creates a new table with generated data 
+  // this method creates a new table with generated data 
   postUserTable: function(req, res){
     // can refactor to use only req.body
     var tableData = req.body;
@@ -66,7 +66,7 @@ module.exports = {
     });
   },
 
-  // this retrieves all the tableNames associated with the passed in username
+  // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res){
     var username = req.query.usr;
     client.query("SELECT tablename FROM userstables WHERE username = '"+username+"';", function(err,tableNames){
@@ -74,7 +74,8 @@ module.exports = {
         res.status(200).json(tableNames.rows);
     });
   },
-  // this retrieves all the rows in the table specified from the query param
+
+  // this method retrieves all the rows in the table specified from the query param
   getOneTable: function(req, res){
     var usernameTable = req.query.usrTable;
 
@@ -105,7 +106,7 @@ module.exports = {
     var valueStr = gen.generateValueString(fieldValueArr);  
 
     console.log(fieldValueArr, 'fieldValueArr');
-
+    
     client.query("INSERT INTO "+usernameTable+"("+fieldTypeStr+") VALUES ("+valueStr+")", fieldValueArr, function(err, rows) {
       if (err) { throw new Error(err); }
       console.log('succesfuly posted to '+usernameTable+ '  table');
