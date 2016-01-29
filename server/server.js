@@ -39,9 +39,10 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GitHubStrategy({
   clientID: token.CLIENT_ID,
   clientSecret: token.CLIENT_SECRET,
-  callbackURL: 'http://localhost:5001/auth/callback'
+  callbackURL: 'http://127.0.0.1:5001/auth/callback'
 },
   function(accessToken, refreshToken, profile, done) {
+    console.log('Are you here?')
     userController.isUserInDB({ username: profile._json.email }, function(inDB) {
       if (inDB) {
         userController.loginGitHubUser(profile, function(err, profile) {

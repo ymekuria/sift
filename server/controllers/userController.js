@@ -32,6 +32,8 @@ module.exports = {
 
   createLocalUser: function(req, res, next) {
 
+    console.log('Req.body: ', req.body)
+
     var user = {
       username: req.body.email,
       displayName: req.body.displayName,
@@ -54,7 +56,7 @@ module.exports = {
 
             client.query('INSERT INTO users (username, displayName, password, email, salt) VALUES ($1, $2, $3, $4, $5)', [user.username, user.displayName, user.password, user.email, user.salt], function(err, response) {
               if (err) { throw new Error(err); }
-              // res.redirect('#/homepage')
+              console.log('User 57: ', user)
               var token = jwt.encode(user.username, 'greenVeranda');
               res.json({
                 token: token

@@ -17,28 +17,44 @@ class Signin extends Component {
       email: this.refs.email.value
     }
 
-    $.ajax({
+    console.log(user);
+
+    return fetch('/api/users', {
       method: 'POST',
-      url: 'http://localhost:5001/api/users',
-      data: user
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+    .then((res) => res.json())
+    .then((resJSON) => {
+      localStorage.setItem('sift-user', resJSON.token)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  createGitHubUser(e) {
+    e.preventDefault();
+
+    $.ajax({
+      method: 'GET',
+      url: '/auth/github'
     })
     .done(function(res) {
-      console.log(this)
+      console.log(res)
       if (res.token) {
         localStorage.setItem('user', res.token);
         // this.transitionTo('homepage');
       }
-    }) 
-  }
-
-  createGitHubUser(e) {
-    console.log('clicked to sign in through GitHub');
+    })
   }
 	
   render() {
     return (
       <div className='signin'>
-       <button onClick={this.createGitHubUser}>Log In with GitHub</button>
+       <input type='button' onclick='location.href="/auth/github"'>Login with GitHub</input>
        <span> -- OR -- </span>
        <form ref='userForm' onSubmit={this.createLocalAccount.bind(this)}>
          <input type='text' ref='first' placeholder='First Name' />
