@@ -1,12 +1,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var githubAuth = require('./auth/githubAuth.js');
 var passport = require('passport');
 var session = require('express-session');
 var GitHubStrategy = require('passport-github').Strategy;
 var userController = require('./controllers/userController.js')
 var token = require('./auth/authTokens.js');
 var morgan = require('morgan');
+var cors = require('cors');
 var pg = require('pg');
 var app = express();
 
@@ -14,6 +14,7 @@ var app = express();
 
 // Middleware. Add below as needed
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
