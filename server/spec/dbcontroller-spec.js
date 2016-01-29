@@ -10,40 +10,35 @@ describe("Posting User Schemas", function() {
 
   beforeEach(function(done) {
     client = new pg.Client(db.connectionString);
-      
     client.connect();
+    done();
+  })
+ 
 
-    var UserTablename = "yoni_test_mytable";
+  afterEach(function(done) {
+    client.query("DROP TABLE yonim_test");
+    client.end();
+    done();
+  });
 
-    /* Empty the db table before each test so that multiple tests
-     * (or repeated runs of the tests) won't screw each other up: */
-    client.query("DROP TABLE " + UserTablename);
-
-    client.query('CREATE TABLE IF NOT EXISTS yoni_test_mytable (' +
+  it("Should write to the database", function(done) {
+    client.query('CREATE TABLE IF NOT EXISTS yonim_test ('+
       'firstname VARCHAR(120), ' +
       'lastname VARCHAR(120), ' +
       'streetaddress VARCHAR(200))', function(err, result) {
         if (err) { throw new Error(err); }
         console.log('test table created');
         done();
-    })
-  });
 
-  afterEach(function() {
-    client.end();
-  });
-
-  it("Should write to the database", function(done) {
-    user = {
+    data = {
       firstname: 'Yoni',
       lastname: 'Mekuria',
       streetaddress: '5234 Callback Way'
     }
-    client.query('INSERT INTO yoni_test (firstname, lastname, streetaddress) VALUES ($1, $2, $3)', [user.firstname, user.lastname, user.streetaddress], function(err, results) {
+    client.query('INSERT INTO yonim_test (firstname, lastname, streetaddress) VALUES ($1, $2, $3)', [data.firstname, data.lastname, data.streetaddress], function(err, results) {
       if (err) { throw new Error(err); }
-      client.query('SELECT * FROM yoni_test', function(err, results) {
+      client.query('SELECT * FROM yonim_test', function(err, results) {
         expect(results.rows.length).to.equal(1);
-        console.log('results', results);
         done();
       })
     })
@@ -51,23 +46,32 @@ describe("Posting User Schemas", function() {
 });
 
   it("Should generate data and add fields to the database", function(done) {
-    // Post the user to the chat server.
+        client = new pg.Client(db.connectionString);
+    client.connect();
+    
     request({ method: "POST",
-              uri: "http://127.0.0.1:5001/api/schema:?usr=yoni_test",
-              json: {"tableName": "mytable", "Name.firstName": "yes", "Name.lastName": "yes", "Address.streetAddress": "yes"}
-    }, function(error, res, body) {
-      var queryString = "SELECT * FROM users";
-      var queryArgs = [];
-
-      client.query(queryString, queryArgs, function(err, results) {
+              uri: "http://127.0.0.1:5001/api/generateTable:?usr=yonim",
+              json: {"tableName": "test", "Name.firstName": "yes", "Name.lastName": "yes", "Address.streetAddress": "yes"}
+    }, function(error, firstResult) {
+      var queryString = "SELECT * FROM yonim_test";
+      //console.log('first result', firstResult);     
+      client.query(queryString, function(err, results) {
+        if(err) { throw err;}
         //expect(results.rows.length).to.equal(10);
         //expect(results.rows[0].username).to.equal("erikdbrown@gmail.com");
-        console.log('results in generate data', results);
+        console.log('results in generate data', results.rows);
 
-        done();
+      done();
       });
     });
   });
+
+
+
+
+
+});
+
 
   // it("Should return 403 if a username is already in the database", function(done) {
   //   request({ method: "POST",

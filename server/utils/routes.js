@@ -1,5 +1,5 @@
 // add links to controllers here
-var db = require('../controllers/dbcontrollers.js');
+var dbController = require('../controllers/dbcontrollers.js');
 var userController = require('../controllers/userController.js')
 var passport = require('passport');
 
@@ -15,20 +15,22 @@ module.exports = function(app, express) {
     res.redirect('/');
   });
  
-  // these are the endpoints each user will have access to
+  // this endpoint genratesa new table with the fields the user specifys
+  app.post('/api/generateTable:usr', dbController.postUserTable);
+  // this endpoint 
+  app.get('/api/getTables:usr', dbController.getTables);
 
-  app.post('/api/generateTable:usr', db.postUserSchema);
-  app.get('/api/getTables:usr', db.getTables);
+  // these are the endpoints that will be avialable
+  app.post('/api/postToTable:usrTable', dbController.postToTable);
+  app.get('/api/getOneTable:usrTable', dbController.getOneTable);
+  
 
-  app.get('/api/getOneTable:usrTable', db.getOneTable);
-  app.post('/api/postToTable:usrTable', db.postToTable);
-
-  app.put('/api/updateValue', db.updateValue);
+  app.put('/api/updateValue', dbController.updateValue);
   // this endpoint deletes the entire table from the database
-  app.delete('/api/deleteTable',db.deleteTable);
+  app.delete('/api/deleteTable',dbController.deleteTable);
 
   // this endpoint deletes a row from a users 
-  app.delete('/api/deleteRow',db.deleteRow);
+  app.delete('/api/deleteRow',dbController.deleteRow);
 
 }
 
