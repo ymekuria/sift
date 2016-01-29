@@ -27,7 +27,8 @@ postUserSchema: function(req, res){
 
     var tableData = req.body;
     var username = req.query.usr;
-    var tableName = tableData.tableName;
+    var tableName = tableData.tableName; 
+    console.log('tableName',tableName);
     var fakeData = gen.generateData(req, res);
     //var fieldArr = '';
     var fieldArr = [];
@@ -41,7 +42,9 @@ postUserSchema: function(req, res){
         var fields = key.split(".");  
         fieldArr.push(fields[1]); 
 
-        client.query("ALTER TABLE "+username+"_"+tableName+" ADD COLUMN "+ fields[1] +" text;");
+        client.query("ALTER TABLE "+username+"_"+tableName+" ADD COLUMN "+ fields[1] +" text;", function(err,rows){
+          if (err) { console.log("column already exists"); }
+        });
       }
     }
      
@@ -50,15 +53,16 @@ postUserSchema: function(req, res){
 
     for(var i = 0; i < fakeData.length; i++) {
       client.query("INSERT INTO "+username+"_"+tableName+"("+fieldStr+") VALUES ("+valueStr+")", fakeData[i], function(err, rows) {
-        if (err) { throw new Error(err); }
+        if (err) { throw new Error(err.name); }
       });
   
     }
 
-    client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)',[username, username+"_"+tableName]);
+    client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)',[username, username+"_"+tableName],function(err,rows){
+      if (err) { console.log("error !!!"); }
 
-
-	res.status(200).send("success");
+      res.status(200).send("success");
+    });
 
 },
 

@@ -20,7 +20,6 @@ describe("Posting User Schemas", function() {
     client.query("DROP TABLE " + UserTablename);
 
     client.query('CREATE TABLE IF NOT EXISTS yoni_test_mytable (' +
-      'id SERIAL PRIMARY KEY, ' +
       'firstname VARCHAR(120), ' +
       'lastname VARCHAR(120), ' +
       'streetaddress VARCHAR(200))', function(err, result) {
