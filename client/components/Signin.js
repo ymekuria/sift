@@ -53,4 +53,6 @@ class Signin extends Component {
   }
 };
 
+// reactMixin.onClass(Signin, Navigation)
+
 export default Signin;
