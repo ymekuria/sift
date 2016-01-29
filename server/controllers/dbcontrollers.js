@@ -80,7 +80,7 @@ module.exports = {
 
     client.query("SELECT * FROM "+usernameTable+";", function(err,entireTable){
         if (err) { throw new Error(err); }
-        console.log(entireTable.rows);
+        //console.log(entireTable.rows);
          res.status(200).json(entireTable.rows);
     });
 
