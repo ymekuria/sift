@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+// import { Navigation } from 'react-router';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-// import fetch from 'whatwg-fetch';
+// import reactMixin from 'react-mixin';
 import autobind from 'autobind-decorator';
 
 // @autobind
@@ -22,7 +23,11 @@ class Signin extends Component {
       data: user
     })
     .done(function(res) {
-      localStorage.setItem('user', res.token);
+      console.log(this)
+      if (res.token) {
+        localStorage.setItem('user', res.token);
+        // this.transitionTo('homepage');
+      }
     }) 
   }
 
@@ -47,5 +52,7 @@ class Signin extends Component {
     );
   }
 };
+
+// reactMixin.onClass(Signin, Navigation)
 
 export default Signin;
