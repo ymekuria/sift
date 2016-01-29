@@ -107,33 +107,6 @@ describe("Posting User Schemas", function() {
     done();
     });    
   });
-  // it("Should retrieve a schema", function(done) {
-  
-
-  //   data = {
-  //     firstname: 'john',
-  //     lastname: 'Mekuria',
-  //     streetaddress: '5234 Callback Way'
-  //   }
-  //   client.query('INSERT INTO yonim_test (firstname, lastname, streetaddress) VALUES ($1, $2, $3)', [data.firstname, data.lastname, data.streetaddress], function(err, results) {
-  //     if (err) { throw new Error(err); }
-    
-  //   request({ method: "GET",
-  //             uri: "http://127.0.0.1:5001/api/getOneTable:?usrTable=yonim_test"
-              
-  //   }, function(err, getResult) {
-  //     if (err) {throw new Error(err);}
-  //     //var queryString = "SELECT * FROM yonim_test";
-  //     //console.log('first result', firstResult);     
-  //     //client.query(queryString, function(err, results) {
-  //       //if(err) { throw err;}
-  //       //expect(results.rows.length).to.equal(10);
-  //       //expect(results.rows[0].username).to.equal("erikdbrown@gmail.com");
-  //       console.log('results in retrieve schema ', err);
-
-  //     done();
-  //     });    
-  //   })
  
 });  
 
