@@ -61,7 +61,7 @@ module.exports = {
 
     client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)',[username, username+"_"+tableName],function(err,rows){
       if (err) { console.log("error !!!"); }
-
+      console.log(username +' and ' +username+"_"+tableName+' added to the userstables');
       res.status(200).send("success");
     });
   },
