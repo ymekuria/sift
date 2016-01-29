@@ -21,8 +21,8 @@ class Signin extends Component {
       url: 'http://localhost:5001/api/users',
       data: user
     })
-    .done(function(response) {
-      console.log('response: ', response)
+    .done(function(res) {
+      localStorage.setItem('user', res.token);
     }) 
   }
 
