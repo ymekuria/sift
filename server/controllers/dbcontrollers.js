@@ -64,7 +64,7 @@ postUserSchema: function(req, res){
 
 ///////////GET///////////
 
-getTables: function(req, res){
+  getTables: function(req, res){
     var username = req.query.usr;
     console.log("username : ",username);
     client.query("SELECT tablename FROM userstables WHERE username = '"+username+"';", function(err,tableNames){
@@ -72,9 +72,9 @@ getTables: function(req, res){
         console.log(tableNames.rows);
         res.status(200).json(tableNames.rows);
     });
-},
+  },
 
-getOneTable: function(req, res){
+  getOneTable: function(req, res){
     var usernameTable = req.query.usrTable;
 
     client.query("SELECT * FROM "+usernameTable+";", function(err,entireTable){
@@ -83,21 +83,34 @@ getOneTable: function(req, res){
          res.status(200).json(entireTable.rows);
     });
 
-},
+  },
 
-postToTable: function(req, res){
+  postToTable: function(req, res){
     var usernameTable = req.query.usrTable;
-    var data = req.body;
+    var fieldData = req.body;
+    var fieldTypeArr = [];
+    var fieldValueArr = []
 
+    // parse the fields to add to query string
+    for ( var key in fieldData ) {
+      var fields = key.split(".");  
+      fieldTypeArr.push(key); 
+      fieldValueArr.push(fieldData[key]);
+    }  
 
-console.log(usernameTable, data);
-    // client.query("SELECT * FROM "+usernameTable+";", function(err,entireTable){
-    //     if (err) { throw new Error(err); }
-    //     console.log(entireTable.rows);
-    //      res.status(200).json(entireTable.rows);
-    // });
-res.status(200)
-},
+    // stringify to put in query string.
+    var fieldTypeStr = fieldTypeArr.join(",");
+    var valueStr = gen.generateValueString(fieldValueArr);  
+
+    console.log(fieldValueArr, 'fieldValueArr');
+
+    client.query("INSERT INTO "+usernameTable+"("+fieldTypeStr+") VALUES ("+valueStr+")", fieldValueArr, function(err, rows) {
+      if (err) { throw new Error(err); }
+      console.log('succesfuly posted to '+usernameTable+ '  table');
+      res.status(200)
+    });
+
+  },
 
 
 
