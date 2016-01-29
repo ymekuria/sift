@@ -1,0 +1,33 @@
+.topNav {
+  height: 45px;
+  width: 98vw;
+  border-bottom: solid grey 1px;
+}
+
+.leftNav {
+  width: 60px;
+  height: 95vh;
+  border-right: solid grey 1px;
+  position: fixed;
+}
+
+.dataEntry {
+  width: 500px;
+  height: 300px;
+/*  background-color: blue;*/
+  margin: 20px 0 0 20px;
+}
+
+.homepage {
+  width: 500px;
+  height: 300px;
+  background-color: red;
+  margin: 20px 0 0 20px;
+}
+
+.dataVis {
+  width: 500px;
+  height: 300px;
+  background-color: green;
+  margin: 20px 0 0 20px;
+}
