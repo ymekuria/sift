@@ -14,6 +14,12 @@ describe("Posting User Schemas", function() {
 
     var tablename = "yonim_test";
 
+         data = {
+      firstname: 'Yoni',
+      lastname: 'Mekuria',
+      streetaddress: '5234 Callback Way'
+    }
+
    client.query("DROP TABLE IF EXISTS " + tablename); 
 
    client.query('CREATE TABLE IF NOT EXISTS yonim_test ('+
@@ -21,32 +27,42 @@ describe("Posting User Schemas", function() {
     'lastname VARCHAR(120), ' +
     'streetaddress VARCHAR(200))', function(err, result) {
       if (err) { throw new Error(err); }
-      console.log('test table created');
-      done();
+    
     }); 
+
+  
+    client.query('INSERT INTO yonim_test (firstname, lastname, streetaddress) VALUES ($1, $2, $3)', [data.firstname, data.lastname, data.streetaddress], function(err, results) {
+      if (err) { throw new Error(err); }
+      client.query('SELECT * FROM yonim_test', function(err, results) {
+        // console.log('results.rows before each', results.rows);
+        done();
+      });
+    });
+
+
   });
  
 
   afterEach(function() {
-    //client.query("DROP TABLE yonim_test");
+    client.query("DROP TABLE yonim_test");
     client.end();
     });
 
-  it("Should write to the database", function(done) {
-     data = {
-      firstname: 'Yoni',
-      lastname: 'Mekuria',
-      streetaddress: '5234 Callback Way'
-    }
-    client.query('INSERT INTO yonim_test (firstname, lastname, streetaddress) VALUES ($1, $2, $3)', [data.firstname, data.lastname, data.streetaddress], function(err, results) {
-      if (err) { throw new Error(err); }
-      client.query('SELECT * FROM yonim_test', function(err, results) {
-        expect(results.rows.length).to.equal(1);
-        done();
-      })
-    })
+//   it("Should write to the database", function(done) {
+//      data = {
+//       firstname: 'Yoni',
+//       lastname: 'Mekuria',
+//       streetaddress: '5234 Callback Way'
+//     }
+//     client.query('INSERT INTO yonim_test (firstname, lastname, streetaddress) VALUES ($1, $2, $3)', [data.firstname, data.lastname, data.streetaddress], function(err, results) {
+//       if (err) { throw new Error(err); }
+//       client.query('SELECT * FROM yonim_test', function(err, results) {
+//         expect(results.rows.length).to.equal(1);
+//         done();
+//       })
+//     })
   
-});
+// });
 
   it("Should retrieve a schema", function(done) {
     request({ method: "GET",
@@ -54,8 +70,10 @@ describe("Posting User Schemas", function() {
               
     }, function(err, results) {
       if (err) {throw new Error(err);}
-        //expect(results.rows.length).to.equal(1);
-        console.log('results in retrieve schema ', results.rows);
+        var rows = JSON.parse(results.body)
+        expect(rows.length).to.equal(1);
+        expect(rows[0].firstname).to.equal("Yoni");
+        // console.log('results in retrieve schema ', rows);
       done();
       });    
     });
@@ -66,47 +84,49 @@ describe("Posting User Schemas", function() {
               
     }, function(err, results) {
       if (err) {throw new Error(err);}
-        //expect(results.rows.length).to.equal(1);
-        //console.log('results in retrieve all schemas ', results.rows);
+        var rows = JSON.parse(results.body)
+        // expect(rows.length).to.equal(1);
+        expect(rows[0].tableName).to.equal("yonim_test");
+        console.log('results in retrieve schema ', rows);
       done();
       });    
     });
 
-  it("Should delete a usersTable", function(done) {
-  request({ method: "GET",
-            uri: "http://127.0.0.1:5001/api/deleteTable",
-            json: { tableName: "yonim_test" }
+  // it("Should delete a usersTable", function(done) {
+  // request({ method: "GET",
+  //           uri: "http://127.0.0.1:5001/api/deleteTable",
+  //           json: { tableName: "yonim_test" }
             
-  }, function(err, results) {
-    if (err) {throw new Error(err);}
+  // }, function(err, results) {
+  //   if (err) {throw new Error(err);}
       
-    done();
-    });    
-  });
+  //   done();
+  //   });    
+  // });
 
-  it("Should delete a row from a usersTable", function(done) {
-  request({ method: "GET",
-            uri: "http://127.0.0.1:5001/api/deleteRow",
-            json: { tableName: "yonim_test", columnName: "firstname", "value": "yoni"  }
+  // it("Should delete a row from a usersTable", function(done) {
+  // request({ method: "GET",
+  //           uri: "http://127.0.0.1:5001/api/deleteRow",
+  //           json: { tableName: "yonim_test", columnName: "firstname", "value": "yoni"  }
             
-  }, function(err, results) {
-    if (err) {throw new Error(err);}
+  // }, function(err, results) {
+  //   if (err) {throw new Error(err);}
       
-    done();
-    });    
-  });
+  //   done();
+  //   });    
+  // });
 
-    it("Should update a value in a usersTable", function(done) {
-  request({ method: "GET",
-            uri: "http://127.0.0.1:5001/api/updateValue",
-            json: { tableName: "yonim_test", columnName: "firstname", "newValue": "john", "oldValue": "yoni" }
+  //   it("Should update a value in a usersTable", function(done) {
+  // request({ method: "GET",
+  //           uri: "http://127.0.0.1:5001/api/updateValue",
+  //           json: { tableName: "yonim_test", columnName: "firstname", "newValue": "john", "oldValue": "yoni" }
             
-  }, function(err, results) {
-    if (err) {throw new Error(err);}
+  // }, function(err, results) {
+  //   if (err) {throw new Error(err);}
       
-    done();
-    });    
-  });
+  //   done();
+  //   });    
+  // });
  
 });  
 
