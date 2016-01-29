@@ -29,7 +29,7 @@ module.exports = function(app, express) {
   app.delete('/api/deleteTable',db.deleteTable);
 
   // this endpoint deletes a row from a users 
-  // app.delete('/api/:username',db.deleterow);
+  app.delete('/api/deleteRow',db.deleteRow);
 
 }
 

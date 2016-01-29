@@ -125,43 +125,41 @@ put: function(req, res){
 
 ///////////DELETE//////////
 deleteRow: function(req, res){
-    var usernameTable = req.query.usrTable;
-    var fieldData = req.body;
-    var fieldTypeArr = [];
-    var fieldValueArr = []
+    var usernameTable = req.body.tableName;
+    var columnName = req.body.columnName;
+    var value = req.body.value; 
+   
+   console.log('columnName', columnName, 'value', value, 'tableName', usernameTable);
 
     // parse the fields to add to query string
-    for ( var key in fieldData ) {
-      var fields = key.split(".");  
-      fieldTypeArr.push(key); 
-      fieldValueArr.push(fieldData[key]);
-    }  
+    // for ( var key in fieldData ) {
+    //   if ( key !== '' ) {
+    //     var fields = key.split(".");  
+    //     fieldTypeArr.push(key); 
+    //     fieldValueArr.push(fieldData[key]);
+    //   } 
+    // }   
 
-    // stringify to put in query string.
-    var fieldTypeStr = fieldTypeArr.join(",");
-    var valueStr = gen.generateValueString(fieldValueArr);  
+    // // stringify to put in query string.
+    // var fieldTypeStr = fieldTypeArr.join(",");
+    // var valueStr = gen.generateValueString(fieldValueArr);  
 
-    // client.query("DELETE FROM "+usernameTable+" WHERE ("+fieldTypeStr+") VALUES ("+valueStr+")", fieldValueArr, function(err, rows) {
-    //   if (err) { throw new Error(err); }
-    //   console.log('succesfuly posted to '+usernameTable+ '  table');
-    //   res.status(200)
-    // });
-        // SQL Query > Delete Data
-        client.query("DELETE FROM items WHERE id=($1)", [id]);
-
-        // SQL Query > Select Data
-        var query = client.query("SELECT * FROM items ORDER BY id ASC");
-
+    client.query("DELETE FROM "+usernameTable+" WHERE "+columnName+ " = '"+ value+"';", function(err, data) { 
+     if (err) { throw new Error(err); }
+        console.log('succesfuly deleted ',value);
+        res.status(200).send('succesfuly deleted'+ value);
+    });
 
 },
 
 deleteTable: function(req, res){
-  var usernameTable = req.body.usrTable;
+  var usernameTable = req.body.tableName;
+  console.log('tableName', usernameTable);
 
   client.query('DROP TABLE IF EXISTS ' + usernameTable, function(err, rows) {
     if (err) { throw new Error(err); }
     console.log('succesfuly deleted '+usernameTable+ '  table');
-    res.status(200);
+    res.status(200).json(usernameTable);
   });
 }
 
