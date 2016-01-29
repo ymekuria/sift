@@ -3,6 +3,7 @@ import main from '../components/main.jsx'
 import dataEntry from '../components/createData.jsx'
 import homepage from '../components/homepage.jsx'
 import dataVis from '../components/dataVis.jsx'
+import Signin from '../components/Signin'
 import routes from '../config/routes.js'
 import { Route, IndexRoute} from 'react-router'
 

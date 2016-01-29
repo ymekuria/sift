@@ -7,6 +7,7 @@ var GitHubStrategy = require('passport-github').Strategy;
 var userController = require('./controllers/userController.js')
 var token = require('./auth/authTokens.js');
 var morgan = require('morgan');
+var cors = require('cors');
 var pg = require('pg');
 var app = express();
 var cors = require('cors');
