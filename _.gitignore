@@ -3,6 +3,7 @@
 # Logs
 logs
 *.log
+npm-debug.log
 
 # Runtime data
 pids
@@ -21,6 +22,9 @@ coverage
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
 dist/
+client/components/*-compiled.*
+client/*-compiled.*
+*-compiled.*
 
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:
