@@ -23,8 +23,11 @@ const Selections = ({
   //for our checked values, when the submit button is clicked
   //we will refer to currently checked and send this information
   //to the database
-  let currentlyChecked = {};
-  console.log(selection)
+  let currentlyChecked = {
+    name: {},
+    address: {},
+    internet : {}
+  };
   let recordCheck = (e, value) => {
     if (e.target.checked) {
       currentlyChecked[value] = true;

@@ -36,7 +36,6 @@ module.exports = {
 
   parseColumnNames: function (obj) {
     var results = [];
-
     for (key in obj) {
       if (key !== 'tableName') {
         results = results.concat(Object.keys(obj[key]));
@@ -47,10 +46,8 @@ module.exports = {
 
 	generateData: function(obj,numberOfRows) {
 		var fakeData = [];  	
-    
-    //look obj[key] and only push if obj[key] is true
 
-    for ( var i = 0; i < 10; i++ ) { 
+    for (var i = 0; i < numberOfRows; i++ ) { 
     	var rowData = [];
       for (key in obj) {
         if ( key !== 'tableName') {
