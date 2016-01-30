@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-class Signin extends Component {
-	
+class Signin extends Component {	
   render() {
     return (
       <div className='signin'>

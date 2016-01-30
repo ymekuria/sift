@@ -85,7 +85,7 @@ userMethods = {
 
     var user = {
       username: req.body.email,
-      displayName: req.body.first + ' ' + req.body.last,
+      displayName: req.body.displayName,
       password: req.body.password,
       email: req.body.email,
     };
