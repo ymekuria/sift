@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 var GitHubStrategy = require('passport-github').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 var userController = require('./controllers/userController.js')
 var token = require('./auth/authTokens.js');
 var morgan = require('morgan');
@@ -29,11 +30,19 @@ require('./utils/routes.js')(app, express);
 
 
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  done(null, user.username);
 });
 
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
+passport.deserializeUser(function(username, done) {
+  userController.findUser({ username: username }, function(err, user) {
+      if (err) { return done(err); }
+
+      if (!user) {
+        return done(null, false);
+      }
+
+      return done(null, user);
+    })
 });
 
 passport.use(new GitHubStrategy({
@@ -42,17 +51,22 @@ passport.use(new GitHubStrategy({
   callbackURL: 'http://127.0.0.1:5001/auth/callback'
 },
   function(accessToken, refreshToken, profile, done) {
-    console.log('Are you here?')
-    userController.isUserInDB({ username: profile._json.email }, function(inDB) {
-      if (inDB) {
-        userController.loginGitHubUser(profile, function(err, profile) {
-          return done(err, profile);
-        })
-      } else {
-        userController.createGitHubUser(profile, function(err, user) {
-          return done(err, user);
-        })
+    userController.findOrCreateGitHubUser(profile, accessToken, refreshToken, function(err, user) {
+      if (err) { done(err); }
+      done(null, user);
+    })    
+}));
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    userController.findUser({ username: username }, function(err, user) {
+      if (err) { return done(err); }
+
+      if (!user || userController.validatePassword(user, password)) {
+        return done(null, false);
       }
+
+      return done(null, user);
     })
 }));
 
