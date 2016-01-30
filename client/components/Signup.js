@@ -32,7 +32,7 @@ class Signup extends Component {
     return (
       <div className='signin'>
         <form action='/auth/github' method='get'>
-          <button type='submit'>Sign in with GitHub</button>
+          <button type='submit'>Sign up with GitHub</button>
         </form>
        <span> -- OR -- </span>
        <form action='/api/users' method='post'>
