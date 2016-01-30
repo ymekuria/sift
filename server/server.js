@@ -59,28 +59,22 @@ passport.use(new GitHubStrategy({
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log('username: ', username)
-    console.log('password: ', password)
     userController.findUser({ username: username }, function(err, user) {
-      console.log('User: ', user)
       if (err) { return done(err); }
 
       if (user && !user.password) {
         return done(null, false, { message: 'Please sign in with your GitHub account' });
-      }
-
-      if (!user) {
+      } else if (!user) {
         return done(null, false);
+      } else {
+        userController.validatePassword(user.password, password, function(isMatch) {
+          if (isMatch) {
+            return done(null, user);
+          } else {
+            return done(null, false); // TODO: redirect to signin rather than signup
+          }
+        })
       }
-
-      userController.validatePassword(user.password, password, function(isMatch) {
-        if (isMatch) {
-          return done(null, user);
-        } else {
-          return done(null, false); // TODO: redirect to signin rather than signup
-        }
-      })
-
     })
 }));
 
