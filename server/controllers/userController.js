@@ -24,16 +24,21 @@ client.query('CREATE TABLE IF NOT EXISTS users (' +
 
 userMethods = {
 
+  getUser: function(req, res, next) {
+    // console.log(req);
+    next()
+  },
+
   isUserInDB: function(user, callback) {
     client.query('SELECT username, githubToken FROM users WHERE username=($1)', [user.username], function(err, rows) {
       if (err) { throw new Error(err); }
       var inDB = rows.rows.length > 0;
-      callback(inDB, rows.rows[0].githubToken);
+      callback(inDB);
     });
   },
 
   findUser: function(user, callback) {
-    client.query('SELECT username, password FROM users WHERE username=($1)', [user.username], function(err, rows) {
+    client.query('SELECT * FROM users WHERE username=($1)', [user.username], function(err, rows) {
       if (err) { throw new Error(err); }
       if (rows.rows.length === 0) {
         callback(null, null) // user does not exist
@@ -65,14 +70,14 @@ userMethods = {
         }
       }
     })
-
   },
 
-  validatePassword: function(user, password) {
+  validatePassword: function(storedHash, password, callback) {
 
-    bcrypt.compare(password, user.password, function(err, isMatch) {
+    bcrypt.compare(password, storedHash, function(err, isMatch) {
+      console.log('used compare')
       if (err) { throw new Error(err); }
-      return isMatch;
+      callback(isMatch);
     })
   },
 
@@ -85,7 +90,7 @@ userMethods = {
       email: req.body.email,
     };
 
-    userMethods.isUserInDB(user, function(inDB, githubToken) {
+    userMethods.isUserInDB(user, function(inDB) {
       if (inDB) {
         res.sendStatus(403); // username exists
       } else {
@@ -110,29 +115,29 @@ userMethods = {
     })
   },
 
-  loginLocalUser: function(req, res) {
-    var username = req.body.username;
+  // loginLocalUser: function(req, res) {
+  //   var username = req.body.username;
 
-    client.query('SELECT password FROM users WHERE username=($1)', [username], function(err, rows, fields) {
-      if (err) { throw new Error(err); }
-      if (rows.rows.length === 0) {
-        res.sendStatus(404); // username does not exist
-      } else {
-        var dbPassword = rows.rows[0].password;
-        bcrypt.compare(req.body.password, dbPassword, function(err, isMatch) {
-          if (err) { throw new Error(err); }
-          if (!isMatch) {
-            res.sendStatus(401); // invalid username or password
-          } else {
-            var token = jwt.encode(username, 'greenVeranda');
-            res.json({
-              token: token
-            });
-          }
-        })
-      }
-    })
-  },
+  //   client.query('SELECT password FROM users WHERE username=($1)', [username], function(err, rows, fields) {
+  //     if (err) { throw new Error(err); }
+  //     if (rows.rows.length === 0) {
+  //       res.sendStatus(404); // username does not exist
+  //     } else {
+  //       var dbPassword = rows.rows[0].password;
+  //       bcrypt.compare(req.body.password, dbPassword, function(err, isMatch) {
+  //         if (err) { throw new Error(err); }
+  //         if (!isMatch) {
+  //           res.sendStatus(401); // invalid username or password
+  //         } else {
+  //           var token = jwt.encode(username, 'greenVeranda');
+  //           res.json({
+  //             token: token
+  //           });
+  //         }
+  //       })
+  //     }
+  //   })
+  // },
 
   updateToken: function(user, token, callback) {
     client.query('UPDATE users SET githubToken = ($1) WHERE username = ($2)', [token, user.username], callback);

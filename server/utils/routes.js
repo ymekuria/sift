@@ -7,17 +7,16 @@ module.exports = function(app, express) {
 
  // add auth routes here	
   app.get('/api/users'/***/);
-  app.post('/api/users', userController.createLocalUser, function(req, res) {
+  app.post('/api/users', userController.createLocalUser, userController.getUser, function(req, res) {
     res.redirect('/');
   });
-  app.post('/signin', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/#/signup' }));
+  app.post('/signin', passport.authenticate('local', { successRedirect: '/user', failureRedirect: '/#/signup' }));
   app.get('/auth/github', passport.authenticate('github'));
-  app.get('/auth/callback', passport.authenticate('github', { successRedirect: '/', failureRedirect: '/#/signup' }));
+  app.get('/auth/callback', passport.authenticate('github', { successRedirect: '/user', failureRedirect: '/#/signup' }));
 
-  // app.get('/', passport.authenticate('github', {failureRedirect: '#/signup', session: false}), function(req, res){
-  //   console.log('you are in the / GET')
-  //   res.send('this is the home page');
-  // });
+  app.get('/user', userController.getUser, function(req, res) {
+    res.redirect('/')
+  });
  
   // this endpoint genratesa new table with the fields the user specifys
   app.post('/api/generateTable:usr', dbController.postUserTable);
