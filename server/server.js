@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var githubAuth = require('./auth/githubAuth.js');
+// var githubAuth = require('./auth/githubAuth.js');
 var passport = require('passport');
 var session = require('express-session');
 var GitHubStrategy = require('passport-github').Strategy;

@@ -1,15 +1,4 @@
-.topNav {
-  height: 45px;
-  width: 98vw;
-  border-bottom: solid grey 1px;
-}
 
-.leftNav {
-  width: 60px;
-  height: 95vh;
-  border-right: solid grey 1px;
-  position: fixed;
-}
 
 .dataEntry {
   width: 500px;
@@ -19,10 +8,20 @@
 }
 
 .homepage {
-  width: 500px;
+  width: 100vw;
   height: 300px;
-  background-color: red;
-  margin: 20px 0 0 20px;
+}
+.banner {
+  height: 200px;
+  text-align: center;
+  margin-right: 55px;
+  padding-top: 120px;
+  background-color: dark green;
+}
+.homeTableDisplay {
+  width: 100vw;
+  height: 350px;
+  background-color: blue;
 }
 
 .dataVis {
@@ -30,4 +29,7 @@
   height: 300px;
   background-color: green;
   margin: 20px 0 0 20px;
+}
+.welcome {
+  padding-top: 20px;
 }

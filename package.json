@@ -7,7 +7,8 @@
     "node": "4.2.2"
   },
   "scripts": {
-    "test": "mocha server/spec",
+    "test_client": "mocha client/spec",
+    "test_server": "mocha server/spec",
     "start": "node server/server.js",
     "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "build": "npm run clean && npm run build:webpack",
@@ -29,6 +30,7 @@
     "chai": "^3.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "faker": "^3.0.1",
     "jwt-simple": "^0.4.1",
     "lodash": "^4.0.1",
     "material-ui": "^0.14.3",
@@ -42,6 +44,7 @@
     "react-dom": "latest",
     "react-router": "^2.0.0-rc5",
     "react-tap-event-plugin": "^0.2.1",
+    "request": "^2.69.0",
     "sinon": "^1.17.2"
   },
   "devDependencies": {
@@ -58,6 +61,7 @@
     "eslint-plugin-react": "^3.16.1",
     "eventsource-polyfill": "^0.9.6",
     "expect": "^1.13.4",
+    "mocha": "^2.4.5",
     "rimraf": "^2.5.1",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.12",
