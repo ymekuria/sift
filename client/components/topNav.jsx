@@ -3,9 +3,8 @@ import { AppBar, Colors, FontIcon } from 'material-ui'
 
 let styles = {
   backgroundColor: 'grey',
-  height: '60px',
-  width: '100vw',
-  margin: '-10'
+  width: '110vw',
+  margin: '-20'
 }
 
 const TopNav = () => (

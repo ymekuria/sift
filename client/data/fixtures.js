@@ -1,6 +1,4 @@
-//mock table data
-
-{
+export default {
   current: 'Users',
   selections: {
     Cars: {
@@ -29,4 +27,5 @@
       height: false,
       width: false
     }
+  } 
 }
