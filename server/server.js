@@ -62,7 +62,11 @@ passport.use(new LocalStrategy(
     userController.findUser({ username: username }, function(err, user) {
       if (err) { return done(err); }
 
-      if (!user || userController.validatePassword(user, password)) {
+      if (user && user.password === null) {
+        return done(null, false, { message: 'Please sign in with your GitHub account' });
+      }
+
+      if (!user || !userController.validatePassword(user, password)) {
         return done(null, false);
       }
 
