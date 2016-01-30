@@ -18,7 +18,7 @@ describe("Authenticating Users", function() {
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
-    client.query("DROP TABLE " + UserTablename);
+    client.query("DROP TABLE IF EXISTS " + UserTablename);
 
     client.query('CREATE TABLE IF NOT EXISTS users (' +
       'id SERIAL PRIMARY KEY, ' +

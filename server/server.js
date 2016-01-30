@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var githubAuth = require('./auth/githubAuth.js');
+//var githubAuth = require('./auth/githubAuth.js');
 var passport = require('passport');
 var session = require('express-session');
 var GitHubStrategy = require('passport-github').Strategy;
@@ -24,6 +24,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./utils/routes.js')(app, express);
+
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -53,6 +54,7 @@ passport.use(new GitHubStrategy({
 }));
 
 var port = process.env.PORT || 5001;
+
 
 app.listen(port, function() {
 	console.log('Sifting on port= ', port)
