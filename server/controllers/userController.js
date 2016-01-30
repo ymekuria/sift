@@ -33,7 +33,7 @@ userMethods = {
     client.query('SELECT username, githubToken FROM users WHERE username=($1)', [user.username], function(err, rows) {
       if (err) { throw new Error(err); }
       var inDB = rows.rows.length > 0;
-      callback(inDB, rows.rows[0].githubToken);
+      callback(inDB);
     });
   },
 
