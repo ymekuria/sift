@@ -2,16 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 class Signup extends Component {
-
-  createLocalAccount(e) {
-    e.preventDefault();
-
-    var user = {
-      displayName: this.refs.first.value + ' ' + this.refs.last.value,
-      password: this.refs.password.value,
-      email: this.refs.email.value
-    }
-  }
 	
   render() {
     return (
