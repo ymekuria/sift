@@ -27,6 +27,7 @@ class Signup extends Component {
          <input type='password' name='password' placeholder='password' />
          <input type='password' name='confirm' placeholder='Comfirm Password' />
          <button type='submit'>Create Account</button>
+         <a href='#/signin'>Already have an account?</a>
        </form>
       </div>
     );
