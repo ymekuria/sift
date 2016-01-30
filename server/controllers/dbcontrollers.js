@@ -1,6 +1,6 @@
 var pg = require('pg');
 var faker = require('faker');
-
+var _ = require('lodash');
 var db = require('../utils/dbconnect.js');
 var utils = require('../utils/generateData.js');
 var tableConnections = require('../models/dbTableConnections.js');
@@ -20,44 +20,54 @@ module.exports = {
     "Name.lastName": "yes",
     "Address.streetAddress": "yes"
 }
+
+//dataIndex = all of our data
+{ tableName: 'yoniTable',
+  name: { 
+    firstName: true, 
+    lastName: true}, 
+  company: {
+    catchPhrase: true}
+}
+
 */
+
+
+
   // this method creates a new table with generated data 
   postUserTable: function(req, res){
     // can refactor to use only req.body
     var tableData = req.body;
     var username = req.query.usr;
     var tableName = tableData.tableName; 
-    console.log('req.body',tableName);
-    var fakeData = utils.generateData(req, res);
-    //var fieldArr = '';
-    var fieldArr = [];
-    console.log('inside pstUserTable!', tableData, 'username',username);
+    var fakeData = utils.generateData(tableData, 20);
+    var columnArray = utils.parseColumnNames(tableData);
     // creating a new table with no columns 
     client.query("CREATE TABLE IF NOT EXISTS "+username+"_"+tableName+"();");
 
     // adding columns to the table a
-    for (var key in tableData){
-      if( key !== 'tableName'){
-        var fields = key.split(".");
-        // generating fieldArr for the query string  
-        fieldArr.push(fields[1]); 
 
-        // adding columns and text
-        client.query("ALTER TABLE "+username+"_"+tableName+" ADD COLUMN "+ fields[1] +" text;", function(err,rows){
-          if (err) { console.log("column already exists"); }
+    _.each(columnArray, function (item, i) {
+        var queryString = "ALTER TABLE "+username+"_"+tableName+" ADD COLUMN "+ columnArray[i] +" text;"
+        client.query(queryString, function(err,rows){
+          if (err) {
+            throw new Error(err);
+            return
+          }
+          console.log('nice insert!', rows)
         });
-      }
-    }
+    })
      
-    var fieldStr = fieldArr.join(",");
-    var valueStr = utils.generateValueString(fakeData[0]);
+    var fieldStr = columnArray.join(",");
+    var valueStr = utils.generateValueString(columnArray);
 
-    for(var i = 0; i < fakeData.length; i++) {
+
+    _.each(fakeData, function (item, i) {
       client.query("INSERT INTO "+username+"_"+tableName+"("+fieldStr+") VALUES ("+valueStr+")", fakeData[i], function(err, rows) {
-        if (err) { throw new Error(err.name); }
+        if (err) { throw new Error(err); }
       });
-  
-    }
+      
+    })
 
     client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)',[username, username+"_"+tableName],function(err,rows){
       if (err) { console.log("error !!!"); }
@@ -65,6 +75,7 @@ module.exports = {
       res.status(200).send("success");
     });
   },
+
 
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res){
@@ -88,6 +99,7 @@ module.exports = {
   },
 
  // this posts to a users tables
+ // {columnName: value}
   postToTable: function(req, res){
     var usernameTable = req.query.usrTable;
     var fieldData = req.body;
@@ -96,14 +108,14 @@ module.exports = {
 
     // parse the fields to add to query string
     for ( var key in fieldData ) {
-      var fields = key.split(".");  
+      console.log(fields)
       fieldTypeArr.push(key); 
       fieldValueArr.push(fieldData[key]);
     }  
 
     // stringify to put in query string.
     var fieldTypeStr = fieldTypeArr.join(",");
-    var valueStr = gen.generateValueString(fieldValueArr);  
+    var valueStr = utils.generateValueString(fieldValueArr);  
 
     console.log(fieldValueArr, 'fieldValueArr');
     

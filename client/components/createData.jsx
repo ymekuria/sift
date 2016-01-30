@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import Selections from './selections.jsx'
 import { Menu, MenuItem} from 'material-ui'
-
+import {  createTable } from '../utils/utils.js'
+import fixtures from '../data/fixtures'
+import faker from 'faker'
 
 //refactor into css file
 const style = {
@@ -16,49 +18,31 @@ const style = {
 class DataEntry extends Component { 
   constructor() {
     super();
-    this.state = {
-      current: 'Users',
-      selections: {
-        Cars: {
-          color: false,
-          make: false,
-          model: false
-        },
-        Users: {
-          name: false,
-          email: false,
-          address: false
-        },
-        Animals: {
-          species: false,
-          region: false,
-          diet: false
-        },
-        Bands: {
-          members: false,
-          style: false,
-          city: false
-        },
-        Trees: {
-          bark: false,
-          region: false,
-          height: false,
-          width: false
-        }
-      }
-    }
+    this.state = fixtures
   }
+
   renderSelection(selected) {
     let selection = this.state.selections[selected]
     return (
-      <Selections selection={selection}/>
+      <Selections onSubmit={this.onSubmit.bind(this)} selection={selection}/>
     )
   }
   onSelectTable(e) {
-    console.log('holler', e)
     this.setState({
       current: e
     })
+  }
+  onSubmit(checked) {
+    //faker tests
+    console.log(faker.name.jobArea())
+  }
+  onDelete() {
+    //enter an 'editing' view and send a new 
+    //selection object that reflects the changes
+    //that were made
+  }
+  onUpdate() {
+    //
   }
 
   render () {
