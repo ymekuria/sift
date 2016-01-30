@@ -7,7 +7,7 @@ class Signin extends Component {
     return (
       <div className='signin'>
         <form action='/auth/github' method='get'>
-          <button type='submit'>Sign up with GitHub</button>
+          <button type='submit'>Sign in with GitHub</button>
         </form>
        <span> -- OR -- </span>
        <form action='/signin' method='post'>
@@ -15,6 +15,7 @@ class Signin extends Component {
          <input type='password' name='password' placeholder='password' />
          <button type='submit'>Sign In</button>
        </form>
+       <a href='#/signup'>Need an account?</a>
       </div>
     );
   }
