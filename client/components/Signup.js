@@ -11,21 +11,6 @@ class Signup extends Component {
       password: this.refs.password.value,
       email: this.refs.email.value
     }
-
-    return fetch('/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(user)
-    })
-    .then((res) => res.json())
-    .then((resJSON) => {
-      localStorage.setItem('sift-user', resJSON.token)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
   }
 	
   render() {
