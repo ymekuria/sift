@@ -1,27 +1,33 @@
 import React from 'react'
+// import request from 'request'
 
 //db call helpers
 //zen - 'https://api.github.com/zen'
 export const createTable = (username, selections) => {
   //api/generateTable:?usr=<username>'
   //post data to db
-  let url = 'api/generateTable:?usr=' + username
+  let url = 'http://localhost:5001/api/generateTable:?usr=' + username
+   console.log('URL', url)
   return fetch(url, {
     method: 'POST',
-    headers: {},
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(selections)
   })
   .then((response) => response.text())
   .then((text) => {
     console.log(text);
   })
+  .catch((err) => console.log(err));
 }
 
 const getTable = (username, tableName) => {
   //api/getOneTable:?usrTable=<username_table>
   //api/getOneTable
   //gets a single table
-  let url = 'api/getOneTable:?usrTable=' + username_tableName;
+  let url = 'http://localhost:5001/getOneTable:?usrTable=' + username_tableName;
   return fetch(url, {
     method: 'GET',
     headers: {},

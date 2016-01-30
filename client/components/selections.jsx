@@ -24,7 +24,7 @@ const Selections = ({
   //we will refer to currently checked and send this information
   //to the database
   let currentlyChecked = {};
-
+  console.log(selection)
   let recordCheck = (e, value) => {
     if (e.target.checked) {
       currentlyChecked[value] = true;

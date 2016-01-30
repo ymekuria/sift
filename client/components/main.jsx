@@ -9,19 +9,13 @@ let viewStyles= {
 }
 //this will be the top level app that renders everyting to root
 class Main extends Component {
-
-  renderHome() {
-    return (
-      <Homepage/>
-    )
-  }
   
   render() {
     return (
       <div>
         <Nav/>
         <div style={viewStyles}>
-        {this.props.children || this.renderHome()}
+        {this.props.children || <Homepage/>}
         </div>
       </div>
     )

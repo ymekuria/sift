@@ -9,8 +9,8 @@
   "scripts": {
     "test_client": "mocha client/spec",
     "test_server": "mocha server/spec",
-    "start": "node server/server.js",
-    "postinstall": "bower install"
+    "start": "nodemon server/server.js",
+    "webpack": "node devServer.js"
   },
   "repository": {
     "type": "git",
@@ -23,10 +23,10 @@
   },
   "homepage": "https://github.com/verdantveranda/2015-11-thesis",
   "dependencies": {
-    "bcrypt": "^0.8.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
     "chai": "^3.4.1",
+    "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "faker": "^3.0.1",

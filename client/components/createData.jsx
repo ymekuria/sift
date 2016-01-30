@@ -4,6 +4,7 @@ import { Menu, MenuItem} from 'material-ui'
 import {  createTable } from '../utils/utils.js'
 import fixtures from '../data/fixtures'
 import faker from 'faker'
+
 //refactor into css file
 const style = {
   marginRight: '32',
@@ -33,6 +34,7 @@ class DataEntry extends Component {
   }
   onSubmit(checked) {
     //faker tests
+    console.log(faker.name.jobArea())
   }
   onDelete() {
     //enter an 'editing' view and send a new 
