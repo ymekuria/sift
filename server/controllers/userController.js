@@ -33,7 +33,7 @@ userMethods = {
     client.query('SELECT username, githubToken FROM users WHERE username=($1)', [user.username], function(err, rows) {
       if (err) { throw new Error(err); }
       var inDB = rows.rows.length > 0;
-      callback(inDB);
+      callback(inDB, rows.rows[0].githubToken);
     });
   },
 
@@ -83,11 +83,9 @@ userMethods = {
 
   createLocalUser: function(req, res, next) {
 
-    console.log('Req.body: ', req.body)
-
     var user = {
       username: req.body.email,
-      displayName: req.body.displayName,
+      displayName: req.body.first + ' ' + req.body.last,
       password: req.body.password,
       email: req.body.email,
     };
@@ -107,7 +105,6 @@ userMethods = {
 
             client.query('INSERT INTO users (username, displayName, password, email, salt) VALUES ($1, $2, $3, $4, $5)', [user.username, user.displayName, user.password, user.email, user.salt], function(err, response) {
               if (err) { throw new Error(err); }
-              console.log('User 57: ', user)
               var token = jwt.encode(user.username, 'greenVeranda');
               res.json = { token: token };
               next();

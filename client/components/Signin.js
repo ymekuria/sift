@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Navigation } from 'react-router';
 import ReactDOM from 'react-dom';
 
 class Signin extends Component {
@@ -21,7 +20,5 @@ class Signin extends Component {
     );
   }
 };
-
-// reactMixin.onClass(Signin, Navigation)
 
 export default Signin;
