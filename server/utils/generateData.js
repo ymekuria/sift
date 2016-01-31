@@ -1,4 +1,5 @@
 var faker = require('Faker');
+var _ = require('lodash');
 // var underscore = require('underscore')
 var dataIndex = require('./dataIndex/write.js');
 
@@ -16,22 +17,6 @@ var dataIndex = require('./dataIndex/write.js');
 //pull out the relevant faker queries ---> insert into 
 //the generate data algorithm below. 
 
-//use this in combination with our dataIndex to get and execute faker queries
-var fakerize = function (obj) {
-  //for each key in faker, execute the given faker generation
-  var results = [];
-  for (key in obj) {
-    var rowData = [];
-    for (key2 in index[key]) {
-      var ref = index[key][key2];
-      results.push("faker." + ref + "()");
-    }
-  }
-  return results;
-};
-
-
-
 module.exports = { 
 
   parseColumnNames: function (obj) {
@@ -44,29 +29,35 @@ module.exports = {
     return results;
   },
 
-	generateData: function(obj,numberOfRows) {
+  // this method generates an array of data with the specified fields
+  //use req.body as a reference to the index file to 
+  //pull out the relevant faker queries ---> insert into 
+  //the generate data algorithm below. 
+	generateData: function(fields,numberOfRows) {
 		var fakeData = [];  	
 
     for (var i = 0; i < numberOfRows; i++ ) { 
     	var rowData = [];
-      for (key in obj) {
-        if ( key !== 'tableName') {
-          for (key2 in dataIndex[key]) {
-            if (obj[key][key2]) {
-              var ref = dataIndex[key][key2];
+      // for (key in fields) {
+      _.each( fields, function(fieldVal, fakerCategory) { 
+        if ( fakerCategory !== 'tableName') {
+          _.each( fieldVal, function (fakerVal, fakerField){ 
+            // if the the passed in catagory is marked true 
+            if (fields[fakerCategory][fakerField]) {
+              // generating the fake data from faker and pushing the row into an array
+              var ref = dataIndex[fakerCategory][fakerField];
               rowData.push(eval("faker." + ref + "()"));
             }
-          }
+          });
         }
           
-      }
+      });
 
 			fakeData.push(rowData);
 		}	
 		return fakeData;
 
   },
-//
 
 
 	generateValueString: function(fakeDataArr) {

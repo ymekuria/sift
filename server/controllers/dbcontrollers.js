@@ -42,11 +42,11 @@ module.exports = {
     var tableName = tableData.tableName; 
     var fakeData = utils.generateData(tableData, 20);
     var columnArray = utils.parseColumnNames(tableData);
+    
     // creating a new table with no columns 
     client.query("CREATE TABLE IF NOT EXISTS "+username+"_"+tableName+"();");
 
-    // adding columns to the table a
-
+    // adding columns to the table 
     _.each(columnArray, function (item, i) {
         var queryString = "ALTER TABLE "+username+"_"+tableName+" ADD COLUMN "+ columnArray[i] +" text;"
         client.query(queryString, function(err,rows){
@@ -54,16 +54,17 @@ module.exports = {
             throw new Error(err);
             return
           }
-          console.log('nice insert!', rows)
+          // console.log('nice insert!', rows)
         });
     })
      
     var fieldStr = columnArray.join(",");
     var valueStr = utils.generateValueString(columnArray);
 
-
+    // adding the generated data to the database
     _.each(fakeData, function (item, i) {
-      client.query("INSERT INTO "+username+"_"+tableName+"("+fieldStr+") VALUES ("+valueStr+")", fakeData[i], function(err, rows) {
+      var queryString = "INSERT INTO "+username+"_"+tableName+"("+fieldStr+") VALUES ("+valueStr+")"
+      client.query(queryString, fakeData[i], function(err, rows) {
         if (err) { throw new Error(err); }
       });
       
@@ -71,7 +72,7 @@ module.exports = {
 
     client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)',[username, username+"_"+tableName],function(err,rows){
       if (err) { console.log("error !!!"); }
-      console.log(username +' and ' +username+"_"+tableName+' added to the userstables');
+      console.log('successfuly added '+username+ ' and ' +username+"_"+tableName+' to the userstables');
       res.status(200).send("success");
     });
   },
@@ -79,8 +80,10 @@ module.exports = {
 
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res){
+
     var username = req.query.usr;
-    client.query("SELECT tablename FROM userstables WHERE username = '"+username+"';", function(err,tableNames){
+    var queryString = "SELECT tablename FROM userstables WHERE username = '"+username+"';";
+    client.query(queryString, function(err,tableNames){
         if (err) { throw new Error(err); }
         res.status(200).json(tableNames.rows);
     });
@@ -89,17 +92,17 @@ module.exports = {
   // this method retrieves all the rows in the table specified from the query param
   getOneTable: function(req, res){
     var usernameTable = req.query.usrTable;
-
-    client.query("SELECT * FROM "+usernameTable+";", function(err,entireTable){
+    var queryString = "SELECT * FROM "+usernameTable+";";
+    client.query(queryString, function(err,entireTable){
         if (err) { throw new Error(err); }
-        //console.log(entireTable.rows);
+        console.log(entireTable.rows);
          res.status(200).json(entireTable.rows);
     });
 
   },
 
- // this posts to a users tables
- // {columnName: value}
+ // this posts to a users tables. The front-end sends a post request with the columns and new values
+ // {columnName: value, column2Name: value, ...}
   postToTable: function(req, res){
     var usernameTable = req.query.usrTable;
     var fieldData = req.body;
@@ -108,7 +111,6 @@ module.exports = {
 
     // parse the fields to add to query string
     for ( var key in fieldData ) {
-      console.log(fields)
       fieldTypeArr.push(key); 
       fieldValueArr.push(fieldData[key]);
     }  
@@ -117,12 +119,11 @@ module.exports = {
     var fieldTypeStr = fieldTypeArr.join(",");
     var valueStr = utils.generateValueString(fieldValueArr);  
 
-    console.log(fieldValueArr, 'fieldValueArr');
-    
-    client.query("INSERT INTO "+usernameTable+"("+fieldTypeStr+") VALUES ("+valueStr+")", fieldValueArr, function(err, rows) {
+    var queryString = "INSERT INTO "+usernameTable+"("+fieldTypeStr+") VALUES ("+valueStr+")"
+    client.query(queryString, fieldValueArr, function(err, rows) {
       if (err) { throw new Error(err); }
       console.log('succesfuly posted to '+usernameTable+ '  table');
-      res.status(200)
+      res.status(200).send('succesfuly posted to '+usernameTable+ '  table')
     });
 
   },
@@ -142,27 +143,41 @@ module.exports = {
   },
 
   ///////////DELETE//////////
+  // deletes a row from a users table. Needs the tablename, and a value and columName that corresponds with the roow to be deleted
+  // eg {"tableName": "yoni_test","columnName": "lastname", "value": "lastname"}
+
   deleteRow: function(req, res){
       var usernameTable = req.body.tableName;
       var columnName = req.body.columnName;
       var value = req.body.value; 
-
-      client.query("DELETE FROM "+usernameTable+" WHERE "+columnName+ " = '"+ value+"';", function(err, data) { 
+      
+      var queryString = "DELETE FROM "+usernameTable+" WHERE "+columnName+ " = '"+ value+"';";
+      client.query(queryString, function(err, data) { 
        if (err) { throw new Error(err); }
-         res.status(200).send('succesfully deleted '+ value);
+         console.log('succesfully deleted the row that has '+ value+' as a '+columnName)
+         res.status(200).send('succesfully deleted the row that has '+ value+' as a '+columnName);
       });
 
   },
-
+  
+  // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"} 
+  // returns the table that was deleted.
   deleteTable: function(req, res){
     var usernameTable = req.body.tableName;
-    console.log('tableName', usernameTable);
 
-    client.query('DROP TABLE IF EXISTS ' + usernameTable, function(err, rows) {
+    // stores the table to be deleted 
+    client.query('SELECT * FROM '+usernameTable, function(err, entireTable){
       if (err) { throw new Error(err); }
-      console.log('succesfuly deleted '+usernameTable+ '  table');
-      res.status(200).json(usernameTable);
+      var deletedTable = entireTable.rows;
+
+      // this query deletes the table
+      client.query('DROP TABLE IF EXISTS ' + usernameTable, function(err, result) {
+        if (err) { throw new Error(err); }
+        console.log('succesfuly deleted '+usernameTable+ '  table');
+        res.status(200).json('succesfuly deleted '+usernameTable+ '  table', deletedTable);
+      });
     });
+ 
   }
 
 };
