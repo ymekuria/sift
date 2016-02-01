@@ -1,12 +1,32 @@
+var jwt = require('jwt-simple');
+
 module.exports = {
 
 	isAuth: function(req, res, next) {
-		if (req.isAuthenticated()) { return next(); }
+		console.log('isAuthenticated: ', req.isAuthenticated())
+		if (req.isAuthenticated()) { 
+			console.log('Authenticated!')
+			return next(); 
+		}
+		console.log('NOT Authenticated!')
 		res.redirect('/#/signin');
 	},
 
-	routeToHome: function(req, res) {
-    // req.login();
-    res.redirect('/');
+	generateToken: function(user, callback) {
+		var token = jwt.encode(user.username, 'greenVeranda');
+		callback(token);
+	},
+
+  decode: function(req, res) {
+  	var token = req.body.token
+  	if (!token) {
+  		token = generateToken(req.user, 'greenVeranda')
+  		res.send(token);
+  	} else {
+	  	user = jwt.decode(token, 'greenVeranda')
+	  	req.user = {
+	  		displayName: user.displayName
+	  	};
+  	}
   }
 }

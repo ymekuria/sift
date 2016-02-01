@@ -2,25 +2,28 @@
 var dbController = require('../controllers/dbcontrollers.js');
 var userController = require('../controllers/userController.js')
 var passport = require('passport');
+var utils = require('./utils')
 
-module.exports = function(app, express) {
+module.exports = function(app, express, ensureAuth) {
 
-  // authentication routes
-  app.get('/api/users'/***/);
-  app.post('/api/users', userController.createLocalUser, utils.routeToHome);
-  
-  //local signin and global signout
-  app.post('/signin', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/#/signin' }));
-  app.get('/signout', function(req, res){
-    req.logout();
-    res.redirect('/');
+  // local authentication
+  app.post('/api/users', userController.createLocalUser, function(req, res) {
+    res.redirect('/#/signin');
   });
 
-  // GitHub Authentication and Signin
-  app.get('/auth/github', passport.authenticate('github'));
-  app.get('/auth/callback', passport.authenticate('github', { successRedirect: '/user', failureRedirect: '/#/signup' }));
+  app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/#/signin' }), function(req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    res.redirect('/#/create');
+  });
 
-  // app.get('/', utils.isAuth)
+  app.get('/user', function(req, res) {
+    var user = {
+      displayname: req.user.displayname,
+      username: req.user.username
+    }
+    res.json(user)
+  })
  
   // this endpoint genratesa new table with the fields the user specifys
   app.post('/api/generateTable:usr', dbController.postUserTable);
