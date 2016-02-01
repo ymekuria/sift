@@ -19,7 +19,11 @@ module.exports = function(app, express, ensureAuth) {
 
   app.get('/user', function(req, res) {
     console.log('req.user: ', req.user)
-    res.json(req.user)
+    var localUser = {
+      username: req.user.username,
+      displayname: req.user.displayname
+    }
+    res.json(localUser)
   })
  
   // this endpoint genratesa new table with the fields the user specifys
