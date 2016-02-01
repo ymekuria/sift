@@ -23,10 +23,14 @@ class DataEntry extends Component {
   }
 
   componentDidMount() {
-    console.log('user state: ', this.state.user)
-    if (!this.state.user) {
+    var user = localStorage.getItem('sift-user');
+    if (!user) {
       h.setUser(function(user) {
-      console.log('User: ', user)
+        var localUser = {
+          displayname: user.displayname,
+          username: user.username
+        }
+        localStorage.setItem('sift-user', user)
       })
     }
   }

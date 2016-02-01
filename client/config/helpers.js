@@ -13,13 +13,15 @@ let helpers = {
 	// },
 
 	setUser: function(callback) {
-		console.log('calling /user')
-		return fetch('/user', {
+		fetch('/user', {
 			credentials: 'same-origin'
 		})
-		.then((res) => {
-			console.log('this is the response: ', res.body)
-			callback(res);
+		.then((response) => response.text())
+		.then((responseText) => {
+			callback(responseText);
+		})
+		.catch((err) => {
+			console.log(err)
 		})
 	}
 

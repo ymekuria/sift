@@ -20,7 +20,7 @@ var cors = require('cors');
 // Middleware. Add below as needed
 app.use(cors());
 app.use(morgan('dev'));
-app.use(cookieParser('secret'));
+// app.use(cookieParser('secret'));
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({extended: true }));
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 passport.serializeUser(function(user, done) {
-  done(null, user.username);
+  done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
