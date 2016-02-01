@@ -13,7 +13,6 @@ module.exports = {
 	},
 
 	generateToken: function(user, callback) {
-		var token = jwt.encode(user.username, 'greenVeranda');
 		callback(token);
 	},
 
