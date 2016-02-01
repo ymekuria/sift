@@ -45,6 +45,15 @@ class DataEntry extends Component {
     //
   }
 
+  componentDidMount() {
+    console.log('user state: ', this.state.user)
+    if (!this.state.user) {
+      h.setUser(function(user) {
+      console.log('User: ', user)
+      })
+    }
+  }
+
   render () {
     let selections = this.state.selections;
     return (

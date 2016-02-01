@@ -30,8 +30,6 @@ var fakerize = function (obj) {
   return results;
 };
 
-
-
 module.exports = { 
 
   parseColumnNames: function (obj) {
