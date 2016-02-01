@@ -25,6 +25,12 @@ module.exports = function(app, express, ensureAuth) {
     }
     res.json(localUser)
   })
+
+  app.get('/auth/github', passport.authenticate('github'));
+  app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/#/signin' }), function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/#/create');
+  });
  
   // this endpoint genratesa new table with the fields the user specifys
   app.post('/api/generateTable:usr', dbController.postUserTable);
