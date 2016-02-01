@@ -10,6 +10,7 @@ var token = require('./auth/authTokens.js');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var utils = require('./utils/utils')
 var pg = require('pg');
 var app = express();
 var cors = require('cors');
