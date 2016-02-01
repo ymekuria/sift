@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({extended: true }));
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  done(null, user.username);
 });
 
 passport.deserializeUser(function(user, done) {
