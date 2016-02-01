@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Selections from './selections.jsx'
 import { Menu, MenuItem} from 'material-ui'
 import {  createTable } from '../utils/utils.js'
+import h from '../config/helpers'
 import fixtures from '../data/fixtures'
 import faker from 'faker'
 
@@ -19,6 +20,15 @@ class DataEntry extends Component {
   constructor() {
     super();
     this.state = fixtures
+  }
+
+  componentDidMount() {
+    console.log('user state: ', this.state.user)
+    if (!this.state.user) {
+      h.setUser(function(user) {
+      console.log('User: ', user)
+      })
+    }
   }
 
   renderSelection(selected) {
@@ -45,14 +55,6 @@ class DataEntry extends Component {
     //
   }
 
-  componentDidMount() {
-    console.log('user state: ', this.state.user)
-    if (!this.state.user) {
-      h.setUser(function(user) {
-      console.log('User: ', user)
-      })
-    }
-  }
 
   render () {
     let selections = this.state.selections;

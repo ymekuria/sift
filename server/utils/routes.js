@@ -18,6 +18,7 @@ module.exports = function(app, express, ensureAuth) {
   });
 
   app.get('/user', function(req, res) {
+    console.log('req.user: ', req.user)
     var user = {
       displayname: req.user.displayname,
       username: req.user.username
