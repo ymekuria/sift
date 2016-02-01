@@ -40,6 +40,18 @@ passport.deserializeUser(function(user, done) {
 	});
 });
 
+passport.use(new GitHubStrategy({
+    clientID: token.CLIENT_ID,
+    clientSecret: token.CLIENT_SECRET,
+    callbackURL: "http://127.0.0.1:5001/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+  	userController.findOrCreateGitHubUser(profile, accessToken, refreshToken, function(err, user) {
+  		done(err, user);
+  	})
+  }
+));
+
 passport.use(new LocalStrategy(
 	function(username, password, done) {
 		userController.findUser({ username: username }, function(err, user) {
