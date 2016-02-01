@@ -9,7 +9,7 @@ module.exports = {
 			return next(); 
 		}
 		console.log('NOT Authenticated!')
-		res.redirect('/#/signin');
+		res.redirect('/signin');
 	},
 
 	generateToken: function(user, callback) {
