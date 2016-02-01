@@ -11,6 +11,9 @@ import { Route, IndexRoute} from 'react-router'
 
 export default (
   <Route path='/' component={main}>
+    <Route path='signin' component={Signin}/>
+    <Route path='signup' component={Signup}/>
+    <Route path='home' component={homepage}/>
     <Route path='create' component={dataEntry}/>
     <Route path='visual' component={dataVis}/>
   </Route>
