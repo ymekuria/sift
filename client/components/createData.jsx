@@ -26,11 +26,6 @@ class DataEntry extends Component {
     var user = localStorage.getItem('sift-user');
     if (!user) {
       h.setUser(function(dbUser) {
-        // var localUser = {
-        //   displayname: dbUser.displayname,
-        //   username: dbUser.username
-        // };
-        // console.log('localUser: ', localUser)
         localStorage.setItem('sift-user', dbUser);
       })
     }
