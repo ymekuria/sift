@@ -29,10 +29,12 @@ app.use(bodyParser.urlencoded({extended: true }));
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 passport.serializeUser(function(user, done) {
+	console.log('serializeUser: ', user)
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
+	console.log('deserializeUser: ', user)
 	userController.findUser({ username: user.username }, function(err, user) {
 		done(err, user);
 	});
