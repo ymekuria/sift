@@ -1,6 +1,5 @@
 var pg = require('pg');
 var db = require('../utils/dbconnect.js');
-var request = require('request'); // You might need to npm install the request module!
 var expect = require('../../node_modules/chai/chai').expect;
 var sinon = require('sinon');
 var dbcontroller = require('../controllers/dbcontrollers.js');
@@ -20,16 +19,16 @@ describe("Posting User Schemas", function() {
       streetaddress: '5234 Callback Way'
     }
 
-   client.query("DROP TABLE IF EXISTS " + tablename); 
+   client.query("DROP TABLE IF EXISTS " + tablename);
 
    client.query('CREATE TABLE IF NOT EXISTS yonim_test ('+
     'firstname VARCHAR(120), ' +
     'lastname VARCHAR(120), ' +
     'streetaddress VARCHAR(200))', function(err, result) {
       if (err) { throw new Error(err); }
-    }); 
+    });
 
-  
+
     client.query('INSERT INTO yonim_test (firstname, lastname, streetaddress) VALUES ($1, $2, $3)', [data.firstname, data.lastname, data.streetaddress], function(err, results) {
       if (err) { throw new Error(err); }
       client.query('SELECT * FROM yonim_test', function(err, results) {
@@ -40,7 +39,7 @@ describe("Posting User Schemas", function() {
 
 
   });
- 
+
 
   afterEach(function() {
     client.query("DROP TABLE yonim_test");
@@ -52,7 +51,7 @@ describe("Posting User Schemas", function() {
   it("Should retrieve a schema", function(done) {
     request({ method: "GET",
               uri: "http://127.0.0.1:5001/api/getOneTable:?usrTable=yonim_test"
-              
+
     }, function(err, results) {
       if (err) {throw new Error(err);}
         var rows = JSON.parse(results.body)
@@ -60,11 +59,11 @@ describe("Posting User Schemas", function() {
         expect(rows[0].firstname).to.equal("Yoni");
         // console.log('results in retrieve schema ', rows);
       done();
-      });    
+      });
     });
 
   it("Should retrieve a list of all of a Users schemas", function(done) {
-    
+
     client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)', ['yonim','yonim_test'], function(err, results) {
      if (err) { throw new Error(err); }
     });
@@ -72,7 +71,7 @@ describe("Posting User Schemas", function() {
 
     request({ method: "GET",
               uri: "http://127.0.0.1:5001/api/getTables:?usr=yonim"
-              
+
     }, function(err, results) {
       if (err) {throw new Error(err);}
         var rows = JSON.parse(results.body);
@@ -80,7 +79,7 @@ describe("Posting User Schemas", function() {
         expect(rows[0].tablename).to.equal('yonim_test');
         // console.log('results in retrieve schema ', rows);
       done();
-      });    
+      });
     });
 
   it("Should delete a usersTable", function(done) {
@@ -94,9 +93,9 @@ describe("Posting User Schemas", function() {
     'lastname VARCHAR(120), ' +
     'streetaddress VARCHAR(200))', function(err, result) {
       if (err) { throw new Error(err); }
-    }); 
+    });
       expect(results.body).to.equal("yonim_test");
-    });  
+    });
     done();
 
   });
@@ -109,7 +108,7 @@ describe("Posting User Schemas", function() {
     if (err) {throw new Error(err);}
       expect(results.body).to.equal("succesfully deleted Yoni");
     done();
-    });    
+    });
   });
 
   it("Should update a value in a usersTable", function(done) {
@@ -124,7 +123,7 @@ describe("Posting User Schemas", function() {
 
   });
 
-});  
+});
 ////////////////////////////////////////////////////////////////////////////////////////
 //////////////////GENERATING DYNAMIC TABLES BELOW //////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -135,11 +134,11 @@ describe("Generating dynamic tables", function() {
     client = new pg.Client(db.connectionString);
     client.connect();
 
-///POST REQUEST HERE 
+///POST REQUEST HERE
       done();
 
   });
- 
+
 
   afterEach(function() {
     client.end();

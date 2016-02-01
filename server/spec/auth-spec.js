@@ -1,6 +1,5 @@
 var pg = require('pg');
 var db = require('../utils/dbconnect.js');
-var request = require('request'); // You might need to npm install the request module!
 var expect = require('../../node_modules/chai/chai').expect;
 var bcrypt = require('bcrypt-nodejs');
 var sinon = require('sinon');
@@ -11,7 +10,7 @@ describe("Authenticating Users", function() {
 
   beforeEach(function(done) {
     client = new pg.Client(db.connectionString);
-      
+
     client.connect();
 
     var UserTablename = "users";
@@ -133,10 +132,10 @@ describe("Authenticating Users", function() {
   });
 
   // it("Should return a GitHub authenticated user", function(done) {
-    
+
   // });
 
   // it("Should save GitHub authenticated user to database", function(done) {
-    
+
   // });
 });
