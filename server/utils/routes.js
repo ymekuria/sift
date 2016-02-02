@@ -31,27 +31,16 @@ module.exports = function(app, express, ensureAuth) {
     res.redirect('/#/signin')
   });
 
+  // external routs for users to access their data
   app.get('/t/:tablename/:username', dbController.getOneTable);
   app.post('/t/:tablename/:username', dbController.postToTable);
   app.put('/t/:tablename/:username', dbController.updateValue);
   app.delete('/t/:tablename/:username', dbController.deleteRow);
  
-  // this endpoint genratesa new table with the fields the user specifys
+  // endpoints for creating, receiving, and deleting tables
   app.post('/api/users/tables', dbController.createUserTable);
-  // this endpoint 
   app.get('/api/users/tables', dbController.getTables);
-
-  // // these are the endpoints that will be avialable
-  app.post('/api/postToTable:usrTable', dbController.postToTable);
-  app.get('/api/getOneTable:usrTable', dbController.getOneTable);
-  
-
-  app.put('/api/updateValue', dbController.updateValue);
-  // // this endpoint deletes the entire table from the database
-  app.delete('/api/deleteTable', dbController.deleteTable);
-
-  // // this endpoint deletes a row from a users 
-  app.delete('/api/deleteRow', dbController.deleteRow);
+  app.delete('/api/users/tables', dbController.deleteTable);
 
 }
 
