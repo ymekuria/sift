@@ -7,9 +7,10 @@ class Nav extends Component {
   constructor() {
     super()
   }
+
   render() {
     return (
-      <div>
+      <div className='nav'>
         <TopNav/>
         <LeftNav/>
       </div>
@@ -19,5 +20,4 @@ class Nav extends Component {
 
 
 export default Nav
-
 

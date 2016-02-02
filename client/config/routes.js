@@ -14,7 +14,7 @@ export default (
     <Route path='signin' component={Signin}/>
     <Route path='signup' component={Signup}/>
     <Route path='home' component={homepage}/>
-    <Route path='create' component={dataEntry}/>
-    <Route path='visual' component={dataVis}/>
+    <Route path='build' component={dataEntry}/>
+    <Route path='vis' component={dataVis}/>
   </Route>
 )
