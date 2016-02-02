@@ -2,12 +2,10 @@ import React, { Component } from 'react'
 import { createTable } from '../utils/utils.js'
 import Selections from './selections.jsx'
 import { Menu, MenuItem} from 'material-ui'
-import {  createTable } from '../utils/utils.js'
 import h from '../config/helpers'
 import fixtures from '../data/fixtures'
 import Dropdown from './dropdown.jsx'
 import data from '../data/write.js'
-
 import faker from 'faker'
 /*
   == Material UI componenets ==
