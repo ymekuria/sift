@@ -32,44 +32,31 @@ module.exports = {
 
 */
 
-
-
   // this method creates a new table with generated data 
-  postUserTable: function(req, res){
-    // can refactor to use only req.body
-    var tableData = req.body;
-    var username = req.query.usr;
-    var tableName = tableData.tableName; 
-    var fakeData = utils.generateData(tableData, 20);
-    var columnArray = utils.parseColumnNames(tableData);
+  postUserTable: function(req, res) {
+    var username = 'erikdbrowngmailcom';
+
+    var tableName = req.body.tableName; 
+    var fakeData = utils.generateData(req.body, 20); // returns an ordered array ['Erik', 'Brown', 'Yahoo!', 'Zack', 'Dean', 'Google'...];
+    var columnsArray = utils.parseColumnNames(req.body);
+    var columnCreation = columnsArray.join(" text, ") + ' text';
+    var columnInsertion = columnsArray.join(', ')
+
     
     // creating a new table with no columns 
-    client.query("CREATE TABLE IF NOT EXISTS "+username+"_"+tableName+"();");
-
-    // adding columns to the table 
-    _.each(columnArray, function (item, i) {
-        var queryString = "ALTER TABLE "+username+"_"+tableName+" ADD COLUMN "+ columnArray[i] +" text;"
-        client.query(queryString, function(err,rows){
-          if (err) {
-            throw new Error(err);
-            return
-          }
-          // console.log('nice insert!', rows)
-        });
+    var queryString = "CREATE TABLE IF NOT EXISTS " + username + "_" + tableName + " (" + columnCreation + ");";
+    client.query(queryString, function(err, rows) {
+      if (err) { throw new Error(err); }
     })
      
-    var fieldStr = columnArray.join(",");
-    var valueStr = utils.generateValueString(columnArray);
+    var valueStr = utils.generateValueString(columnsArray.length);
 
-    // adding the generated data to the database
-    _.each(fakeData, function (item, i) {
-      var queryString = "INSERT INTO "+username+"_"+tableName+"("+fieldStr+") VALUES ("+valueStr+")"
-      client.query(queryString, fakeData[i], function(err, rows) {
-        if (err) { throw new Error(err); }
-      });
+    var insertString = "INSERT INTO " + username + "_" + tableName + " (" + columnInsertion + ") VALUES " + fakeData + ";";
+
+    client.query(insertString, function(err, rows) {
+      if (err) { throw new Error(err); }
+    });
       
-    })
-
     client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)',[username, username+"_"+tableName],function(err,rows){
       if (err) { console.log("error !!!"); }
       console.log('successfuly added '+username+ ' and ' +username+"_"+tableName+' to the userstables');
@@ -78,7 +65,7 @@ module.exports = {
   },
 
 
-  // this method retrieves all the tableNames associated with the passed in username
+  this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res){
 
     var username = req.query.usr;
@@ -90,40 +77,39 @@ module.exports = {
   },
 
   // this method retrieves all the rows in the table specified from the query param
-  getOneTable: function(req, res){
-    var usernameTable = req.query.usrTable;
-    var queryString = "SELECT * FROM "+usernameTable+";";
-    client.query(queryString, function(err,entireTable){
+  getOneTable: function(req, res) {
+    var table = req.params.username + '_' + req.params.tablename;
+
+    var queryString = "SELECT * FROM " + table + ";";
+    client.query(queryString, function(err, dbTable){
         if (err) { throw new Error(err); }
-        console.log(entireTable.rows);
-         res.status(200).json(entireTable.rows);
+        if (!dbTable) {
+          res.sendStatus(404); // Table does not exist;
+        }
+        res.status(200).json(dbTable.rows);
     });
 
   },
 
  // this posts to a users tables. The front-end sends a post request with the columns and new values
  // {columnName: value, column2Name: value, ...}
-  postToTable: function(req, res){
-    var usernameTable = req.query.usrTable;
-    var fieldData = req.body;
-    var fieldTypeArr = [];
-    var fieldValueArr = []
+  postToTable: function(req, res) {
+    var table = req.params.username + '_' + req.params.tablename;
 
-    // parse the fields to add to query string
-    for ( var key in fieldData ) {
-      fieldTypeArr.push(key); 
-      fieldValueArr.push(fieldData[key]);
-    }  
+    var newRowColumnsArray = Object.keys(req.body);
+    var newRowValuesArray = _.map(newRowColumnsArray, function(key) {
+      return req.body[key];
+    });
+    newRowColumnsString = newRowColumnsArray.join(',');
 
     // stringify to put in query string.
-    var fieldTypeStr = fieldTypeArr.join(",");
-    var valueStr = utils.generateValueString(fieldValueArr);  
+    var valueStr = utils.generateValueString(newRowColumnsArray.length);
 
-    var queryString = "INSERT INTO "+usernameTable+"("+fieldTypeStr+") VALUES ("+valueStr+")"
-    client.query(queryString, fieldValueArr, function(err, rows) {
+    var queryString = "INSERT INTO " + table + "(" + newRowColumnsString + ") VALUES (" + valueStr + ")"
+    client.query(queryString, newRowValuesArray, function(err, rows) {
       if (err) { throw new Error(err); }
-      console.log('succesfuly posted to '+usernameTable+ '  table');
-      res.status(200).send('succesfuly posted to '+usernameTable+ '  table')
+      console.log('succesfuly posted to ' + table + '  table');
+      res.status(200).send('succesfuly posted to ' + table + '  table')
     });
 
   },

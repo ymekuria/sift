@@ -29,25 +29,29 @@ module.exports = function(app, express, ensureAuth) {
   app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/#/signin')
-  })
+  });
 
+  // app.get('/api/:tablename/:username', dbController.getOneTable)
+  // app.post('/api/:tablename/:username', dbController.postToTable)
+  // app.put('/api/:tablename/:username', dbController.updateValue)
+  // app.delete('/api/:tablename/:username', dbController.deleteRow)
  
   // this endpoint genratesa new table with the fields the user specifys
-  app.post('/api/generateTable:usr', dbController.postUserTable);
+  app.post('/api/users/tables', dbController.postUserTable);
   // this endpoint 
-  app.get('/api/getTables:usr', dbController.getTables);
+  // app.get('/api/users/tables', dbController.getTables);
 
-  // these are the endpoints that will be avialable
-  app.post('/api/postToTable:usrTable', dbController.postToTable);
-  app.get('/api/getOneTable:usrTable', dbController.getOneTable);
+  // // these are the endpoints that will be avialable
+  // app.post('/api/postToTable:usrTable', dbController.postToTable);
+  // app.get('/api/getOneTable:usrTable', dbController.getOneTable);
   
 
-  app.put('/api/updateValue', dbController.updateValue);
-  // this endpoint deletes the entire table from the database
-  app.delete('/api/deleteTable',dbController.deleteTable);
+  // app.put('/api/updateValue', dbController.updateValue);
+  // // this endpoint deletes the entire table from the database
+  // app.delete('/api/deleteTable',dbController.deleteTable);
 
-  // this endpoint deletes a row from a users 
-  app.delete('/api/deleteRow',dbController.deleteRow);
+  // // this endpoint deletes a row from a users 
+  // app.delete('/api/deleteRow',dbController.deleteRow);
 
 }
 
