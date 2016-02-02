@@ -58,7 +58,7 @@ class DataEntry extends Component {
 
   render () {
     return (
-      <div className='dataEntry'>
+      <div>
         <Paper className='select'>
           <Dropdown 
           className='dropdown' 

@@ -7,11 +7,11 @@ class Main extends Component {
   
   render() {
     return (
-      <div>
+      <div className='container'>
         <Nav/>
-        <div className='routeContainer'>
-        {this.props.children || <Homepage/>}
-        </div>
+          <div className='routeContainer'>
+          {this.props.children || <Homepage/>}
+          </div>
       </div>
     )
   }
