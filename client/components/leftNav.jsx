@@ -13,7 +13,8 @@ let styles = {
   backgroundColor: '#293535',
   paddingTop: '15px',
   textAlign: 'center',
-  position: "absolute"
+  position: 'absolute',
+  height: '110vh'
 }
 let iconStyles = {
   marginBottom: '15px'
