@@ -122,6 +122,7 @@ module.exports = {
   ///////////PUT/////////// updates a row in a column 
   updateValue: function(req, res) {
     var table = req.params.username + '_' + req.params.tablename;
+
     var columnName = req.body.columnName;
     var newValue = req.body.newValue; 
     var oldValue = req.body.oldValue; 
@@ -138,7 +139,8 @@ module.exports = {
   // eg {"tableName": "yoni_test","columnName": "lastname", "value": "lastname"}
 
   deleteRow: function(req, res) {
-      var usernameTable = req.body.tableName;
+      var table = req.params.username + '_' + req.params.tablename;
+      
       var columnName = req.body.columnName;
       var value = req.body.value; 
       
