@@ -80,12 +80,14 @@ module.exports = {
     var table = req.params.username + '_' + req.params.tablename;
 
     var queryString = "SELECT * FROM " + table + ";";
-    client.query(queryString, function(err, dbTable){
-        if (err) { throw new Error(err); }
-        if (!dbTable) {
-          res.sendStatus(404); // Table does not exist;
+    client.query(queryString, function(err, dbTable) {
+        if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+          res.sendStatus(400);
+        } else if (err) {
+          throw new Error(err);
+        } else {
+          res.status(200).json(dbTable.rows);
         }
-        res.status(200).json(dbTable.rows);
     });
 
   },
