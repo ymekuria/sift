@@ -5,7 +5,6 @@ var SALT_WORK_FACTOR = 10;
 var jwt = require('jwt-simple');
 // var request = require('request');
 
-
 var client = new pg.Client(db.connectionString);
 client.connect();
 

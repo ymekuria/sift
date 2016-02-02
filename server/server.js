@@ -55,20 +55,23 @@ passport.use(new GitHubStrategy({
 passport.use(new LocalStrategy(
 	function(username, password, done) {
 		userController.findUser({ username: username }, function(err, user) {
+			console.log(user)
 			if (err) { done(err); }
 			if (!user) {
+				console.log('there is no user')
 				done(null, false) // user does not exist
-			}
-			if (user.githubtoken !== 'false') {
-				done(null, false, { message: 'Please sign in with your GitHub account.' })
 			} else {
-				userController.validatePassword(user.password, password, function(matched) {
-					if (matched) {
-						done(null, user);
-					} else {
-						done(null, false);
-					}
-				})
+				if (user.githubtoken !== 'false') {
+					done(null, false, { message: 'Please sign in with your GitHub account.' })
+				} else {
+					userController.validatePassword(user.password, password, function(matched) {
+						if (matched) {
+							done(null, user);
+						} else {
+							done(null, false);
+						}
+					})
+				}
 			}
 		})
 }))
