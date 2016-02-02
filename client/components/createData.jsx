@@ -1,10 +1,20 @@
 import React, { Component } from 'react'
+import { createTable } from '../utils/utils.js'
 import Selections from './selections.jsx'
 import { Menu, MenuItem} from 'material-ui'
 import {  createTable } from '../utils/utils.js'
 import h from '../config/helpers'
 import fixtures from '../data/fixtures'
+import Dropdown from './dropdown.jsx'
+
+import data from '../data/write.js'
 import faker from 'faker'
+/*
+  == Material UI componenets ==
+*/
+import Paper from 'material-ui/lib/paper'
+
+
 
 //refactor into css file
 const style = {
@@ -15,12 +25,15 @@ const style = {
   zIndex: 0
 };
 
-
 class DataEntry extends Component { 
   constructor() {
     super();
-    this.state = fixtures
+    this.state = {
+      categories: data.categories,
+      selections: {}
+    }
   }
+
 
   componentDidMount() {
     var user = localStorage.getItem('sift-user');
@@ -37,38 +50,56 @@ class DataEntry extends Component {
       <Selections onSubmit={this.onSubmit.bind(this)} selection={selection}/>
     )
   }
-  onSelectTable(e) {
+
+  renderSelection(selected) {
+    let selection = this.state.selections[selected]
+    return (
+      <Selections onSubmit={this.onSubmit.bind(this)} selection={selection}/>
+    )
+}
+
+  addToList (selection, category) {
+    let currentSelections = this.state.selections;
+    if (!currentSelections[category]) {
+      currentSelections[category] = {};
+      currentSelections[category][selection] = true;
+    } 
+    else if(!currentSelections[category][selection]) {
+      currentSelections[category][selection] = true
+    }
+
+
     this.setState({
-      current: e
+      selections: currentSelections
     })
   }
   onSubmit(checked) {
     //faker tests
-    console.log(faker.name.jobArea())
   }
-  onDelete() {
-    //enter an 'editing' view and send a new 
-    //selection object that reflects the changes
-    //that were made
-  }
-  onUpdate() {
-    //
+  removeFromList(category, subCategory) {
+    let selections = this.state.selections;
+    delete selections[category][subCategory];
+
+    this.setState({
+      selections: selections
+    })
   }
 
 
   render () {
-    let selections = this.state.selections;
     return (
       <div className='dataEntry'>
-        <Menu style={style}>
-          {Object.keys(selections).map((s)=> {
-            return <MenuItem 
-            maxHeight={200}
-            onClick={() => this.onSelectTable(s)}
-            primaryText={s}/>
-          })}
-        </Menu>
-        {this.renderSelection(this.state.current)}
+        <Paper className='select'>
+          <Dropdown 
+          className='dropdown' 
+          categories={this.state.categories}
+          addToList={this.addToList.bind(this)}/>
+        </Paper>
+        <Paper className='buildTable'>
+          <Selections 
+          removeFromList={this.removeFromList.bind(this)}
+          selections={this.state.selections}/>
+        </Paper>
       </div>
     )
   }

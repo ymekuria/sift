@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { AppBar, Colors, FontIcon } from 'material-ui'
 
 let styles = {
-  backgroundColor: 'grey',
+  backgroundColor: '#121F1F',
   width: '110vw',
   margin: '-20'
 }
