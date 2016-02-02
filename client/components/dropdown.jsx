@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import _ from 'lodash'
+import all from '../data/subSelections.js'
+import _ from 'lodash';
 /*
   == Material UI componenets ==
 */
-import Checkbox from 'material-ui/lib/checkbox'
+import Checkbox from 'material-ui/lib/checkbox';
 import IconButton from 'material-ui/lib/icon-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
+import { Menu, MenuItem} from 'material-ui';
+
 
 //react-select stylesheet
 require('../css/select.css')
@@ -27,42 +30,50 @@ class Dropdown extends Component {
     }
   }
 
-  updateValue (newValue) {
+  updateValue (newValue, single) {
     let subSelections = this.state.subSelections[newValue];
     this.setState({
       selectValue: newValue
     });
   }
 
-  toggleCheckbox (e) {
-    let newState = {};
-    newState[e.target.name] = e.target.checked;
-    this.setState(newState);
-  }
 
   render () {
-    let options = this.props.categories
+    //make it so that options searches for all values
+    let options = this.props.categories;
+    let categories = this.state.subSelections;
     let subSelections = this.state.subSelections[this.state.selectValue];
     let currentCategory = this.state.selectValue;
     let addToList = this.props.addToList;
-
+    let updateValue = this.updateValue.bind(this);
     return (
       <div className="section dropdown">
-        <h3 className="section-heading">{'Select Categories'}</h3>
-        <Select ref="categorySelect" options={options} simpleValue clearable={true} name="category" value={this.state.selectValue} onChange={this.updateValue.bind(this)} searchable={true} />
-
-        <div className='selectField'>
-          {_.map(subSelections, function (subSelection) {
-            return (
-              <div className='add'>
-                <IconButton onClick={() =>{addToList(subSelection, currentCategory)}}>
-                  <ContentAdd/>
-                </IconButton>
-                <div className='addLabel'>{subSelection}</div>
-              </div>
-            )
-          })}
+        <div className='libHeader'>
+          <h3>Library</h3>
         </div>
+        <div className='selectField'>
+          <Select className='search' ref="categorySelect" options={all.subSelections} simpleValue clearable={true} name="category" value={this.state.selectValue} onChange={this.updateValue.bind(this)} searchable={true} />
+            {_.map(subSelections, function (subSelection) {
+              return (
+                <div className='add'>
+                  <IconButton onClick={() =>{addToList(subSelection, currentCategory)}}>
+                    <ContentAdd/>
+                  </IconButton>
+                  <div className='addLabel'>{subSelection}</div>
+                </div>
+              )
+            })}
+        </div>
+          <Menu style={{width: '200px'}}>
+            {Object.keys(categories).map(function (category) {
+              console.log(categories)
+              return (
+                <MenuItem
+                  onClick={() => { updateValue(category) }}
+                  primaryText={category}/>
+              )
+            })}
+          </Menu>
       </div>
     );
   }

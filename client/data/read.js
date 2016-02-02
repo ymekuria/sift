@@ -45,21 +45,28 @@ var second = [
 "boolean"
 ];
 
-var index = _.map(first, function (category, i) {
-  var children = [];
-  for (key in faker[category]) {
-    if (second.indexOf(key) > -1) {
-      children.push(key)
-    }
-  }
-  return {
-    value: category,
-    label: category,
-    disabled: false,
-    children: children
+// var index = _.map(first, function (category, i) {
+//   var children = [];
+//   for (key in faker[category]) {
+//     if (second.indexOf(key) > -1) {
+//       children.push(key)
+//     }
+//   }
+//   return {
+//     value: category,
+//     label: category,
+//     disabled: false,
+//     children: children
+//   }
+// })
+
+var index = _.map(second, function (sub) {
+    return {
+      value: sub,
+      label: sub,
+      disabled: false
   }
 })
-
 // for (key in faker) {
 //   if (first.indexOf(key) > -1) {
 //     index[key] = [];
@@ -94,7 +101,7 @@ function fakerize (obj) {
 //  company: {catchPhrase: true}})
 
 
-fs.writeFile('./write.js', JSON.stringify(index, null, 2), function(err) {
+fs.writeFile('./subSelections.js', JSON.stringify(index, null, 2), function(err) {
   if (err) throw err;
     console.log('i think it wrote')
 })

@@ -22,7 +22,6 @@ const Selections = ({
 
   return (
     <div>
-      <h3>Selections</h3>
       <List>
         {list.map((item) => {
           let category = item[0];
