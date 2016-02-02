@@ -8,7 +8,7 @@ module.exports = function(app, express, ensureAuth) {
 
   // local authentication
   app.post('/api/users', userController.createLocalUser, function(req, res) {
-    res.redirect('/signin');
+    res.redirect('/#/signin');
   });
   app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/#/signin' }), function(req, res) {
     res.redirect('/#/create');
@@ -22,6 +22,8 @@ module.exports = function(app, express, ensureAuth) {
 
   // user objet pass-through
   app.get('/user', function(req, res) {
+    console.log('/user was called.')
+    console.log('req.user: ', req.user)
     res.json(req.user)
   })
 
@@ -32,10 +34,10 @@ module.exports = function(app, express, ensureAuth) {
   });
 
   // external routs for users to access their data
-  app.get('/t/:tablename/:username', dbController.getOneTable);
-  app.post('/t/:tablename/:username', dbController.postToTable);
-  app.put('/t/:tablename/:username', dbController.updateValue);
-  app.delete('/t/:tablename/:username', dbController.deleteRow);
+  app.get('/sand/:tablename/:username', dbController.getOneTable);
+  app.post('/sand/:tablename/:username', dbController.postToTable);
+  app.put('/sand/:tablename/:username', dbController.updateValue);
+  app.delete('/sand/:tablename/:username', dbController.deleteRow);
  
   // endpoints for creating, receiving, and deleting tables
   app.post('/api/users/tables', dbController.createUserTable);

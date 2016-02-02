@@ -54,11 +54,12 @@ passport.use(new GitHubStrategy({
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		userController.findUser({ username: username }, function(err, user) {
-			console.log(user)
+		console.log('username: ', username);
+		console.log('username: ', password);
+		userController.findUser({ email: username }, function(err, user) {
+			console.log('User: ', user);
 			if (err) { done(err); }
 			if (!user) {
-				console.log('there is no user')
 				done(null, false) // user does not exist
 			} else {
 				if (user.githubtoken !== 'false') {

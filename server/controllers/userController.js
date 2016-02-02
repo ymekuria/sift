@@ -29,7 +29,7 @@ userMethods = {
   },
 
   isUserInDB: function(user, callback) {
-    client.query('SELECT username, githubtoken FROM users WHERE username=($1)', [user.username], function(err, rows) {
+    client.query('SELECT username FROM users WHERE username=($1)', [user.username], function(err, rows) {
       if (err) { throw new Error(err); }
       var inDB = rows.rows.length > 0;
       callback(inDB);
@@ -37,7 +37,7 @@ userMethods = {
   },
 
   findUser: function(user, callback) {
-    client.query('SELECT * FROM users WHERE username=($1)', [user.username], function(err, rows) {
+    client.query('SELECT * FROM users WHERE email=($1)', [user.email], function(err, rows) {
       if (err) { throw callback(err); }
       if (rows.rows.length === 0) {
         callback(null, null) // user does not exist
@@ -48,7 +48,7 @@ userMethods = {
   },
 
   findOrCreateGitHubUser: function(user, accessToken, refreshToken, next) {
-    client.query('SELECT username, displayname, githubtoken FROM users WHERE username=($1)', [user._json.email], function(err, rows) {
+    client.query('SELECT username, displayname, githubtoken FROM users WHERE email=($1)', [user._json.email], function(err, rows) {
       if (err) { throw new Error(err); }
       if (rows.rows.length === 0) { // does not exist, create a new one
         userMethods.createGitHubUser(user, accessToken, function(err, newUser) {
@@ -82,7 +82,7 @@ userMethods = {
   createLocalUser: function(req, res, next) {
 
     var user = {
-      username: req.body.email,
+      username: req.body.email.replace(/[^a-zA-Z0-9 ]/g, ""),
       displayName: req.body.first + ' ' + req.body.last,
       password: req.body.password,
       email: req.body.email,
@@ -120,7 +120,7 @@ userMethods = {
   createGitHubUser: function (profile, token, callback) {
   
     var user = {
-      username: profile._json.email,
+      username: profile._json.email.replace(/[^a-zA-Z0-9 ]/g, ""),
       displayName: profile._json.name,
       email: profile._json.email,
       githubtoken: token
