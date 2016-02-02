@@ -34,20 +34,20 @@ module.exports = {
 
   // this method creates a new table with generated data 
   postUserTable: function(req, res) {
-    var username = 'erikdbrowngmailcom';
+    var username = 'erikdbrowngmailcom'; // TODO: figure out how to remove special characters from email address
 
-    var tableName = req.body.tableName; 
+    var tableName = req.body.tableName;
     var fakeData = utils.generateData(req.body, 20); // returns an ordered array ['Erik', 'Brown', 'Yahoo!', 'Zack', 'Dean', 'Google'...];
     var columnsArray = utils.parseColumnNames(req.body);
     var columnCreation = columnsArray.join(" text, ") + ' text';
-    var columnInsertion = columnsArray.join(', ')
+    var columnInsertion = columnsArray.join(', ');
 
     
     // creating a new table with no columns 
     var queryString = "CREATE TABLE IF NOT EXISTS " + username + "_" + tableName + " (" + columnCreation + ");";
     client.query(queryString, function(err, rows) {
       if (err) { throw new Error(err); }
-    })
+    });
      
     var valueStr = utils.generateValueString(columnsArray.length);
 
@@ -57,19 +57,18 @@ module.exports = {
       if (err) { throw new Error(err); }
     });
       
-    client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)',[username, username+"_"+tableName],function(err,rows){
-      if (err) { console.log("error !!!"); }
-      console.log('successfuly added '+username+ ' and ' +username+"_"+tableName+' to the userstables');
-      res.status(200).send("success");
+    client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)', [username, username + "_" + tableName], function(err,rows) {
+      if (err) { throw new Error(err); }
+      res.sendStatus(200);
     });
   },
 
 
-  this method retrieves all the tableNames associated with the passed in username
+  // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res){
 
     var username = req.query.usr;
-    var queryString = "SELECT tablename FROM userstables WHERE username = '"+username+"';";
+    var queryString = "SELECT tablename FROM userstables WHERE username = '" + username + "';";
     client.query(queryString, function(err,tableNames){
         if (err) { throw new Error(err); }
         res.status(200).json(tableNames.rows);
