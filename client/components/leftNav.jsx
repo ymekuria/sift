@@ -4,7 +4,7 @@ import ActionFlightTakeoff from 'material-ui/lib/svg-icons/action/flight-takeoff
 //refactor into css file
 let styles = {
   zIndex: -1,
-  backgroundColor: 'grey'
+  backgroundColor: '#293535'
 }
 
 const LeftNavbar = () => (
