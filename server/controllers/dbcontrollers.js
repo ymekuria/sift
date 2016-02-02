@@ -108,9 +108,13 @@ module.exports = {
 
     var queryString = "INSERT INTO " + table + "(" + newRowColumnsString + ") VALUES (" + valueStr + ")"
     client.query(queryString, newRowValuesArray, function(err, rows) {
-      if (err) { throw new Error(err); }
-      console.log('succesfuly posted to ' + table + '  table');
-      res.status(200).send('succesfuly posted to ' + table + '  table')
+      if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+          res.sendStatus(400);
+        } else if (err) {
+          throw new Error(err);
+        } else {
+          res.statusStatus(200);
+        }
     });
 
   },
