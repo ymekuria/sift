@@ -123,7 +123,7 @@ module.exports = {
   updateValue: function(req, res) {
     console.log('req.body: ', req.body)
     var table = req.params.username + '_' + req.params.tablename;
-    var rowId = req.params.rowId
+    var rowId = req.params.rowId;
 
     var columnName = req.body.columnName;
     var newValue = req.body.newValue;
@@ -139,18 +139,14 @@ module.exports = {
   // eg {"tableName": "yoni_test","columnName": "lastname", "value": "lastname"}
 
   deleteRow: function(req, res) {
-      var table = req.params.username + '_' + req.params.tablename;
-
-      var columnName = req.body.columnName;
-      var value = req.body.value; 
-      
-      var queryString = "DELETE FROM "+usernameTable+" WHERE "+columnName+ " = '"+ value+"';";
-      client.query(queryString, function(err, data) { 
-       if (err) { throw new Error(err); }
-         console.log('succesfully deleted the row that has '+ value+' as a '+columnName)
-         res.status(200).send('succesfully deleted the row that has '+ value+' as a '+columnName);
-      });
-
+    var table = req.params.username + '_' + req.params.tablename;
+    var rowId = req.params.rowId;
+    
+    var queryString = "DELETE FROM " + table + " WHERE id = " + rowId;
+    client.query(queryString, function(err, data) { 
+     if (err) { throw new Error(err); }
+       res.sendStatus(200)
+    });
   },
   
   // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"} 
