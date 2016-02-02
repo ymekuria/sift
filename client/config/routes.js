@@ -9,7 +9,7 @@ import { Route, IndexRoute} from 'react-router'
 
 export default (
   <Route path='/' component={main}>
-    <Route path='create' component={dataEntry}/>
-    <Route path='visual' component={dataVis}/>
+    <Route path='build' component={dataEntry}/>
+    <Route path='vis' component={dataVis}/>
   </Route>
 )
