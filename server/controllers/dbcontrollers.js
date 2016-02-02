@@ -34,7 +34,7 @@ module.exports = {
 
   // this method creates a new table with generated data 
   createUserTable: function(req, res) {
-    var username = 'erikdbrowngmailcom'; // TODO: figure out how to remove special characters from email address
+    var username = req.user.username;
 
     var tableName = req.body.tableName;
     var fakeData = utils.generateData(req.body, 20); // returns an ordered array ['Erik', 'Brown', 'Yahoo!', 'Zack', 'Dean', 'Google'...];
@@ -67,7 +67,7 @@ module.exports = {
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
 
-    var username = req.query.usr;
+    var username = req.user.username;
     var queryString = "SELECT tablename FROM userstables WHERE username = '" + username + "';";
     client.query(queryString, function(err,tableNames){
         if (err) { throw new Error(err); }
@@ -81,13 +81,13 @@ module.exports = {
 
     var queryString = "SELECT * FROM " + table + ";";
     client.query(queryString, function(err, dbTable) {
-        if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-          res.sendStatus(400);
-        } else if (err) {
-          throw new Error(err);
-        } else {
-          res.status(200).json(dbTable.rows);
-        }
+      if (!err) {
+        res.status(200).json(dbTable.rows);
+      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+        res.sendStatus(400);
+      } else {
+        throw new Error(err);
+      }
     });
 
   },
@@ -108,20 +108,19 @@ module.exports = {
 
     var queryString = "INSERT INTO " + table + "(" + newRowColumnsString + ") VALUES (" + valueStr + ")"
     client.query(queryString, newRowValuesArray, function(err, rows) {
-      if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-          res.sendStatus(400);
-        } else if (err) {
-          throw new Error(err);
-        } else {
-          res.statusStatus(200);
-        }
+      if (!err) {
+        res.sendStatus(200);
+      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+        res.sendStatus(400);
+      } else {
+        throw new Error(err);
+      }
     });
 
   },
 
   ///////////PUT/////////// updates a row in a column 
   updateValue: function(req, res) {
-    console.log('req.body: ', req.body)
     var table = req.params.username + '_' + req.params.tablename;
     var rowId = req.params.rowId;
 
@@ -129,8 +128,13 @@ module.exports = {
     var newValue = req.body.newValue;
   // console.log("tableName", usernameTable, "newValue",newValue,"oldValue", oldValue);
     client.query("UPDATE " + table + " SET " + columnName + " = '" + newValue + "' WHERE id = " + rowId, function(err, data) { 
-     if (err) { throw new Error(err); }
-       res.sendStatus(200);
+     if (!err) {
+        res.sendStatus(200);
+      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+        res.sendStatus(400);
+      } else {
+        throw new Error(err);
+      }
     });
   },
 
@@ -144,8 +148,13 @@ module.exports = {
     
     var queryString = "DELETE FROM " + table + " WHERE id = " + rowId;
     client.query(queryString, function(err, data) { 
-     if (err) { throw new Error(err); }
-       res.sendStatus(200)
+     if (!err) {
+        res.sendStatus(200);
+      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+        res.sendStatus(400);
+      } else {
+        throw new Error(err);
+      }
     });
   },
   
@@ -155,7 +164,7 @@ module.exports = {
     var usernameTable = req.body.tableName;
 
     // stores the table to be deleted 
-    client.query('SELECT * FROM '+usernameTable, function(err, entireTable){
+    client.query('SELECT * FROM '+ usernameTable, function(err, entireTable){
       if (err) { throw new Error(err); }
       var deletedTable = entireTable.rows;
 
