@@ -65,10 +65,12 @@ class DataEntry extends Component {
           categories={this.state.categories}
           addToList={this.addToList.bind(this)}/>
         </Paper>
-        <Paper className='buildTable'>
-          <Selections 
-          removeFromList={this.removeFromList.bind(this)}
-          selections={this.state.selections}/>
+        <Paper className='selectionList'>
+          <div>
+            <Selections
+            removeFromList={this.removeFromList.bind(this)}
+            selections={this.state.selections}/>
+          </div>
         </Paper>
       </div>
     )
