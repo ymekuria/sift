@@ -42,6 +42,11 @@ h3 {
   height: 550px;
   margin-left: 15px;
 }
+.add {
+  width: 200px;
+  height: 48px;
+  margin: 20px 0 0 20px;
+}
 
 .selectField {
   width: 250px;
@@ -81,7 +86,6 @@ h3 {
   display: inline-block;
   overflow: scroll;
 }
-
 
 /*======Other========*/
 .homepage {

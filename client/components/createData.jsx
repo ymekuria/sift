@@ -6,8 +6,8 @@ import {  createTable } from '../utils/utils.js'
 import h from '../config/helpers'
 import fixtures from '../data/fixtures'
 import Dropdown from './dropdown.jsx'
-
 import data from '../data/write.js'
+
 import faker from 'faker'
 /*
   == Material UI componenets ==
@@ -51,13 +51,6 @@ class DataEntry extends Component {
     )
   }
 
-  renderSelection(selected) {
-    let selection = this.state.selections[selected]
-    return (
-      <Selections onSubmit={this.onSubmit.bind(this)} selection={selection}/>
-    )
-}
-
   addToList (selection, category) {
     let currentSelections = this.state.selections;
     if (!currentSelections[category]) {
@@ -67,7 +60,6 @@ class DataEntry extends Component {
     else if(!currentSelections[category][selection]) {
       currentSelections[category][selection] = true
     }
-
 
     this.setState({
       selections: currentSelections
