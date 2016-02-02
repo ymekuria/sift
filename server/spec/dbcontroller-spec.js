@@ -3,6 +3,7 @@ var db = require('../utils/dbconnect.js');
 var expect = require('../../node_modules/chai/chai').expect;
 var sinon = require('sinon');
 var dbcontroller = require('../controllers/dbcontrollers.js');
+var request = require('request')
 
 describe("Posting User Schemas", function() {
   var client;
@@ -13,7 +14,7 @@ describe("Posting User Schemas", function() {
 
     var tablename = "yonim_test";
 
-         data = {
+    var data = {
       firstname: 'Yoni',
       lastname: 'Mekuria',
       streetaddress: '5234 Callback Way'
@@ -43,7 +44,6 @@ describe("Posting User Schemas", function() {
 
   afterEach(function() {
     client.query("DROP TABLE yonim_test");
-    // client.query("DELETE from userstables where username = 'yonim';");
     client.end();
     });
 
@@ -67,7 +67,6 @@ describe("Posting User Schemas", function() {
     client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)', ['yonim','yonim_test'], function(err, results) {
      if (err) { throw new Error(err); }
     });
-
 
     request({ method: "GET",
               uri: "http://127.0.0.1:5001/api/getTables:?usr=yonim"
@@ -145,19 +144,20 @@ describe("Generating dynamic tables", function() {
     });
 
 
-  it("Should generate data and add fields to the database", function(done) {
+  it("Should create a new usertable to the database", function(done) {
     request({ method: "POST",
-              uri: "http://127.0.0.1:5001/api/generateTable:?usr=yonim",
-              json: {"tableName": "test", "Name.firstName": "yes", "Name.lastName": "yes", "Address.streetAddress": "yes"}
+              uri: "localhost:5001/api/test/yonim_test",
+              json: {"Name.firstName": "yes", "Name.lastName": "yes", "Address.streetAddress": "yes"}
     }, function(error, firstResult) {
       client.query("SELECT * FROM yonim_test", function(err, results) {
         if(err) { throw err;}
         expect(results.rows.length).to.equal(10);
+        done();
         // console.log('results in generate data', results.rows.length);
-        client.query("DROP TABLE IF EXISTS yonim_test;",function(err, data){
-          if (err){console.log(err)}
-        })
-      done();
+        // client.query("DROP TABLE IF EXISTS yonim_test;",function(err, data){
+        //   if (err){console.log(err)}
+        // })
+      
       });
     });
   });

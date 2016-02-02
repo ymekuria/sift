@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test_client": "mocha client/spec",
-    "test_server": "mocha server/spec",
+    "test": "mocha server/spec",
     "start": "nodemon server/server.js",
     "webpack": "node devServer.js"
   },

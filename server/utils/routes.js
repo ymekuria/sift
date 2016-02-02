@@ -8,7 +8,7 @@ module.exports = function(app, express, ensureAuth) {
 
   // local authentication
   app.post('/api/users', userController.createLocalUser, function(req, res) {
-    res.redirect('/signin');
+    res.redirect('/#/signin');
   });
   app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/#/signin' }), function(req, res) {
     res.redirect('/#/create');
@@ -22,32 +22,29 @@ module.exports = function(app, express, ensureAuth) {
 
   // user objet pass-through
   app.get('/user', function(req, res) {
+    console.log('/user was called.')
+    console.log('req.user: ', req.user)
     res.json(req.user)
   })
 
   //logout
   app.get('/logout', function(req, res) {
     req.logout();
-    res.redirect('/')
-  })
+    res.redirect('/#/signin')
+  });
 
+  // endpoints for creating, receiving, and deleting tables
+  app.get('/api/users/tables', dbController.getTables);
+  app.post('/api/users/tables', dbController.createUserTable);
+  // app.put('/api/users/tables/:id'); // do we need to have users update their tables?
+  app.delete('/api/users/tables/:id', dbController.deleteTable);
+
+  // external routs for users to access their data
+  app.get('/sand/:tablename/:username', dbController.getOneTable);
+  app.post('/sand/:tablename/:username', dbController.postToTable);
+  app.put('/sand/:tablename/:username/:rowId', dbController.updateValue);
+  app.delete('/sand/:tablename/:username/:rowId', dbController.deleteRow);
  
-  // this endpoint genratesa new table with the fields the user specifys
-  app.post('/api/generateTable:usr', dbController.postUserTable);
-  // this endpoint 
-  app.get('/api/getTables:usr', dbController.getTables);
-
-  // these are the endpoints that will be avialable
-  app.post('/api/postToTable:usrTable', dbController.postToTable);
-  app.get('/api/getOneTable:usrTable', dbController.getOneTable);
-  
-
-  app.put('/api/updateValue', dbController.updateValue);
-  // this endpoint deletes the entire table from the database
-  app.delete('/api/deleteTable',dbController.deleteTable);
-
-  // this endpoint deletes a row from a users 
-  app.delete('/api/deleteRow',dbController.deleteRow);
 
 }
 

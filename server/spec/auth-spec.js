@@ -4,6 +4,7 @@ var expect = require('../../node_modules/chai/chai').expect;
 var bcrypt = require('bcrypt-nodejs');
 var sinon = require('sinon');
 var userController = require('../controllers/userController.js');
+var request = require('request');
 
 describe("Authenticating Users", function() {
   var client;
