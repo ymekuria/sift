@@ -33,7 +33,7 @@ module.exports = {
 */
 
   // this method creates a new table with generated data 
-  postUserTable: function(req, res) {
+  createUserTable: function(req, res) {
     var username = 'erikdbrowngmailcom'; // TODO: figure out how to remove special characters from email address
 
     var tableName = req.body.tableName;
@@ -44,7 +44,7 @@ module.exports = {
 
     
     // creating a new table with no columns 
-    var queryString = "CREATE TABLE IF NOT EXISTS " + username + "_" + tableName + " (" + columnCreation + ");";
+    var queryString = "CREATE TABLE IF NOT EXISTS " + username + "_" + tableName + " ( id SERIAL PRIMARY KEY, " + columnCreation + ");";
     client.query(queryString, function(err, rows) {
       if (err) { throw new Error(err); }
     });
@@ -65,7 +65,7 @@ module.exports = {
 
 
   // this method retrieves all the tableNames associated with the passed in username
-  getTables: function(req, res){
+  getTables: function(req, res) {
 
     var username = req.query.usr;
     var queryString = "SELECT tablename FROM userstables WHERE username = '" + username + "';";
@@ -120,11 +120,11 @@ module.exports = {
   },
 
   ///////////PUT/////////// updates a row in a column 
-  updateValue: function(req, res){
-      var usernameTable = req.body.tableName;
-      var columnName = req.body.columnName;
-      var newValue = req.body.newValue; 
-      var oldValue = req.body.oldValue; 
+  updateValue: function(req, res) {
+    var table = req.params.username + '_' + req.params.tablename;
+    var columnName = req.body.columnName;
+    var newValue = req.body.newValue; 
+    var oldValue = req.body.oldValue; 
   // console.log("tableName", usernameTable, "newValue",newValue,"oldValue", oldValue);
   // client.query("UPDATE "+usernameTable+" SET firstname = '"+newValue+"' WHERE firstname = '"+oldValue+"'"
       client.query("UPDATE "+usernameTable+" SET "+columnName+" = '"+newValue+"' WHERE "+columnName+ " = '"+oldValue+"'", function(err, data) { 
@@ -137,7 +137,7 @@ module.exports = {
   // deletes a row from a users table. Needs the tablename, and a value and columName that corresponds with the roow to be deleted
   // eg {"tableName": "yoni_test","columnName": "lastname", "value": "lastname"}
 
-  deleteRow: function(req, res){
+  deleteRow: function(req, res) {
       var usernameTable = req.body.tableName;
       var columnName = req.body.columnName;
       var value = req.body.value; 
@@ -153,7 +153,7 @@ module.exports = {
   
   // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"} 
   // returns the table that was deleted.
-  deleteTable: function(req, res){
+  deleteTable: function(req, res) {
     var usernameTable = req.body.tableName;
 
     // stores the table to be deleted 
