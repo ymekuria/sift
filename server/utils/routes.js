@@ -2,18 +2,35 @@
 var dbController = require('../controllers/dbcontrollers.js');
 var userController = require('../controllers/userController.js')
 var passport = require('passport');
+var utils = require('./utils')
 
-module.exports = function(app, express) {
+module.exports = function(app, express, ensureAuth) {
 
- // add auth routes here	
-  app.get('/api/users'/***/);
-  app.post('/api/users', userController.createLocalUser);
-  app.post('/api/users/login', userController.loginLocalUser);
-  app.get('/auth/github', passport.authenticate('github'));
-  app.get('/auth/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) { // TODO: redirect to correct login route
-    // Successful authentication, redirect home.
-    res.redirect('/');
+  // local authentication
+  app.post('/api/users', userController.createLocalUser, function(req, res) {
+    res.redirect('/signin');
   });
+  app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/#/signin' }), function(req, res) {
+    res.redirect('/#/create');
+  });
+
+  // GitHub authentication
+  app.get('/auth/github', passport.authenticate('github'));
+  app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/#/signin' }), function(req, res) {
+    res.redirect('/#/create');
+  });
+
+  // user objet pass-through
+  app.get('/user', function(req, res) {
+    res.json(req.user)
+  })
+
+  //logout
+  app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/')
+  })
+
  
   // this endpoint genratesa new table with the fields the user specifys
   app.post('/api/generateTable:usr', dbController.postUserTable);
