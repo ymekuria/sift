@@ -121,17 +121,17 @@ module.exports = {
 
   ///////////PUT/////////// updates a row in a column 
   updateValue: function(req, res) {
+    console.log('req.body: ', req.body)
     var table = req.params.username + '_' + req.params.tablename;
+    var rowId = req.params.rowId
 
     var columnName = req.body.columnName;
-    var newValue = req.body.newValue; 
-    var oldValue = req.body.oldValue; 
+    var newValue = req.body.newValue;
   // console.log("tableName", usernameTable, "newValue",newValue,"oldValue", oldValue);
-  // client.query("UPDATE "+usernameTable+" SET firstname = '"+newValue+"' WHERE firstname = '"+oldValue+"'"
-      client.query("UPDATE "+usernameTable+" SET "+columnName+" = '"+newValue+"' WHERE "+columnName+ " = '"+oldValue+"'", function(err, data) { 
-       if (err) { throw new Error(err); }
-         res.status(200).send('succesfully modified '+ oldValue + " to " + newValue + " in " + usernameTable);
-      });
+    client.query("UPDATE " + table + " SET " + columnName + " = '" + newValue + "' WHERE id = " + rowId, function(err, data) { 
+     if (err) { throw new Error(err); }
+       res.sendStatus(200);
+    });
   },
 
   ///////////DELETE//////////
@@ -140,7 +140,7 @@ module.exports = {
 
   deleteRow: function(req, res) {
       var table = req.params.username + '_' + req.params.tablename;
-      
+
       var columnName = req.body.columnName;
       var value = req.body.value; 
       

@@ -36,8 +36,8 @@ module.exports = function(app, express, ensureAuth) {
   // external routs for users to access their data
   app.get('/sand/:tablename/:username', dbController.getOneTable);
   app.post('/sand/:tablename/:username', dbController.postToTable);
-  app.put('/sand/:tablename/:username', dbController.updateValue);
-  app.delete('/sand/:tablename/:username', dbController.deleteRow);
+  app.put('/sand/:tablename/:username/:rowId', dbController.updateValue);
+  app.delete('/sand/:tablename/:username/:rowId', dbController.deleteRow);
  
   // endpoints for creating, receiving, and deleting tables
   app.post('/api/users/tables', dbController.createUserTable);
