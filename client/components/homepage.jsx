@@ -28,8 +28,10 @@ class Homepage extends Component {
   
   }
 
-  renderDashTable() {
-
+  renderDashTable(key) {
+    return(
+      <DashTable key={key} index={key} names={['yoni','jon']}/>
+      )
   }
 
   render() {
@@ -40,7 +42,9 @@ class Homepage extends Component {
 
         <div className='row'> 
           <div className='col-md-12'>
+           {_.map(['yoni','jon'],this.renderDashTable)}
             <DashTable/>       
+           
           </div>    
         </div>
       </div>   
@@ -62,7 +66,7 @@ class DashTable extends Component {
     return (
       <div>
         <Paper style={style}  zDepth={5} rounded={false}>
-            <h4></h4>
+            <h4>this.props.index</h4>
             <RaisedButton label="Manage App" style={{margin: 5}} />
 
        </Paper>
