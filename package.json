@@ -52,7 +52,9 @@
     "react-tap-event-plugin": "^0.2.1",
     "redux": "^3.2.1",
     "request": "^2.69.0",
+    "rethinkdb": "^2.2.1",
     "sinon": "^1.17.2",
+    "socket.io": "^1.4.5",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

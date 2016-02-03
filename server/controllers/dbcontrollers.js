@@ -1,12 +1,25 @@
 var pg = require('pg');
+var r = require('rethinkdb');
 var faker = require('faker');
 var _ = require('lodash');
-var db = require('../utils/dbconnect.js');
+var psqlDB = require('../utils/dbconnect.js');
 var utils = require('../utils/generateData.js');
 var tableConnections = require('../models/dbTableConnections.js');
 
-var client = new pg.Client(db.connectionString);
+// setting up Postgres connection
+var client = new pg.Client(psqlDB.connectionString);
 client.connect();
+
+// setting up RethinkDB connection
+var connection = null;
+r.connect( { host: 'localhost', db: 'apiTables' }, function(err, conn) {
+  if (err) throw err;
+  connection = conn;
+  console.log('Connected to RethinkDB')
+  r.dbCreate('apiTables').run(conn, function(err, conn) {
+    console.log('Tables DB created in RethinkDB')
+  });
+});
 
 
 module.exports = {
@@ -34,108 +47,81 @@ module.exports = {
 
   // this method creates a new table with generated data 
   createUserTable: function(req, res) {
-    var username = req.user.username;
+    var username = req.user.username
+    var userID = req.user.id;
 
-    var tableName = req.body.tableName;
-    var fakeData = utils.generateData(req.body, 20); // returns an ordered array ['Erik', 'Brown', 'Yahoo!', 'Zack', 'Dean', 'Google'...];
-    var columnsArray = utils.parseColumnNames(req.body);
-    var columnCreation = columnsArray.join(" text, ") + ' text';
-    var columnInsertion = columnsArray.join(', ');
-
+    var columns = utils.parseColumnNames(req.body)
+    var tablename = username + '_' + req.body.tableName;
+    var fakeData = utils.generateData(req.body, columns, 20); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
     
-    // creating a new table with no columns 
-    var queryString = "CREATE TABLE IF NOT EXISTS " + username + "_" + tableName + " ( id SERIAL PRIMARY KEY, " + columnCreation + ");";
-    client.query(queryString, function(err, rows) {
-      if (err) { throw new Error(err); }
-    });
-     
-    var valueStr = utils.generateValueString(columnsArray.length);
-
-    var insertString = "INSERT INTO " + username + "_" + tableName + " (" + columnInsertion + ") VALUES " + fakeData + ";";
-
-    client.query(insertString, function(err, rows) {
-      if (err) { throw new Error(err); }
-    });
-      
-    client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)', [username, username + "_" + tableName], function(err,rows) {
-      if (err) { throw new Error(err); }
-      res.sendStatus(200);
+    // creating a new table
+    r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
+      if (err) throw err;
+      // add fakeData to the table
+      r.db('apiTables').table(tablename).insert(fakeData).run(connection, function(err, response) {
+        if (err) { throw err; }
+        // add postgres query to save tablename to user list
+        columns = columns.join(',');
+        client.query('INSERT INTO Tables (userID, tablename, columns) VALUES ($1, $2, $3)', [userID, tablename, columns], function(err, response){
+          if (err) { throw err; }
+          res.sendStatus(200);
+        })
+      });
     });
   },
-
 
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
 
-    var username = req.user.username;
-    var queryString = "SELECT tablename FROM userstables WHERE username = '" + username + "';";
-    client.query(queryString, function(err,tableNames){
+    var userID = req.user.id;
+    var queryString = "SELECT id, tablename, columns FROM tables WHERE userID = '" + userID + "';";
+    client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
+        _.each(tableNames.rows, function(row) {
+          row.columns = row.columns.split(',')
+        })
         res.status(200).json(tableNames.rows);
     });
   },
 
   // this method retrieves all the rows in the table specified from the query param
   getOneTable: function(req, res) {
-    var table = req.params.username + '_' + req.params.tablename;
+    var tablename = req.params.username + '_' + req.params.tablename;
 
-    var queryString = "SELECT * FROM " + table + ";";
-    client.query(queryString, function(err, dbTable) {
-      if (!err) {
-        res.status(200).json(dbTable.rows);
-      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-        res.sendStatus(400);
-      } else {
-        throw new Error(err);
-      }
+    r.table(tablename).run(connection, function(err, cursor) {
+      if (err) { throw err; }
+      cursor.toArray(function(err, results) {
+        cursor.close();
+        res.status(200).send(results);
+      });
     });
-
   },
 
  // this posts to a users tables. The front-end sends a post request with the columns and new values
  // {columnName: value, column2Name: value, ...}
   postToTable: function(req, res) {
-    var table = req.params.username + '_' + req.params.tablename;
+    var tablename = req.params.username + '_' + req.params.tablename;
 
-    var newRowColumnsArray = Object.keys(req.body);
-    var newRowValuesArray = _.map(newRowColumnsArray, function(key) {
-      return req.body[key];
+    r.table(tablename).insert(req.body).run(connection, function(err, response) {
+      if (err) { throw err; }
+      res.sendStatus(200);
     });
-    newRowColumnsString = newRowColumnsArray.join(',');
-
-    // stringify to put in query string.
-    var valueStr = utils.generateValueString(newRowColumnsArray.length);
-
-    var queryString = "INSERT INTO " + table + "(" + newRowColumnsString + ") VALUES (" + valueStr + ")"
-    client.query(queryString, newRowValuesArray, function(err, rows) {
-      if (!err) {
-        res.sendStatus(200);
-      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-        res.sendStatus(400);
-      } else {
-        throw new Error(err);
-      }
-    });
-
   },
 
   ///////////PUT/////////// updates a row in a column 
   updateValue: function(req, res) {
-    var table = req.params.username + '_' + req.params.tablename;
+    var tablename = req.params.username + '_' + req.params.tablename;
     var rowId = req.params.rowId;
 
     var columnName = req.body.columnName;
-    var newValue = req.body.newValue;
-  // console.log("tableName", usernameTable, "newValue",newValue,"oldValue", oldValue);
-    client.query("UPDATE " + table + " SET " + columnName + " = '" + newValue + "' WHERE id = " + rowId, function(err, data) { 
-     if (!err) {
-        res.sendStatus(200);
-      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-        res.sendStatus(400);
-      } else {
-        throw new Error(err);
-      }
-    });
+    var newValue = req.body.newValue
+    var update = {};
+    update[columnName] = newValue;
+
+    r.table(tablename).get(rowId).update(update).run(connection, function(err, results) {
+      if (err) { throw err; }
+      res.sendStatus(200);
+    })
   },
 
   ///////////DELETE//////////
@@ -143,39 +129,40 @@ module.exports = {
   // eg {"tableName": "yoni_test","columnName": "lastname", "value": "lastname"}
 
   deleteRow: function(req, res) {
-    var table = req.params.username + '_' + req.params.tablename;
+    var tablename = req.params.username + '_' + req.params.tablename;
     var rowId = req.params.rowId;
-    
-    var queryString = "DELETE FROM " + table + " WHERE id = " + rowId;
-    client.query(queryString, function(err, data) { 
-     if (!err) {
-        res.sendStatus(200);
-      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-        res.sendStatus(400);
-      } else {
-        throw new Error(err);
-      }
-    });
+
+    r.table(tablename).get(rowId).delete().run(connection, function(err, results) {
+      if (err) { throw err; }
+      res.sendStatus(200);
+    })
   },
   
   // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"} 
   // returns the table that was deleted.
   deleteTable: function(req, res) {
-    var usernameTable = req.body.tableName;
+    var username = req.user.username;
+    var userId = req.user.id;
+    
+    var tableId = req.params.id
 
-    // stores the table to be deleted 
-    client.query('SELECT * FROM '+ usernameTable, function(err, entireTable){
-      if (err) { throw new Error(err); }
-      var deletedTable = entireTable.rows;
-
-      // this query deletes the table
-      client.query('DROP TABLE IF EXISTS ' + usernameTable, function(err, result) {
+    client.query('SELECT tablename FROM Tables WHERE id = ' + tableId, function(err, results) {
+      if (err) { throw err; }
+      if (results.rows.length === 0) {
+        res.sendStatus(404);
+      }
+      tablename = results.rows[0].tablename;
+      client.query('DELETE FROM Tables WHERE userID = ' + userId + ' AND id = ' + tableId, function(err, entireTable) {
         if (err) { throw new Error(err); }
-        console.log('succesfuly deleted '+usernameTable+ '  table');
-        res.status(200).json('succesfuly deleted '+usernameTable+ '  table', deletedTable);
+        console.log('entireTable', entireTable)
+        var deletedTable = entireTable.rows;
+
+        r.db('apiTables').tableDrop(tablename).run(connection, function(err, results) {
+          if (err) { throw err; }
+          res.sendStatus(200);
+        });
       });
     });
- 
   }
 
 };

@@ -19,8 +19,7 @@ var dataIndex = require('./dataIndex/write.js');
 
 module.exports = { 
 
-  parseColumnNames: function (obj) {
-    console.log('parseObj: ', obj);
+  parseColumnNames: function(obj) {
     var results = [];
     for (key in obj) {
       if (key !== 'tableName') {
@@ -34,35 +33,30 @@ module.exports = {
   //use req.body as a reference to the index file to 
   //pull out the relevant faker queries ---> insert into 
   //the generate data algorithm below. 
-	generateData: function(fields, numberOfRows) {
-		var rowData = [];  	
+	generateData: function(fields, columns, numberOfRows) {
+    // var columns = module.exports.parseColumnNames(fields);
+		var data = [];  	
 
-    for (var i = 0; i < numberOfRows; i++ ) { 
-      var row = [];
-      // for (key in fields) {
-      _.each(fields, function(fieldVal, fakerCategory) { 
-        if ( fakerCategory !== 'tableName') {
-          _.each(fieldVal, function (fakerVal, fakerField){ 
-            // if the the passed in catagory is marked true 
-            if (fields[fakerCategory][fakerField]) {
-              // generating the fake data from faker and pushing the row into an array
-              var ref = dataIndex[fakerCategory][fakerField];
-              var value = eval("faker." + ref + "()");
-              if (value.indexOf('\'') > -1) {
-                value = eval("faker." + ref + "()");
-              } else {
-                row.push("'" + value + "'");
-              }
+    for (var i = 0; i < numberOfRows; i++) { 
+      var row = {};
+      _.each(fields, function(field, fakerCategory) {
+        if (fakerCategory !== 'tableName') {
+          _.each(field, function (fakerVal, fakerField) {
+            var key = fakerField;
+            // generating the fake data from faker and pushing the row into an array
+            var ref = dataIndex[fakerCategory][fakerField];
+            var value = eval("faker." + ref + "()");
+            if (value.indexOf('\'') > -1) {
+              value = eval("faker." + ref + "()");
+            } else {
+              row[key] = value;
             }
           });
-        }
-          
+        } 
       });
-      var string = "(" + row.join(' , ') + ")";
-      rowData.push(string);			
+      data.push(row);			
 		}	
-		return rowData.join(',');
-
+		return data;
   },
 
 

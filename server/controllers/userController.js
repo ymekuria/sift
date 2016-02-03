@@ -9,7 +9,7 @@ var client = new pg.Client(db.connectionString);
 client.connect();
 
 // create the Users table
-client.query('CREATE TABLE IF NOT EXISTS users (' +
+client.query('CREATE TABLE IF NOT EXISTS Users (' +
   'id SERIAL PRIMARY KEY, ' +
   'username VARCHAR(120), ' +
   'displayname VARCHAR(120), ' +
@@ -18,7 +18,7 @@ client.query('CREATE TABLE IF NOT EXISTS users (' +
   'salt VARCHAR(60) DEFAULT null,' +
   'githubtoken VARCHAR(60) DEFAULT false )', function(err, result) {
     if (err) { throw new Error(err); }
-    console.log('users table created');
+    console.log('Users table created');
 })
 
 userMethods = {
@@ -29,7 +29,7 @@ userMethods = {
   },
 
   isUserInDB: function(user, callback) {
-    client.query('SELECT username FROM users WHERE username=($1)', [user.username], function(err, rows) {
+    client.query('SELECT username FROM Users WHERE username=($1)', [user.username], function(err, rows) {
       if (err) { throw new Error(err); }
       var inDB = rows.rows.length > 0;
       callback(inDB);
@@ -37,7 +37,7 @@ userMethods = {
   },
 
   findUser: function(user, callback) {
-    client.query('SELECT * FROM users WHERE email=($1)', [user.email], function(err, rows) {
+    client.query('SELECT * FROM Users WHERE email=($1)', [user.email], function(err, rows) {
       if (err) { throw callback(err); }
       if (rows.rows.length === 0) {
         callback(null, null) // user does not exist
@@ -48,7 +48,7 @@ userMethods = {
   },
 
   findOrCreateGitHubUser: function(user, accessToken, refreshToken, next) {
-    client.query('SELECT username, displayname, githubtoken FROM users WHERE email=($1)', [user._json.email], function(err, rows) {
+    client.query('SELECT username, displayname, githubtoken FROM Users WHERE email=($1)', [user._json.email], function(err, rows) {
       if (err) { throw new Error(err); }
       if (rows.rows.length === 0) { // does not exist, create a new one
         userMethods.createGitHubUser(user, accessToken, function(err, newUser) {
@@ -101,7 +101,7 @@ userMethods = {
             user.password = hash;
             user.salt = salt;
 
-            client.query('INSERT INTO users (username, displayName, password, email, salt) VALUES ($1, $2, $3, $4, $5)', [user.username, user.displayName, user.password, user.email, user.salt], function(err, response) {
+            client.query('INSERT INTO Users (username, displayName, password, email, salt) VALUES ($1, $2, $3, $4, $5)', [user.username, user.displayName, user.password, user.email, user.salt], function(err, response) {
               if (err) { throw new Error(err); }
               // var token = jwt.encode(user.username, 'greenVeranda');
               // res.json = { token: token };
@@ -114,7 +114,7 @@ userMethods = {
   },
 
   updateToken: function(user, token, callback) {
-    client.query('UPDATE users SET githubtoken = ($1) WHERE username = ($2)', [token, user.username], callback);
+    client.query('UPDATE Users SET githubtoken = ($1) WHERE username = ($2)', [token, user.username], callback);
   },
 
   createGitHubUser: function (profile, token, callback) {
@@ -126,7 +126,7 @@ userMethods = {
       githubtoken: token
     };
 
-    client.query('INSERT INTO users (username, displayName, email, githubtoken) VALUES ($1, $2, $3, $4)', [user.username, user.displayName, user.email, user.githubtoken], function(err, res) {
+    client.query('INSERT INTO Users (username, displayName, email, githubtoken) VALUES ($1, $2, $3, $4)', [user.username, user.displayName, user.email, user.githubtoken], function(err, res) {
       if (err) { next(err); }
       var token = jwt.encode(user.username, 'greenVeranda');
       user.token = token;

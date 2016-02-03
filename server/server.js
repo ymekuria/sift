@@ -1,21 +1,19 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-// var githubAuth = require('./auth/githubAuth.js');
 var passport = require('passport');
 var session = require('express-session');
 var GitHubStrategy = require('passport-github').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
-var userController = require('./controllers/userController.js')
+var userController = require('./controllers/userController.js');
+var socketController = require('./controllers/socketController.js');
 var token = require('./auth/authTokens.js');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var utils = require('./utils/utils')
 var pg = require('pg');
-var app = express();
 var cors = require('cors');
-
-// Databse connectionn
+var app = express();
 
 // Middleware. Add below as needed
 app.use(cors());
@@ -27,6 +25,41 @@ app.use(passport.session());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true }));
 require('./utils/routes.js')(app, express, utils.isAuth);
+
+var port = process.env.PORT || 5001;
+
+var server = app.listen(port, function() {
+	console.log('Sifting on port= ', port)
+});
+
+var io = require('socket.io')(server);
+
+io.sockets.on('connection', function (socket) {
+	socket.on('show table', function(table) {
+		// send DB table info back to client
+	})
+
+	socket.on('edit', function(node) {
+		// edit node and send data back to client
+		socketController.editNode(node, function(data) {
+			socket.emit('data change', data);
+		})
+	});
+
+	socket.on('add', function(node) {
+		// add node to database and send data back to client
+		socketController.addNode(node, function(data) {
+			socket.emit('data change', data);
+		})
+	});
+
+	socket.on('delete', function(node) {
+		// delete node from database and send data back to client
+		socketController.removeNode(node, function(data) {
+			socket.emit('data change', data);
+		})
+	})
+});
 
 passport.serializeUser(function(user, done) {
 	console.log('serializeUser: ', user)
@@ -76,11 +109,5 @@ passport.use(new LocalStrategy(
 			}
 		})
 }))
-
-var port = process.env.PORT || 5001;
-
-app.listen(port, function() {
-	console.log('Sifting on port= ', port)
-});
 
 module.exports = app;
