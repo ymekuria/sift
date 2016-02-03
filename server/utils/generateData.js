@@ -20,6 +20,7 @@ var dataIndex = require('./dataIndex/write.js');
 module.exports = { 
 
   parseColumnNames: function(obj) {
+    console.log('this is the obj', obj)
     var results = [];
     for (key in obj) {
       if (key !== 'tableName') {

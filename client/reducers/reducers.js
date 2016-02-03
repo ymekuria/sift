@@ -60,7 +60,7 @@ const buildTable = (state = initialState, action) => {
     //======submitting table======//
     case 'submit_table':
       console.log('submitting table..?', state.BuildOrder)
-      createTable(action.username, state.BuildOrder);
+      createTable(action.tableName, state.BuildOrder);
       //hook into backend!
       //here we handle the post to our database
       return state;

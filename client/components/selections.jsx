@@ -15,7 +15,7 @@ const Selections = ({ selected }, { store }) => {
       onClick={() => {
         store.dispatch({
         type: 'submit_table',
-        username: 'zack_rock'
+        tableName: 'newTable'
       })}} 
       className='saveButton' 
       tooltip='save'>
