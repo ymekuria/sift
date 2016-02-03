@@ -1,12 +1,19 @@
-var pg = require('pg');
+// var pg = require('pg');
+var r = require('rethinkdb');
 var faker = require('faker');
 var _ = require('lodash');
-var db = require('../utils/dbconnect.js');
+// var db = require('../utils/dbconnect.js');
 var utils = require('../utils/generateData.js');
-var tableConnections = require('../models/dbTableConnections.js');
+// var tableConnections = require('../models/dbTableConnections.js');
 
-var client = new pg.Client(db.connectionString);
-client.connect();
+// var client = new pg.Client(db.connectionString);
+// client.connect();
+var connection = null;
+r.connect( {host: 'localhost', db: "tables"}, function(err, conn) {
+  if (err) throw err;
+  console.log('Tables DB created in RethinkDB')
+  connection = conn;
+});
 
 
 module.exports = {
@@ -34,33 +41,41 @@ module.exports = {
 
   // this method creates a new table with generated data 
   createUserTable: function(req, res) {
-    var username = req.user.username;
+    // var username = req.user.username;
 
-    var tableName = req.body.tableName;
+    var tableName = 'erikdbrowngmailcom_' + req.body.tableName;
     var fakeData = utils.generateData(req.body, 20); // returns an ordered array ['Erik', 'Brown', 'Yahoo!', 'Zack', 'Dean', 'Google'...];
-    var columnsArray = utils.parseColumnNames(req.body);
-    var columnCreation = columnsArray.join(" text, ") + ' text';
-    var columnInsertion = columnsArray.join(', ');
+    // var columnsArray = utils.parseColumnNames(req.body);
+    // var columnCreation = columnsArray.join(" text, ") + ' text';
+    // var columnInsertion = columnsArray.join(', ');
 
     
     // creating a new table with no columns 
-    var queryString = "CREATE TABLE IF NOT EXISTS " + username + "_" + tableName + " ( id SERIAL PRIMARY KEY, " + columnCreation + ");";
-    client.query(queryString, function(err, rows) {
-      if (err) { throw new Error(err); }
-    });
+    r.db("tables").tableCreate(tableName).run(connection, function(err, result) {
+      if (err) throw err;
+      r.db("tables").table(tableName).insert(fakeData).run(connection, function(err, response) {
+        if (err) { throw err; }
+        res.sendStatus(200);
+      })
+    })
+    // var queryString = "CREATE TABLE IF NOT EXISTS " + username + "_" + tableName + " ( id SERIAL PRIMARY KEY, " + columnCreation + ");";
+    // client.query(queryString, function(err, rows) {
+    //   if (err) { throw new Error(err); }
+    // });
      
-    var valueStr = utils.generateValueString(columnsArray.length);
+    // var valueStr = utils.generateValueString(columnsArray.length);
 
-    var insertString = "INSERT INTO " + username + "_" + tableName + " (" + columnInsertion + ") VALUES " + fakeData + ";";
+    // var insertString = "INSERT INTO " + username + "_" + tableName + " (" + columnInsertion + ") VALUES " + fakeData + ";";
 
-    client.query(insertString, function(err, rows) {
-      if (err) { throw new Error(err); }
-    });
+    // client.query(insertString, function(err, rows) {
+    //   if (err) { throw new Error(err); }
+    // });
+    
       
-    client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)', [username, username + "_" + tableName], function(err,rows) {
-      if (err) { throw new Error(err); }
-      res.sendStatus(200);
-    });
+    // client.query('INSERT INTO userstables (username, tablename) VALUES ($1, $2)', [username, username + "_" + tableName], function(err,rows) {
+    //   if (err) { throw new Error(err); }
+    //   res.sendStatus(200);
+    // });
   },
 
 
@@ -77,18 +92,24 @@ module.exports = {
 
   // this method retrieves all the rows in the table specified from the query param
   getOneTable: function(req, res) {
-    var table = req.params.username + '_' + req.params.tablename;
+    var tablename = req.params.username + '_' + req.params.tablename;
 
-    var queryString = "SELECT * FROM " + table + ";";
-    client.query(queryString, function(err, dbTable) {
-      if (!err) {
-        res.status(200).json(dbTable.rows);
-      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-        res.sendStatus(400);
-      } else {
-        throw new Error(err);
-      }
+    r.table(tablename).run(connection, function(err, cursor) {
+      cursor.toArray(function(err, results) {
+        res.status(200).send(results);
+      });
     });
+
+    // var queryString = "SELECT * FROM " + table + ";";
+    // client.query(queryString, function(err, dbTable) {
+    //   if (!err) {
+    //     res.status(200).json(dbTable.rows);
+    //   } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+    //     res.sendStatus(400);
+    //   } else {
+    //     throw new Error(err);
+    //   }
+    // });
 
   },
 

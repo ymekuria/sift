@@ -1,11 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-// var githubAuth = require('./auth/githubAuth.js');
 var passport = require('passport');
 var session = require('express-session');
 var GitHubStrategy = require('passport-github').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
-var userController = require('./controllers/userController.js')
+var userController = require('./controllers/userController.js');
+var socketController = require('./controllers/socketController.js');
 var token = require('./auth/authTokens.js');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -34,12 +34,31 @@ var server = app.listen(port, function() {
 
 var io = require('socket.io')(server);
 
-io.on('connection', function (socket) {
-	console.log('user connected')
-  socket.emit('server event', { foo: 'bar' });
-  socket.on('client event', function (data) {
-    console.log(data);
-  });
+io.sockets.on('connection', function (socket) {
+	socket.on('show table', function(table) {
+		// send DB table info back to client
+	})
+
+	socket.on('edit', function(node) {
+		// edit node and send data back to client
+		socketController.editNode(node, function(data) {
+			socket.emit('data change', data);
+		})
+	});
+
+	socket.on('add', function(node) {
+		// add node to database and send data back to client
+		socketController.addNode(node, function(data) {
+			socket.emit('data change', data);
+		})
+	});
+
+	socket.on('delete', function(node) {
+		// delete node from database and send data back to client
+		socketController.removeNode(node, function(data) {
+			socket.emit('data change', data);
+		})
+	})
 });
 
 passport.serializeUser(function(user, done) {

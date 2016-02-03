@@ -9,16 +9,16 @@ module.exports = function(app, express, ensureAuth) {
 
   // local authentication
   app.post('/api/users', userController.createLocalUser, function(req, res) {
-    res.redirect('/#/signin');
+    res.redirect('/build');
   });
   app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/#/signin' }), function(req, res) {
-    res.redirect('/#/create');
+    res.redirect('/build');
   });
 
   // GitHub authentication
   app.get('/auth/github', passport.authenticate('github'));
   app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/#/signin' }), function(req, res) {
-    res.redirect('/#/create');
+    res.redirect('/build');
   });
 
   // user objet pass-through
@@ -31,7 +31,7 @@ module.exports = function(app, express, ensureAuth) {
   //logout
   app.get('/logout', function(req, res) {
     req.logout();
-    res.redirect('/#/signin')
+    res.redirect('/signin')
   });
 
   // endpoints for creating, receiving, and deleting tables

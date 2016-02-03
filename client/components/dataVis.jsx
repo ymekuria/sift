@@ -7,14 +7,15 @@ class DataVis extends Component {
   constructor() {
     super()
     this.state={
-      data: {}
+      data: []
     }
   }
 
   componentDidMount() {
-    socket.on('server event', function (data) {
-      console.log(data);
-      socket.emit('client event', { socket: 'io' });
+    socket.on('data change', function (data) {
+      this.setState({
+        data: data
+      })
     });
   }
 
