@@ -180,19 +180,24 @@ module.exports = {
   // eg {"tableName": "yoni_test","columnName": "lastname", "value": "lastname"}
 
   deleteRow: function(req, res) {
-    var table = req.params.username + '_' + req.params.tablename;
+    var tablename = req.params.username + '_' + req.params.tablename;
     var rowId = req.params.rowId;
+
+    r.table(tablename).get(rowId).delete().run(connection, function(err, results) {
+      if (err) { throw err; }
+      res.sendStatus(200);
+    })
     
-    var queryString = "DELETE FROM " + table + " WHERE id = " + rowId;
-    client.query(queryString, function(err, data) { 
-     if (!err) {
-        res.sendStatus(200);
-      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-        res.sendStatus(400);
-      } else {
-        throw new Error(err);
-      }
-    });
+    // var queryString = "DELETE FROM " + table + " WHERE id = " + rowId;
+    // client.query(queryString, function(err, data) { 
+    //  if (!err) {
+    //     res.sendStatus(200);
+    //   } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+    //     res.sendStatus(400);
+    //   } else {
+    //     throw new Error(err);
+    //   }
+    // });
   },
   
   // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"} 
