@@ -73,7 +73,7 @@ module.exports = {
   getTables: function(req, res) {
 
     var userID = 23 // req.user.userID;
-    var queryString = "SELECT tablename, columns FROM tables WHERE userID = '" + userID + "';";
+    var queryString = "SELECT id, tablename, columns FROM tables WHERE userID = '" + userID + "';";
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
         _.each(tableNames.rows, function(row) {
@@ -146,7 +146,7 @@ module.exports = {
     var tablename = username + '_' + req.body.tableName;
 
     // stores the table to be deleted 
-    client.query('DELETE FROM usersTables WHERE userID = ' + userID + ' AND tableName = ' + tablename, function(err, entireTable) {
+    client.query('DELETE FROM Tables WHERE userID = ' + userID + ' AND tableName = ' + tablename, function(err, entireTable) {
       if (err) { throw new Error(err); }
       console.log('entireTable', entireTable)
       var deletedTable = entireTable.rows;
