@@ -47,8 +47,8 @@ module.exports = {
 
   // this method creates a new table with generated data 
   createUserTable: function(req, res) {
-    var username = 'erikdbrowngmailcom'; // req.user.username
-    var userID = 23 //req.user.id;
+    var username = req.user.username
+    var userID = req.user.id;
 
     var columns = utils.parseColumnNames(req.body)
     var tablename = username + '_' + req.body.tableName;
@@ -73,7 +73,7 @@ module.exports = {
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
 
-    var userID = 23 // req.user.userID;
+    var userID = req.user.id;
     var queryString = "SELECT id, tablename, columns FROM tables WHERE userID = '" + userID + "';";
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
@@ -141,8 +141,8 @@ module.exports = {
   // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"} 
   // returns the table that was deleted.
   deleteTable: function(req, res) {
-    var username = 'erikdbrowngmailcom'; // req.user.username;
-    var userId = 23; // req.user.id;
+    var username = req.user.username;
+    var userId = req.user.id;
     
     var tableId = req.params.id
 
