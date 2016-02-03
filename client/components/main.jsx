@@ -8,17 +8,17 @@ let viewStyles= {
   float: 'left',
   marginLeft: '47px'
 }
-
+require('../css/style.css')
 //this will be the top level app that renders everyting to root
 class Main extends Component {
 
   render() {
     return (
-      <div>
+      <div className='container'>
         <Nav/>
-        <div style={viewStyles}>
-        {this.props.children || <Homepage/>}
-        </div>
+          <div className='routeContainer'>
+          {this.props.children || <Homepage/>}
+          </div>
       </div>
     )
   }
