@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import {router} from 'react-router'
-import { FontIcon, IconButton, LeftNav, MenuItem, RaisedButton } from 'material-ui';
-import ActionFlightTakeoff from 'material-ui/lib/svg-icons/action/flight-takeoff';
-import Build from 'material-ui/lib/svg-icons/action/build';
-import Stats from 'material-ui/lib/svg-icons/action/assessment';
-import Info from 'material-ui/lib/svg-icons/action/info';
-import Home from 'material-ui/lib/svg-icons/action/home';
+import { routeActions } from 'react-router-redux'
+import { FontIcon, IconButton, LeftNav} from 'material-ui'
+import store from '../store.jsx'
+
+import Build from 'material-ui/lib/svg-icons/action/build'
+import Stats from 'material-ui/lib/svg-icons/action/assessment'
+import Info from 'material-ui/lib/svg-icons/action/info'
+import Home from 'material-ui/lib/svg-icons/action/home'
+
 
 //todo for 
 let styles = {
@@ -27,7 +30,8 @@ class LeftNavbar extends Component {
   }
   navigation(path) {
     console.log('navigating');
-    this.context.router.push(path);
+    store.dispatch(routeActions.push(path));
+    console.log('this is the thing', this.context.store.getState())
   }
 
   render() {
@@ -60,6 +64,7 @@ class LeftNavbar extends Component {
 };
 
 LeftNavbar.contextTypes = {
+  store: React.PropTypes.object,
   router: React.PropTypes.object.isRequired
 }
 

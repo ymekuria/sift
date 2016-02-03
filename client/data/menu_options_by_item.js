@@ -1,5 +1,5 @@
 export default {
-  subSelections: [
+  items: [
     {
       "value": "department",
       "label": "department",

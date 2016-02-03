@@ -4,33 +4,22 @@ import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
 import _ from 'lodash';
 
-
-
-
-
-const Selections = ({
-  selections,
-  onSubmit,
-  removeFromList
-}) => {
-
-  let list = _.reduce(selections, function(acc, sub, category) {
-    return acc.concat(_.map(sub, function (val, subCategory) {
-      return [category, subCategory];
-    }))
-  }, []);
-
+const Selections = ({ selected }, { store }) => {
   return (
     <div>
       <List>
-        {list.map((item) => {
-          let category = item[0];
-          let subCategory = item[1];
+        {selected.map((item, i) => {
           return (
             <ListItem className='listItem'>
               <div className='listItemContent'>
-                {subCategory}
-                <div onClick={() => {removeFromList(category, subCategory)}} className='remove'>{'x'}</div>
+                {item}
+                <div onClick={() => {
+                  store.dispatch({
+                    type: 'remove_from_list',
+                    id: i
+                  })
+                }} 
+                className='remove'>{'x'}</div>
               </div>
               <Divider/>
             </ListItem>
@@ -39,6 +28,10 @@ const Selections = ({
       </List>
     </div>
   )
+}
+
+Selections.contextTypes = {
+  store: React.PropTypes.object
 }
 
 export default Selections
