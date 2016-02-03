@@ -2,11 +2,26 @@ import React from 'react'
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
+import IconButton from 'material-ui/lib/icon-button';
+import ContentAdd from 'material-ui/lib/svg-icons/content/save';
 import _ from 'lodash';
 
 const Selections = ({ selected }, { store }) => {
   return (
     <div>
+    <div className='selectionHeader'>
+      <h3>Selections</h3>
+      <IconButton
+      onClick={() => {
+        store.dispatch({
+        type: 'submit_table',
+        username: 'zack_rock'
+      })}} 
+      className='saveButton' 
+      tooltip='save'>
+        <ContentAdd/>
+      </IconButton>
+    </div>
       <List>
         {selected.map((item, i) => {
           return (
