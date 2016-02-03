@@ -95,6 +95,7 @@ module.exports = {
     var tablename = req.params.username + '_' + req.params.tablename;
 
     r.table(tablename).run(connection, function(err, cursor) {
+      if (err) { throw err; }
       cursor.toArray(function(err, results) {
         res.status(200).send(results);
       });
@@ -116,27 +117,32 @@ module.exports = {
  // this posts to a users tables. The front-end sends a post request with the columns and new values
  // {columnName: value, column2Name: value, ...}
   postToTable: function(req, res) {
-    var table = req.params.username + '_' + req.params.tablename;
+    var tablename = req.params.username + '_' + req.params.tablename;
 
-    var newRowColumnsArray = Object.keys(req.body);
-    var newRowValuesArray = _.map(newRowColumnsArray, function(key) {
-      return req.body[key];
+    r.table(tablename).insert(req.body).run(connection, function(err, response) {
+      if (err) { throw err; }
+      res.sendStatus(200);
     });
-    newRowColumnsString = newRowColumnsArray.join(',');
 
-    // stringify to put in query string.
-    var valueStr = utils.generateValueString(newRowColumnsArray.length);
+    // var newRowColumnsArray = Object.keys(req.body);
+    // var newRowValuesArray = _.map(newRowColumnsArray, function(key) {
+    //   return req.body[key];
+    // });
+    // newRowColumnsString = newRowColumnsArray.join(',');
 
-    var queryString = "INSERT INTO " + table + "(" + newRowColumnsString + ") VALUES (" + valueStr + ")"
-    client.query(queryString, newRowValuesArray, function(err, rows) {
-      if (!err) {
-        res.sendStatus(200);
-      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-        res.sendStatus(400);
-      } else {
-        throw new Error(err);
-      }
-    });
+    // // stringify to put in query string.
+    // var valueStr = utils.generateValueString(newRowColumnsArray.length);
+
+    // var queryString = "INSERT INTO " + table + "(" + newRowColumnsString + ") VALUES (" + valueStr + ")"
+    // client.query(queryString, newRowValuesArray, function(err, rows) {
+    //   if (!err) {
+    //     res.sendStatus(200);
+    //   } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+    //     res.sendStatus(400);
+    //   } else {
+    //     throw new Error(err);
+    //   }
+    // });
 
   },
 
