@@ -67,6 +67,7 @@ var index = _.map(second, function (sub) {
       disabled: false
   }
 })
+
 // for (key in faker) {
 //   if (first.indexOf(key) > -1) {
 //     index[key] = [];

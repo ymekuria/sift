@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import all from '../data/subSelections.js'
 import _ from 'lodash';
 /*
   == Material UI componenets ==
@@ -15,76 +14,53 @@ import { Menu, MenuItem} from 'material-ui';
 require('../css/select.css')
 
 
-class Dropdown extends Component {
-  constructor(props) {
-    super(props);
+const Dropdown = ({ menuOptions }, { store }) => {
 
-  let subSelections = this.props.categories.reduce(function (prev, category) {
-    prev[category.value] = category.children;
-    return prev;
-  }, {})
+  const { all } = menuOptions;                
+  const { byItem } = menuOptions;
+  const { currentCategory } = menuOptions;
+  const { byCategory } = menuOptions;
+  const subSelection = all[currentCategory]
 
-    this.state = {
-      selectValue: '',
-      subSelections: subSelections
-    }
-  }
-
-  updateValue (newValue, single) {
-    let subSelections = this.state.subSelections[newValue];
-    this.setState({
-      selectValue: newValue
-    });
-  }
-
-
-  render () {
-    //make it so that options searches for all values
-    let options = this.props.categories;
-    let categories = this.state.subSelections;
-    let subSelections = this.state.subSelections[this.state.selectValue];
-    let currentCategory = this.state.selectValue;
-    let addToList = this.props.addToList;
-    let updateValue = this.updateValue.bind(this);
-    return (
-      <div className="section dropdown">
-        <div className='libHeader'>
-          <h3>Library</h3>
-        </div>
-        <div className='selectField'>
-          <Select className='search' ref="categorySelect" options={all.subSelections} simpleValue clearable={true} name="category" value={this.state.selectValue} onChange={this.updateValue.bind(this)} searchable={true} />
-            {_.map(subSelections, function (subSelection) {
-              return (
-                <div className='add'>
-                  <IconButton onClick={() =>{addToList(subSelection, currentCategory)}}>
-                    <ContentAdd/>
-                  </IconButton>
-                  <div className='addLabel'>{subSelection}</div>
-                </div>
-              )
-            })}
-        </div>
-          <Menu style={{width: '200px'}}>
-            {Object.keys(categories).map(function (category) {
-              console.log(categories)
-              return (
-                <MenuItem
-                  onClick={() => { updateValue(category) }}
-                  primaryText={category}/>
-              )
-            })}
-          </Menu>
+  return (
+    <div className="section dropdown">
+      <div className='libHeader'>
+        <h3>Library</h3>
       </div>
-    );
-  }
+      <div className='selectField'>
+        <Select className='search'  simpleValue clearable={true} options={byItem}  name="category" searchable={true} />
+          {_.map(subSelection, function (subSelection, c) {
+            return (
+              <div className='add'>
+                <IconButton onClick={() => store.dispatch({
+                  type: 'add_to_build',
+                  category: currentCategory,
+                  addition: c
+                })}>
+                  <ContentAdd/>
+                </IconButton>
+                <div className='addLabel'>{c}</div>
+              </div>
+            )
+          })}
+      </div>
+        <Menu style={{width: '200px'}}>
+          {Object.keys(all).map(function (category) {
+            return (
+              <MenuItem
+                onClick={() => {store.dispatch({
+                  type: 'update_category',
+                  newCategory: category
+                })}}
+                primaryText={category}/>
+            )
+          })}
+        </Menu>
+    </div>
+  );
 };
-Dropdown.propTypes = {
-  label: React.PropTypes.string,
-  searchable: React.PropTypes.bool,
-}
-Dropdown.defaultProps = {
-  label: 'Options:',
-  searchable: true,
+Dropdown.contextTypes = {
+  store: React.PropTypes.object
 }
 
 

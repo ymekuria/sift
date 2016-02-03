@@ -24,6 +24,7 @@
   "homepage": "https://github.com/verdantveranda/2015-11-thesis",
   "dependencies": {
     "autobind-decorator": "^1.3.3",
+    "babel-preset-stage-2": "^6.3.13",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
     "chai": "^3.4.1",
@@ -32,6 +33,7 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "faker": "^3.0.1",
+    "immutable": "^3.7.6",
     "jwt-simple": "^0.4.1",
     "lodash": "^4.1.0",
     "material-ui": "^0.14.3",

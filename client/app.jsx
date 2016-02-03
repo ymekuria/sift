@@ -1,16 +1,22 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
+/*Routing*/
 import routes from './config/routes.js'
 import { Router, browserHistory} from 'react-router'
 
-/*Redux Dependencies*/
+/*Redux*/
 import { Provider } from 'react-redux'
-import { createStore, combineReducers } from 'redux'
-
+import store from './store.jsx'
 require('./css/style.css')
 
+//this is for use with the redux dev tools
+// reduxRouterMiddleware.listenForReplays(store)
 
-ReactDOM.render(<Router history={browserHistory}>{routes}</Router>,
+ReactDOM.render(
+  <Provider store={store}>
+    <Router history={browserHistory}>{routes}</Router>
+  </Provider>,
 	document.getElementById('root')
 );
+
