@@ -1,8 +1,9 @@
 // add links to controllers here
 var dbController = require('../controllers/dbcontrollers.js');
-var userController = require('../controllers/userController.js')
+var userController = require('../controllers/userController.js');
+var socketController = require('../controllers/socketController.js');
 var passport = require('passport');
-var utils = require('./utils')
+var utils = require('./utils');
 
 module.exports = function(app, express, ensureAuth) {
 

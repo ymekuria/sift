@@ -53,6 +53,7 @@
     "redux": "^3.2.1",
     "request": "^2.69.0",
     "sinon": "^1.17.2",
+    "socket.io": "^1.4.5",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

@@ -12,10 +12,8 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var utils = require('./utils/utils')
 var pg = require('pg');
-var app = express();
 var cors = require('cors');
-
-// Databse connectionn
+var app = express();
 
 // Middleware. Add below as needed
 app.use(cors());
@@ -27,6 +25,22 @@ app.use(passport.session());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true }));
 require('./utils/routes.js')(app, express, utils.isAuth);
+
+var port = process.env.PORT || 5001;
+
+var server = app.listen(port, function() {
+	console.log('Sifting on port= ', port)
+});
+
+var io = require('socket.io')(server);
+
+io.on('connection', function (socket) {
+	console.log('user connected')
+  socket.emit('server event', { foo: 'bar' });
+  socket.on('client event', function (data) {
+    console.log(data);
+  });
+});
 
 passport.serializeUser(function(user, done) {
 	console.log('serializeUser: ', user)
@@ -76,11 +90,5 @@ passport.use(new LocalStrategy(
 			}
 		})
 }))
-
-var port = process.env.PORT || 5001;
-
-app.listen(port, function() {
-	console.log('Sifting on port= ', port)
-});
 
 module.exports = app;
