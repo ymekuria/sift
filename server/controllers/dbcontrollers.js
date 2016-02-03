@@ -97,6 +97,7 @@ module.exports = {
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { throw err; }
       cursor.toArray(function(err, results) {
+        cursor.close();
         res.status(200).send(results);
       });
     });
@@ -148,21 +149,30 @@ module.exports = {
 
   ///////////PUT/////////// updates a row in a column 
   updateValue: function(req, res) {
-    var table = req.params.username + '_' + req.params.tablename;
+    var tablename = req.params.username + '_' + req.params.tablename;
     var rowId = req.params.rowId;
 
     var columnName = req.body.columnName;
-    var newValue = req.body.newValue;
+    var newValue = req.body.newValue
+    var update = {};
+    update[columnName] = newValue;
+
+    r.table(tablename).get(rowId).update(update).run(connection, function(err, results) {
+      if (err) { throw err; }
+      res.sendStatus(200);
+    })
+
+
   // console.log("tableName", usernameTable, "newValue",newValue,"oldValue", oldValue);
-    client.query("UPDATE " + table + " SET " + columnName + " = '" + newValue + "' WHERE id = " + rowId, function(err, data) { 
-     if (!err) {
-        res.sendStatus(200);
-      } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
-        res.sendStatus(400);
-      } else {
-        throw new Error(err);
-      }
-    });
+    // client.query("UPDATE " + table + " SET " + columnName + " = '" + newValue + "' WHERE id = " + rowId, function(err, data) { 
+    //  if (!err) {
+    //     res.sendStatus(200);
+    //   } else if (err.code === '42P01') { // sends an error if there is a problem with the parameters (i.e., incorrect username or tablename path)
+    //     res.sendStatus(400);
+    //   } else {
+    //     throw new Error(err);
+    //   }
+    // });
   },
 
   ///////////DELETE//////////
