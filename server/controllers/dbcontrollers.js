@@ -12,9 +12,10 @@ client.connect();
 
 // setting up RethinkDB connection
 var connection = null;
-r.connect( { host: 'localhost' }, function(err, conn) {
+r.connect( { host: 'localhost', db: 'apiTables' }, function(err, conn) {
   if (err) throw err;
   connection = conn;
+  console.log('Connected to RethinkDB')
   r.dbCreate('apiTables').run(conn, function(err, conn) {
     console.log('Tables DB created in RethinkDB')
   });
@@ -141,29 +142,27 @@ module.exports = {
   // returns the table that was deleted.
   deleteTable: function(req, res) {
     var username = 'erikdbrowngmailcom'; // req.user.username;
-    var userID = 23; // req.user.id;
+    var userId = 23; // req.user.id;
     
-    var tablename = username + '_' + req.body.tableName;
+    var tableId = req.params.id
 
-    // stores the table to be deleted 
-    client.query('DELETE FROM Tables WHERE userID = ' + userID + ' AND tableName = ' + tablename, function(err, entireTable) {
-      if (err) { throw new Error(err); }
-      console.log('entireTable', entireTable)
-      var deletedTable = entireTable.rows;
+    client.query('SELECT tablename FROM Tables WHERE id = ' + tableId, function(err, results) {
+      if (err) { throw err; }
+      if (results.rows.length === 0) {
+        res.sendStatus(404);
+      }
+      tablename = results.rows[0].tablename;
+      client.query('DELETE FROM Tables WHERE userID = ' + userId + ' AND id = ' + tableId, function(err, entireTable) {
+        if (err) { throw new Error(err); }
+        console.log('entireTable', entireTable)
+        var deletedTable = entireTable.rows;
 
-      r.db('apiTables').dropTable(tablename).run(connection, function(err, results) {
-        if (err) { throw err; }
-        res.sendStatus(200);
+        r.db('apiTables').tableDrop(tablename).run(connection, function(err, results) {
+          if (err) { throw err; }
+          res.sendStatus(200);
+        });
       });
-
-      // this query deletes the table
-      // client.query('DROP TABLE IF EXISTS ' + usernameTable, function(err, result) {
-      //   if (err) { throw new Error(err); }
-      //   console.log('succesfuly deleted '+usernameTable+ '  table');
-      //   res.status(200).json('succesfuly deleted '+usernameTable+ '  table', deletedTable);
-      // });
     });
- 
   }
 
 };

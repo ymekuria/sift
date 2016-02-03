@@ -6,7 +6,7 @@ client.connect();
 
 client.query('CREATE TABLE IF NOT EXISTS Tables (' +
 	'id SERIAL PRIMARY KEY, ' +
-  'userID VARCHAR(120), ' +
+  'userID INTEGER, ' +
   'columns VARCHAR(200), ' +
   'tablename VARCHAR(120) )', function(err, result) {
     if (err) { throw new Error(err); }
