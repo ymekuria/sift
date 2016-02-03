@@ -97,20 +97,14 @@ h3 {
 }
 
 /*======Other========*/
-.homepage {
-  width: 90vw;
-  height: 100vh;
-}
+
 .banner {
   height: 200px;
   text-align: center;
   margin-right: 55px;
   padding-top: 120px;
 }
-.homeTableDisplay {
-  height: 350px;
-  background-color: blue;
-}
+
 .dataVis {
   width: 500px;
   height: 300px;
@@ -127,4 +121,58 @@ h3 {
   background-color: lightgray;
   margin: 20px 0 0 20px;
 }
+
+
+/*======HomePage View========*/
+
+.dashBanner {
+  height: 350px;
+  background-color: #4bb1fa;
+  color: #FFF;
+  font-family: "Gotham SSm A","Gotham SSm B",proxima-nova,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+}
+.dashOneliner {
+  font-size: 120%;
+}
+
+.homepage {
+  width: 90vw;
+  height: 100vh;
+}
+
+.dashButton {
+  background-color: #4bb1fa; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
