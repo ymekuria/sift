@@ -19,8 +19,7 @@ var dataIndex = require('./dataIndex/write.js');
 
 module.exports = { 
 
-  parseColumnNames: function (obj) {
-    console.log('parseObj: ', obj);
+  parseColumnNames: function(obj) {
     var results = [];
     for (key in obj) {
       if (key !== 'tableName') {
@@ -34,8 +33,8 @@ module.exports = {
   //use req.body as a reference to the index file to 
   //pull out the relevant faker queries ---> insert into 
   //the generate data algorithm below. 
-	generateData: function(fields, numberOfRows) {
-    var columns = module.exports.parseColumnNames(fields);
+	generateData: function(fields, columns, numberOfRows) {
+    // var columns = module.exports.parseColumnNames(fields);
 		var data = [];  	
 
     for (var i = 0; i < numberOfRows; i++) { 
