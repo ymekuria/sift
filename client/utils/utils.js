@@ -25,7 +25,7 @@ export const createTable = (tableName, selections) => {
   .catch((err) => console.log(err));
 }
 
-const getTable = (username, tableName) => {
+export const getTable = (username, tableName) => {
   //api/getOneTable:?usrTable=<username_table>
   //api/getOneTable
   //gets a single table
@@ -37,17 +37,18 @@ const getTable = (username, tableName) => {
   })
   .then((response) => response.text())
   .then((text) => {
-    console.log(text);
+    console.log('response',text);
   })
 }
 
-const getTables = (username) => {
+export const getTables = (username) => {
   //api/getTables:?usr=<username>
   //retrieve all table names for a specific user
-  let url = 'api/getTables:?usr=' + username;
+  console.log('username', username);
+  let url = 'http://localhost:5001/api/users/tables:?username=' + username
   return fetch(url, {
     method: 'GET',
-    headers: {},
+    headers: {}, 
     body: {}
   })
   .then((response) => response.text())

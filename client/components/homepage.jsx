@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash';
+import {getTables} from '../utils/utils.js'
+
 
 // Material UI components
 import Paper from 'material-ui/lib/paper';
@@ -21,7 +23,8 @@ class Homepage extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    getTables('yoni');
     //sync state with dataBase
       // context: this,
       //state: 'userTables'
@@ -42,8 +45,9 @@ class Homepage extends Component {
 
         <div className='row'> 
           <div className='col-md-12'>
-           {_.map(['yoni','jon'],this.renderDashTable)}
-            <DashTable/>       
+           {/*pass in an object as props that has the table name and other relevant infor for the display*/}
+           {_.map(['SiftUsers','HR','TripAdo', 'OneforOne', 'MusicTonight'],this.renderDashTable)}     
+           
            
           </div>    
         </div>
@@ -64,13 +68,13 @@ class DashTable extends Component {
     display: 'inline-block',
   };
     return (
-      <div>
+   
         <Paper style={style}  zDepth={5} rounded={false}>
-            <h4>this.props.index</h4>
+            <h4>{this.props.index}</h4>
             <RaisedButton label="Manage App" style={{margin: 5}} />
 
        </Paper>
-     </div> 
+    
     ) 
   }
 }
