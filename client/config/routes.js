@@ -9,17 +9,17 @@ import dataVis from '../components/dataVis.jsx'
 import Signin from '../components/Signin'
 import Signup from '../components/Signup'
 import routes from '../config/routes.js'
-
+import test from '../components/test.jsx'
 import { Route, IndexRoute } from 'react-router'
 import { requireAuth } from '../auth/auth'
 
 
 //authenticate all routes other than signin signup
 
-//there is a require authentication function that takes 
+//there is a require authentication function that takes
 //a componenet and renders it conditionally
 
-//we need to add that function and get the token 
+//we need to add that function and get the token
 //registered in local storage on sign in
 
 export default (
@@ -44,6 +44,7 @@ export default (
     <Route path='signin' component={Signin}/>
     <Route path='signup' component={Signup}/>
     <Route path='home' component={homepage}/>
+<<<<<<< b40782af99be5f95cab3a2dfdb43b0db7fd7980f
 
     <Route path='home' component={requireAuth(homepage)}/>
     <Route path='build' component={requireAuth(dataEntry)}/>
