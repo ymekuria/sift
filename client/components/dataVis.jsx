@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 
-const socket = io();
+// const socket = io();
 
 class DataVis extends Component {
   constructor() {

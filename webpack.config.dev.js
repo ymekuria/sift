@@ -20,13 +20,20 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.jsx?/,
-      loaders: ['babel'],
-      include: path.join(__dirname, 'client')
+      exclude: /(node_modules)/,
+      loader: 'babel',
+      include: path.join(__dirname, 'client'),
+      query: {
+        presets: ['react', 'es2015', 'stage-2']
+      }
     },
     {
      test: /\.css$/,
      exclude: /node_modules/,
      loader: 'style!css'
    }]
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx']
   }
 };

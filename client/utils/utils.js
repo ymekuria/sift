@@ -3,10 +3,12 @@ import React from 'react'
 
 //db call helpers
 //zen - 'https://api.github.com/zen'
-export const createTable = (username, selections) => {
+export const createTable = (tableName, selections) => {
   //api/generateTable:?usr=<username>'
   //post data to db
-  let url = 'http://localhost:5001/api/generateTable:?usr=' + username
+  selections['tableName'] = tableName;
+
+  let url = 'http://localhost:5001/api/users/tables'
    console.log('URL', url)
   return fetch(url, {
     method: 'POST',

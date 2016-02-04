@@ -47,11 +47,12 @@ module.exports = {
 
   // this method creates a new table with generated data 
   createUserTable: function(req, res) {
-    var username = req.user.username
+    //retrieve user from session store
     var userID = req.user.id;
-
+    console.log(req.user);
+    
     var columns = utils.parseColumnNames(req.body)
-    var tablename = username + '_' + req.body.tableName;
+    var tablename = 'zack' + '_' + req.body.tableName;
     var fakeData = utils.generateData(req.body, columns, 20); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
     
     // creating a new table
