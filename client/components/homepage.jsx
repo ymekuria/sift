@@ -23,7 +23,7 @@ class Homepage extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     getTables('yoni');
     //sync state with dataBase
       // context: this,
