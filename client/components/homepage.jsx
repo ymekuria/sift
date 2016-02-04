@@ -22,18 +22,20 @@ class Homepage extends Component {
       userTables: {}
     }
   }
-
+  
   componentDidMount() {
-    getTables('yoni');
-    //sync state with dataBase
-      // context: this,
-      //state: 'userTables'
+   // find a better way to bind this
+    var that = this;
+    getTables(function(res){
+      that.setState({userTables: res})
+      console.log('this.state', that.state)
+    });
   
   }
 
-  renderDashTable(key) {
+  renderDashTable(table) {
     return(
-      <DashTable key={key} index={key} names={['yoni','jon']}/>
+      <DashTable tableName={table.tablename} index={table}/>
       )
   }
 
@@ -46,7 +48,7 @@ class Homepage extends Component {
         <div className='row'> 
           <div className='col-md-12'>
            {/*pass in an object as props that has the table name and other relevant infor for the display*/}
-           {_.map(['SiftUsers','HR','TripAdo', 'OneforOne', 'MusicTonight'],this.renderDashTable)}     
+           {_.map(this.state.userTables,this.renderDashTable)}     
            
            
           </div>    
@@ -70,7 +72,7 @@ class DashTable extends Component {
     return (
    
         <Paper style={style}  zDepth={5} rounded={false}>
-            <h4>{this.props.index}</h4>
+            <h4>{this.props.tableName}</h4>
             <RaisedButton label="Manage App" style={{margin: 5}} />
 
        </Paper>

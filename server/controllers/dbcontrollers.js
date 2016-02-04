@@ -48,7 +48,7 @@ module.exports = {
   // this method creates a new table with generated data 
   createUserTable: function(req, res) {
     //retrieve user from session store
-    var userID = req.user.id;
+    var userID = 1;
     console.log(req.user);
     
     var columns = utils.parseColumnNames(req.body)
@@ -66,7 +66,7 @@ module.exports = {
         columns = columns.join(',');
         client.query('INSERT INTO Tables (userID, tablename, columns) VALUES ($1, $2, $3)', [userID, tablename, columns], function(err, response){
           if (err) { throw err; }
-          res.sendStatus(200);
+          res.sendStatus(200)
         })
       });
     });
@@ -75,10 +75,9 @@ module.exports = {
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
 
-    var userID = req.user.id;
+    var userID = 1;
     var queryString = "SELECT id, tablename, columns FROM tables WHERE userID = '" + userID + "';";
     client.query(queryString, function(err, tableNames){
-
         if (err) { throw new Error(err); }
         _.each(tableNames.rows, function(row) {
           row.columns = row.columns.split(',')

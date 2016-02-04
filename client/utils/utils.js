@@ -41,11 +41,11 @@ export const getTable = (username, tableName) => {
   })
 }
 
-export const getTables = (username) => {
+export const getTables = (cb) => {
   //api/getTables:?usr=<username>
   //retrieve all table names for a specific user
-  console.log('username', username);
-  let url = 'http://localhost:5001/api/users/tables:?username=' + username
+  // console.log('username', username);
+  let url = 'http://localhost:5001/api/users/tables' 
   return fetch(url, {
     method: 'GET',
     headers: {}, 
@@ -54,6 +54,7 @@ export const getTables = (username) => {
   .then((response) => response.text())
   .then((text) => {
     console.log(text);
+    cb(JSON.parse(text));
   })
 }
 
