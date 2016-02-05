@@ -122,13 +122,3 @@ const deleteRow = (username, tableName, row) => {
     console.log(text);
   })
 }
-
-
-
-
-
-
-
-
-
-
