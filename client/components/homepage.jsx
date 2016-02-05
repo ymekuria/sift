@@ -6,12 +6,33 @@ import {getTables} from '../utils/utils.js'
 // Material UI components
 import Paper from 'material-ui/lib/paper';
 import RaisedButton from 'material-ui/lib/raised-button';
-import FontIcon from 'material-ui/lib/font-icon';
+
+
+
+
+import {router} from 'react-router'
+import { routeActions } from 'react-router-redux'
+//import { FontIcon, IconButton, LeftNav} from 'material-ui'
+import store from '../store.jsx'
+
+import Build from 'material-ui/lib/svg-icons/action/build'
+import Stats from 'material-ui/lib/svg-icons/action/assessment'
+import Info from 'material-ui/lib/svg-icons/action/info'
+import Home from 'material-ui/lib/svg-icons/action/home'
+import Settings from 'material-ui/lib/svg-icons/action/settings'
+
+import IconMenu from 'material-ui/lib/menus/icon-menu';
+import IconButton from 'material-ui/lib/icon-button';
+import MenuItem from 'material-ui/lib/menus/menu-item';
+
+
 
 
 class Homepage extends Component {
   constructor() {
     super();
+
+
 
     //initialize userTables request to
     //user table
@@ -21,11 +42,14 @@ class Homepage extends Component {
       info: {},
       userTables: {}
     }
+    this.navigation = this.navigation.bind(this);
+    this.renderDashTable =this.renderDashTable.bind(this);
   }
   
   componentDidMount() {
    // find a better way to bind this
     var that = this;
+    console.log('that', that);
     getTables(function(res){
       that.setState({userTables: res})
       console.log('this.state', that.state)
@@ -33,17 +57,35 @@ class Homepage extends Component {
   
   }
 
+  navigation(path) {
+    
+    console.log('path', path);
+    store.dispatch(routeActions.push(path));
+    console.log('this is the thing', this.context.store.getState())
+  }
+
+
   renderDashTable(table) {
+   
     return(
-      <DashTable tableName={table.tablename} index={table}/>
+      <DashTable nav={this.navigation} tableName={table.tablename} index={table} />
       )
   }
 
+
   render() {
-    var testArr=['yoni', 'jon'];
+    
     return(
-      <div className='container-fluid'>
-        <DashBanner/>
+ 
+      <div className='container'>
+
+
+                  <h2 className="col-md-5 col-md-offset-3 " >
+            WELCOME BACK TO SIFT {this.state.userTables[0].tablename.split("_")[0].toUpperCase()}
+          </h2>
+          <h4 className="col-md-4 col-md-offset-3 text-center ">
+            Here are your tables
+          </h4> 
 
         <div className='row'> 
           <div className='col-md-12'>
@@ -68,15 +110,30 @@ class DashTable extends Component {
     margin: 20,
     textAlign: 'center',
     display: 'inline-block',
+
+
   };
+    const iconStyle = {
+    marginLeft: 160,
+
+
+    
+
+    
+  };  
+    const svgStyle = {
+      fontSize: '10px'
+    }
     return (
-   
         <Paper style={style}  zDepth={5} rounded={false}>
-            <h4>{this.props.tableName}</h4>
-            <RaisedButton label="Manage App" style={{margin: 5}} />
+          <IconButton onClick={() => console.log('click')} style={iconStyle}>
+            <Settings style={svgStyle}/>
+          </IconButton>
+          <h4>{this.props.tableName.split("_")[1]}</h4>
+          <RaisedButton label="Manage Table" onClick={() => this.props.nav('/vis')} style={{margin: 5}} />
 
        </Paper>
-    
+
     ) 
   }
 }

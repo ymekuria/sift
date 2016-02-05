@@ -12,7 +12,7 @@ import Home from 'material-ui/lib/svg-icons/action/home'
 
 //todo for 
 let styles = {
-  marginTop: '55px',
+  marginTop: '48px',
   backgroundColor: '#293535',
   paddingTop: '15px',
   textAlign: 'center',
