@@ -1,35 +1,43 @@
 // add links to controllers here
 var dbController = require('../controllers/dbcontrollers.js');
 var userController = require('../controllers/userController.js');
-var socketController = require('../controllers/socketController.js');
+// var socketController = require('../controllers/socketController.js');
 var passport = require('passport');
-var utils = require('./utils');
 
 module.exports = function(app, express, ensureAuth) {
 
   // local authentication
   app.post('/api/users', userController.createLocalUser, function(req, res) {
-    res.redirect('/build');
-  });
-  app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/#/signin' }), function(req, res) {
-    res.redirect('/build');
+    res.redirect('/signin');
   });
 
-  // GitHub authentication
-  app.get('/auth/github', passport.authenticate('github'));
-  app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/#/signin' }), function(req, res) {
-    res.redirect('/build');
+  app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/signin' }), function(req, res) {
+    var user = {
+      id: req.user.id,
+      username: req.user.username,
+      displayname: req.user.displayname
+    }
+    res.json(user);
   });
 
   // user objet pass-through
-  app.get('/user', function(req, res) {
-    console.log('/user was called.')
-    console.log('req.user: ', req.user)
-    res.json(req.user)
+  app.get('/user', ensureAuth, function(req, res) {
+    var user = {
+      id: req.user.id,
+      username: req.user.username,
+      displayname: req.user.displayname
+    }
+    res.json(user);
   })
 
+  // GitHub authentication
+  app.get('/auth/github', passport.authenticate('github'));
+  app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/signin' }), function(req, res) {
+    res.redirect('/build');
+  });
+
   //logout
-  app.get('/logout', function(req, res) {
+  app.get('/signout', function(req, res) {
     req.logout();
     res.redirect('/signin')
   });
