@@ -42,15 +42,6 @@ class DataEntry extends Component {
     }
   }
 
-    var user = localStorage.getItem('sift-user');
-    if (!user) {
-      h.setUser(function(dbUser) {
-        var token = JSON.stringify(dbUser)
-        localStorage.setItem('sift-user', token);
-      })
-    }
-  }
-
   componentWillUnmount() {
     this.unsubscribe();
   }

@@ -22,9 +22,6 @@ let helpers = {
 		.then((responseText) => {
 			callback(responseText);
 		})
-		// .then((responseText) => {
-		// 	callback(responseText);
-		// })
 		.catch((err) => {
 			console.log(err)
 		})
