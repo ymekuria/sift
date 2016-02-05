@@ -7,68 +7,56 @@ import Immutable from 'immutable'
 import { createTable } from '../utils/utils.js'
 
 const initialState = {
-  MenuOptions: {
-    currentCategory: 'names',
-    all: all.all,
-    byItem: by_item.items,
-    byCategory: by_category.categories
-  },
-  CurrentSelections: [],
-  BuildOrder: {}
+  country: 'dataTypes',
+  dataValue: '',
+  tableValue: '',
+  columnValue: '',
+  completeTable: '',
+  allColumns: {},
 }
 
-const buildTable = (state = initialState, action) => {
+const customTable = (state = initialState, action) => {
   switch(action.type) {
 
-    //======updating category to (re-renders option option list)======//
-    case 'update_category':
+  case 'updateValue':
       let stateRef = Immutable.fromJS(state);
-      let newState = stateRef.updateIn(['MenuOptions', 'currentCategory'], c => {
-        return action.newCategory;
+      let newState = stateRef.updateIn(['dataValue'], c => {
+        return action.newValue;
       })
       return newState.toJS();
-
-    //======adding to build order (and to current selections)======//
-    case 'add_to_build':
-     return (Immutable.fromJS(state)
-      .updateIn(['BuildOrder'], sel => {
-
-        sel = sel.toJS();
-
-        if (!sel[action.category]) {
-          sel[action.category] = {};
-          sel[action.category][action.addition] = true;
-        } else {
-          sel[action.category][action.addition] = true;
-        }
-        return sel;
-      })
-      .updateIn(['CurrentSelections'], list => {
-        return list.push(action.addition)
-      }).toJS()
-    );
-
-    //======removing from currently selected======//
-    case 'remove_from_list':
-      return (
-        Immutable.fromJS(state)
-        .updateIn(['CurrentSelections'], list => {
-          return list.splice(action.id, 1)
-        }).toJS()
-      )
-
-    //======submitting table======//
-    case 'submit_table':
-      console.log('submitting table..?', state.BuildOrder)
-      createTable(action.tableName, state.BuildOrder);
-      //hook into backend!
-      //here we handle the post to our database
-      return state;
-
-    //=======default return state======//
-    default:
-      return state;
   }
 
+  case 'updateTable':
+      let stateRef = Immutable.fromJS(state);
+      let newState = stateRef.updateIn(['tableValue'], c => {
+        return action.newValue;
+      })
+      return newState.toJS();
+  }
+  case 'updateColumn':
+    let stateRef = Immutable.fromJS(state);
+    let newState = stateRef.updateIn(['columnValue'], c => {
+      return action.newValue;
+    })
+    return newState.toJS();
+  }
+  case 'addColumn':
+    var columns = this.state.allColumns;
+    columns[this.state.columnValue] = this.state.dataValue;
+    let stateRef = Immutable.fromJS(state);
+    let columns = stateRef.updateIn(['allColumns'], c => {
+      return action.newValue;
+    })
+    return newState.toJS();
+  }
+  case 'addTable':
+    let stateRef = Immutable.fromJS(state);
+    let newState = stateRef.updateIn(['completeTable'], c => {
+      return action.newValue;
+    })
+    return newState.toJS();
+  }
+
+
 }
-export default buildTable;
+export default customTable;

@@ -3,12 +3,13 @@ import React from 'react'
 
 //db call helpers
 //zen - 'https://api.github.com/zen'
-export const createTable = (tableName, selections) => {
+export const createTable = (username, selections) => {
   //api/generateTable:?usr=<username>'
   //post data to db
   selections['tableName'] = tableName;
 
   let url = '/api/users/tables'
+
   return fetch(url, {
     method: 'POST',
     headers: {
@@ -16,6 +17,25 @@ export const createTable = (tableName, selections) => {
       'Content-Type': 'application/json'
     },
     credentials: 'include',
+    body: JSON.stringify(selections)
+  })
+  .then((response) => response.text())
+  .then((text) => {
+    console.log(text);
+  })
+  .catch((err) => console.log(err));
+}
+
+const createCustomTable = (username, selections) => {
+  //api/generateTable:?usr=<username>'
+  //post data to db
+  let url = 'http://localhost:5001/api/makeCustomTable:?usr=' + username
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(selections)
   })
   .then((response) => response.text())
@@ -45,10 +65,10 @@ export const getTables = (cb) => {
   //api/getTables:?usr=<username>
   //retrieve all table names for a specific user
   // console.log('username', username);
-  let url = 'http://localhost:5001/api/users/tables' 
+  let url = 'http://localhost:5001/api/users/tables'
   return fetch(url, {
     method: 'GET',
-    headers: {}, 
+    headers: {},
     body: {}
   })
   .then((response) => response.text())
