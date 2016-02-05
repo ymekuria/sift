@@ -5,7 +5,7 @@ var session = require('express-session');
 var GitHubStrategy = require('passport-github').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var userController = require('./controllers/userController.js');
-// var socketController = require('./controllers/socketController.js');
+var socketController = require('./controllers/socketController.js');
 var token = require('./auth/authTokens.js');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -26,43 +26,37 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./utils/routes.js')(app, express, utils.isAuth);
 
+var port = process.env.PORT || 5001;
 
-// var io = require('socket.io')(server);
+var server = app.listen(port, function() {
+	console.log('Sifting on port= ', port)
+});
 
-// io.sockets.on('connection', function (socket) {
-// 	socket.on('show table', function(table) {
-// 		// send DB table info back to client
-// 	})
+var io = require('socket.io')(server);
 
-// 	socket.on('edit', function(node) {
-// 		// edit node and send data back to client
-// 		socketController.editNode(node, function(data) {
-// 			socket.emit('data change', data);
-// 		})
-// 	});
+io.sockets.on('connection', function (socket) {
+		
+	socket.on('edit', function(node) {
+		// edit node and send data back to client
+		socketController.editNode(node);
+	});
 
-// 	socket.on('add', function(node) {
-// 		// add node to database and send data back to client
-// 		socketController.addNode(node, function(data) {
-// 			socket.emit('data change', data);
-// 		})
-// 	});
+	socket.on('add', function(node) {
+		// add node to database and send data back to client
+		socketController.addNode(node);
+	});
 
-// 	socket.on('delete', function(node) {
-// 		// delete node from database and send data back to client
-// 		socketController.removeNode(node, function(data) {
-// 			socket.emit('data change', data);
-// 		})
-// 	})
-// });
+	socket.on('remove', function(node) {
+		// delete node from database and send data back to client
+		socketController.removeNode(node);
+	})
+});
 
 passport.serializeUser(function(user, done) {
-	console.log('serializeUser: ', user)
   done(null, user.email);
 });
 
 passport.deserializeUser(function(email, done) {
-	console.log('deserializeUser: ', email)
 	userController.findUser(email, function(err, user) {
 		done(err, user);
 	});
@@ -75,7 +69,6 @@ passport.use(new GitHubStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
   	userController.findOrCreateGitHubUser(profile, accessToken, refreshToken, function(err, user) {
-  		console.log('gitbub user: ', user)
   		done(err, user);
   	})
   }
@@ -103,10 +96,5 @@ passport.use(new LocalStrategy(
 		})
 }))
 
-var port = process.env.PORT || 5001;
 
-module.exports.server = app.listen(port, function() {
-	console.log('Sifting on port= ', port)
-});
-
-module.exports.app = app;
+module.exports = app;

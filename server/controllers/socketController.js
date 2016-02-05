@@ -1,29 +1,45 @@
-var pg = require('pg');
-var app = require('../server.js')
-var db = require('../utils/dbconnect.js');
+var r = require('rethinkdb');
 
-var client = new pg.Client(db.connectionString);
-client.connect();
+var connection = null;
+r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
+  if (err) throw err;
+  connection = conn;
+});
 
-module.exports = {
+var socketMethods = {
 
-	addNode: function(node, callback) {
+	startIOConnection: function(tablename) {
+		// opens up a stream connection to rethinkDB
+		r.table(tablename).changes().run(conn, function(err, cursor) {
+			if (err) { throw new Error(err) }
+			cursor.each(function(item) {
+				// socket io needs to emit an 'update' + table message with the item
+				io.sockets.emit("update " + tablename, item);
+			})
+		});
+
+		// opens up a custom listener for a table
+			// listens to 'edit ' + tablename
+			  // calls editNode (below)
+			// listens to 'add ' + tablename
+			  // calls addNode (below)
+			// listens to 'remove ' + tablename
+			  // calls removeNode(below)
+	},
+
+	addNode: function(node) {
 		// node = {
 		// 	tablename: String,
 		// 	username: String,
 		// 	values: Array
 		// }
-		var table = node.username + '_' + node.tablename;
-		var values = node.values.join(', ');
-		var queryString = 'INSERT INTO ' + table + 'VALUES (' + values + ');'; 
-		db.query(queryString, function(err, res) {
-			callback(res);
-		})
 
+		
+		// adds node to database using same external API endpoint
 	},
 
 
-	editNode: function(node, callback) {
+	editNode: function(node) {
 		// node = {
 		// 	tablename: String,
 		// 	username: String,
@@ -31,25 +47,20 @@ module.exports = {
 		// 	updatedColumns: Array,
 		// 	updatedValues: Array
 		// }
-		var table = node.username + '_' + node.tablename;
-		var columns = node.updatedColumns.join(',');
-		var values = node.updatedValues.join(',');
-		var queryString = 'UPDATE ' + table + ' SET (' + columns + ') = (' + values + ') WHERE id = ' + node.rowId;
-		db.query(queryString, function(err, data) {
-			console.log(data);
-		});
+
+		// edits node in database using same external API endpoint
 	},
 
-	removeNode: function(node, callback) {
+	removeNode: function(node) {
 		// node = {
 		// 	tablename: String,
 		// 	username: String,
 		// 	rowId: Number
 		// }
-		var queryString = 'DELETE FROM ' + node.username + '_' + node.tablename + ' WHERE id = ' + node.rowId;
-		db.query(queryString, function(err, data) {
-			console.log(data);
-		})
+
+		// removes node from database using same external API endpoint
 	}
 
 };
+
+module.exports = socketMethods;

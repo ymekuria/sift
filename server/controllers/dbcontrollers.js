@@ -1,5 +1,6 @@
 var client = require('../utils/dbconnect').client;
 var r = require('rethinkdb');
+var socketController = require('./socketController')
 // var connection = require('../utils/dbconnect').connection;
 var faker = require('faker');
 var _ = require('lodash');
@@ -100,7 +101,7 @@ module.exports = {
         // res.status(200).send(results);
       });
     });
-  
+
   },
 
  // this posts to a users tables. The front-end sends a post request with the columns and new values
