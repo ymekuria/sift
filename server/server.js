@@ -57,15 +57,11 @@ require('./utils/routes.js')(app, express, utils.isAuth);
 // });
 
 passport.serializeUser(function(user, done) {
-	console.log('serialize called')
-	console.log('serialized user: ', user);
   done(null, user.email);
 });
 
 passport.deserializeUser(function(email, done) {
-	console.log('deserialize called')
 	userController.findUser(email, function(err, user) {
-		console.log('deserialized user: ', user)
 		done(err, user);
 	});
 });
@@ -84,7 +80,6 @@ passport.use(new GitHubStrategy({
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		console.log('username in local stategy: ', username);
 		userController.findUser(username, function(err, user) {
 			if (err) { done(err); }
 			if (!user) {

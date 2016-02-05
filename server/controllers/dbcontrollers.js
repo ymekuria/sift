@@ -1,5 +1,6 @@
 var client = require('../utils/dbconnect').client;
-var r = require('../utils/dbconnect').r;
+var r = require('rethinkdb');
+// var connection = require('../utils/dbconnect').connection;
 var faker = require('faker');
 var _ = require('lodash');
 var utils = require('../utils/generateData.js');
@@ -10,6 +11,16 @@ var config = require('../server.js')
 // var io = sockio.listen(config.server);
 // var client = new pg.Client(psqlDB.connectionString);
 // client.connect();
+
+var connection = null;
+r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
+  if (err) throw err;
+  connection = conn;
+  console.log('Connected to RethinkDB')
+  r.dbCreate('apiTables').run(conn, function(err, conn) {
+    console.log('Tables DB created in RethinkDB')
+  });
+});
 
 module.exports = {
 
@@ -41,9 +52,10 @@ module.exports = {
     console.log(req.user);
     
     var columns = utils.parseColumnNames(req.body)
-    var tablename = 'zack' + '_' + req.body.tableName;
+    var tablename = req.user.username + '_' + req.body.tableName;
     var fakeData = utils.generateData(req.body, columns, 20); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
     
+    console.log('This is the rethinkDB connection: ', connection)
     // creating a new table
     r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
       if (err) throw err;

@@ -19,8 +19,6 @@ class Signin extends Component {
       password: this.refs.password.value
     }
 
-    console.log(user);
-
     return fetch('/signin', {
       method: 'POST',
       credentials: 'same-origin',
@@ -32,7 +30,6 @@ class Signin extends Component {
     })
     .then((res) => { return res.text(); })
     .then(function(json) {
-      console.log(json)
       var user = JSON.stringify(json)
       localStorage.setItem('sift-user', user);
       window.location.assign('/build')
