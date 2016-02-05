@@ -8,7 +8,7 @@ r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
   connection = conn;
 });
 
-module.exports = {
+var socketMethods = {
 
 	addNode: function(node) {
 		// node = {

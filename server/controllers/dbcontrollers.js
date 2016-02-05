@@ -93,14 +93,7 @@ module.exports = {
   getOneTable: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
 
-    r.table(tablename).changes().run(connection, function(err, cursor) {
-      if (err) { throw err; }
-      cursor.each(function(err, data) {
-        // io.sockets.emit(tablename, data);
-        cursor.close();
-        // res.status(200).send(results);
-      });
-    });
+    socketController.startIOConnection(tablename)
   },
 
  // this posts to a users tables. The front-end sends a post request with the columns and new values
