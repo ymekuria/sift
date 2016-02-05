@@ -42,7 +42,7 @@ module.exports = function(app, express, ensureAuth) {
   });
 
   //logout
-  app.get('/signout', function(req, res) {
+  app.get('/signout', ensureAuth, function(req, res) {
     req.logout();
     res.redirect('/signin')
   });
