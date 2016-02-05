@@ -1,26 +1,15 @@
-var pg = require('pg');
-var r = require('rethinkdb');
+var client = require('../utils/dbconnect').client;
+var r = require('../utils/dbconnect').r;
 var faker = require('faker');
 var _ = require('lodash');
-var psqlDB = require('../utils/dbconnect.js');
 var utils = require('../utils/generateData.js');
-var tableConnections = require('../models/dbTableConnections.js');
+// var sockio = require('socket.io');
+var config = require('../server.js')
 
 // setting up Postgres connection
-var client = new pg.Client(psqlDB.connectionString);
-client.connect();
-
-// setting up RethinkDB connection
-var connection = null;
-r.connect( { host: 'localhost', db: 'apiTables' }, function(err, conn) {
-  if (err) throw err;
-  connection = conn;
-  console.log('Connected to RethinkDB')
-  r.dbCreate('apiTables').run(conn, function(err, conn) {
-    console.log('Tables DB created in RethinkDB')
-  });
-});
-
+// var io = sockio.listen(config.server);
+// var client = new pg.Client(psqlDB.connectionString);
+// client.connect();
 
 module.exports = {
 
@@ -88,11 +77,12 @@ module.exports = {
   getOneTable: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
 
-    r.table(tablename).run(connection, function(err, cursor) {
+    r.table(tablename).changes().run(connection, function(err, cursor) {
       if (err) { throw err; }
-      cursor.toArray(function(err, results) {
+      cursor.each(function(err, data) {
+        // io.sockets.emit(tablename, data);
         cursor.close();
-        res.status(200).send(results);
+        // res.status(200).send(results);
       });
     });
   },

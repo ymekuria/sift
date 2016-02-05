@@ -16,10 +16,12 @@ let helpers = {
 		fetch('/user', {
 			credentials: 'same-origin'
 		})
-		.then((response) => response.text())
-		.then((responseText) => {
-			callback(responseText);
+		.then((response) => {
+			callback(response)
 		})
+		// .then((responseText) => {
+		// 	callback(responseText);
+		// })
 		.catch((err) => {
 			console.log(err)
 		})

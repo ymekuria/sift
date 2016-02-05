@@ -3,23 +3,7 @@ var db = require('../utils/dbconnect.js');
 var bcrypt = require('bcrypt-nodejs');
 var SALT_WORK_FACTOR = 10;
 var jwt = require('jwt-simple');
-// var request = require('request');
-
-var client = new pg.Client(db.connectionString);
-client.connect();
-
-// create the Users table
-client.query('CREATE TABLE IF NOT EXISTS Users (' +
-  'id SERIAL PRIMARY KEY, ' +
-  'username VARCHAR(120), ' +
-  'displayname VARCHAR(120), ' +
-  'password VARCHAR(60) DEFAULT null,' +
-  'email VARCHAR(120), ' +
-  'salt VARCHAR(60) DEFAULT null,' +
-  'githubtoken VARCHAR(60) DEFAULT false )', function(err, result) {
-    if (err) { throw new Error(err); }
-    console.log('Users table created');
-})
+var client = require('../utils/dbconnect').client;
 
 userMethods = {
 
@@ -30,6 +14,7 @@ userMethods = {
 
   isUserInDB: function(user, callback) {
     client.query('SELECT username FROM Users WHERE username=($1)', [user.username], function(err, rows) {
+      console.log(user)
       if (err) { throw new Error(err); }
       var inDB = rows.rows.length > 0;
       callback(inDB);
