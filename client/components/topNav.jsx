@@ -29,7 +29,9 @@ class TopNav extends Component {
 
   signout() {
     localStorage.removeItem('sift-user');
-    return fetch('/signout');
+    return fetch('/signout', {
+      credentials: 'same-origin'
+    });
   }
   
   render() {
