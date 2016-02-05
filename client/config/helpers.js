@@ -1,17 +1,5 @@
 let helpers = {
 
-	// handleToken(token, callback) {
-	// 	return fetch('/user', {
-	// 		method: 'POST',
-	// 		body: JSON.stringify({
-	// 			token: token
-	// 		})
-	// 	})
-	// 	.then((res) => {
-	// 		callback(res.user);
-	// 	}) 
-	// },
-
 	setUser: function(callback) {
 		fetch('/user', {
 			credentials: 'same-origin'
@@ -25,6 +13,26 @@ let helpers = {
 		.catch((err) => {
 			console.log(err)
 		})
+	},
+
+	startIOConnection: function(tablename) {
+
+		// listens to 'update' + tablename
+			// when updated, re-render view
+	},
+
+	editNode: function(node, tablename) {
+		// emits to 'edit ' + tablename
+	},
+
+	addNode: function(node, tablename) {
+		// emits to 'add ' + tablename
+
+	},
+
+	removeNode: function(node, tablename) {
+		// emits to 'remove ' + tablename
+
 	}
 
 }
