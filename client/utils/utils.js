@@ -25,7 +25,7 @@ export const createTable = (tableName, selections) => {
   .catch((err) => console.log(err));
 }
 
-const getTable = (username, tableName) => {
+const getTable = (username, tableName) => {  
   //api/getOneTable:?usrTable=<username_table>
   //api/getOneTable
   //gets a single table
@@ -121,13 +121,3 @@ const deleteRow = (username, tableName, row) => {
     console.log(text);
   })
 }
-
-
-
-
-
-
-
-
-
-
