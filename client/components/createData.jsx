@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import { createTable } from '../utils/utils.js'
 import Selections from './selections.jsx'
 import { Menu, MenuItem} from 'material-ui'
-import h from '../config/helpers'
 import Dropdown from './dropdown.jsx'
 import faker from 'faker'
 /*
