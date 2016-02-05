@@ -26,6 +26,11 @@ class TopNav extends Component {
   constructor() {
     super()
   }
+
+  signout() {
+    localStorage.removeItem('sift-user');
+    return fetch('/signout');
+  }
   
   render() {
     return (
@@ -33,7 +38,7 @@ class TopNav extends Component {
         <ToolbarGroup float="right">
           <FontIcon className="muidocs-icon-custom-sort" />
           <ToolbarSeparator />
-          <RaisedButton style={buttonStyle} label="Sign Out"  />
+          <RaisedButton style={buttonStyle} onClick={ this.signout } label="Sign Out"  />
         </ToolbarGroup>
       </Toolbar>
     )
