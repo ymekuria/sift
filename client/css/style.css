@@ -17,7 +17,7 @@ h3 {
 
 .routeContainer {
   margin-left: 50px;
-  width: 90vw;
+  width: 95.5vw;
   height: 100vh;
   overflow-y: scroll;
 }
@@ -126,9 +126,11 @@ h3 {
 /*======HomePage View========*/
 
 .dashBanner {
-  height: 350px;
+  height: 250px;
   background-color: #4bb1fa;
   color: #FFF;
+  margin-left: -50px;
+  margin-right: -300px;
   font-family: "Gotham SSm A","Gotham SSm B",proxima-nova,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
 }
 .dashOneliner {
@@ -144,6 +146,22 @@ h3 {
   background-color: #4bb1fa; 
 }
 
+.dashTableTitle {
+  float:left;
+  display: inline-block;
+  margin-left:0px;
+
+}
+
+.dashSettingIcon {
+  margin-right:0px;
+  float: right;
+  display: inline-block;
+  font-size: 2px;
+}
+.dashTableButton {
+  display: block;
+}
 
 
 

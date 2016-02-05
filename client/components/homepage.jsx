@@ -46,7 +46,7 @@ class Homepage extends Component {
     this.renderDashTable =this.renderDashTable.bind(this);
   }
   
-  componentDidMount() {
+  componentWillMount() {
    // find a better way to bind this
     var that = this;
     console.log('that', that);
@@ -79,15 +79,14 @@ class Homepage extends Component {
  
       <div className='container'>
 
+          <DashBanner userName={this.state.userTables[0].tablename.split("_")[0].toUpperCase()}/>
+       
 
-                  <h2 className="col-md-5 col-md-offset-3 " >
-            WELCOME BACK TO SIFT {this.state.userTables[0].tablename.split("_")[0].toUpperCase()}
-          </h2>
-          <h4 className="col-md-4 col-md-offset-3 text-center ">
-            Here are your tables
-          </h4> 
 
         <div className='row'> 
+                    <h4 className="col-md-2   ">
+            CURRENT TABLES
+          </h4> 
           <div className='col-md-12'>
            {/*pass in an object as props that has the table name and other relevant infor for the display*/}
            {_.map(this.state.userTables,this.renderDashTable)}     
@@ -109,28 +108,33 @@ class DashTable extends Component {
     width: 200,
     margin: 20,
     textAlign: 'center',
-    display: 'inline-block',
+    display: 'inline-block'
 
 
   };
     const iconStyle = {
     marginLeft: 160,
-
-
-    
-
+     display: 'inline-block',
+     
     
   };  
     const svgStyle = {
-      fontSize: '10px'
+      fontSize: '10px',
+       height: '10px',
+        width: '1px'
     }
     return (
         <Paper style={style}  zDepth={5} rounded={false}>
           <IconButton onClick={() => console.log('click')} style={iconStyle}>
             <Settings style={svgStyle}/>
           </IconButton>
-          <h4>{this.props.tableName.split("_")[1]}</h4>
-          <RaisedButton label="Manage Table" onClick={() => this.props.nav('/vis')} style={{margin: 5}} />
+          <h5>{this.props.tableName.split("_")[1]}</h5>
+          <RaisedButton label="View Table" onClick={() => this.props.nav('/vis')} style={{margin: 5,
+            position: 'relative',
+           bottom: -50,
+           
+
+         }} />
 
        </Paper>
 
@@ -160,16 +164,16 @@ class DashBanner extends Component {
     <div className='dashBanner'>
       <div className='row'>
           <h2 className="col-md-4 col-md-offset-4 " >
-            WELCOME TO SIFT
+            WELCOME BACK TO SIFT {this.props.userName}
           </h2>
           <h4 className="col-md-4 col-md-offset-4 dashOneliner">
-            A Simple Integrated Frontend Toolkit
+            
           </h4>     
       </div>
     {/*row for buttons*/}
       <div className='row'>
         <div className='col-md-6 col-md-offset-3'>
-          <DashButtons/>
+          
         </div>
       </div>
     </div> 

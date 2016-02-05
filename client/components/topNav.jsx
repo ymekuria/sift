@@ -17,7 +17,7 @@ let styles = {
   position: 'relative',
   bottom: '8px',
   right: '10px',
-  marginLeft: '-5px',
+  marginLeft: '-5px'
 }
 let buttonStyle = {
   color: 'white'
