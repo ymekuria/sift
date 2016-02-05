@@ -23,7 +23,7 @@ userMethods = {
 
   findUser: function(email, callback) {
     client.query('SELECT * FROM Users WHERE email=($1)', [email], function(err, rows) {
-      if (err) { throw callback(err); }
+      if (err) { callback(err); }
       if (rows.rows.length === 0) {
         callback(null, null) // user does not exist
       } else {
@@ -33,7 +33,8 @@ userMethods = {
   },
 
   findOrCreateGitHubUser: function(user, accessToken, refreshToken, next) {
-    client.query('SELECT username, displayname, githubtoken FROM Users WHERE email=($1)', [user._json.email], function(err, rows) {
+    console.log('Here is the GitHub user: ', user);
+    client.query('SELECT id, email, displayname, githubtoken FROM Users WHERE email=($1)', [user._json.email], function(err, rows) {
       if (err) { throw new Error(err); }
       if (rows.rows.length === 0) { // does not exist, create a new one
         userMethods.createGitHubUser(user, accessToken, function(err, newUser) {
@@ -42,7 +43,7 @@ userMethods = {
       } else {
         var dbUser = rows.rows[0];
         if (!dbUser.githubtoken) {
-          next(null, false, { message: 'Sign in with your username and password' })
+          next(null, false, { message: 'Sign in with your Sift username and password' })
         }
         if (refreshToken) {
           userMethods.updateToken(dbUser, refreshToken, function() {

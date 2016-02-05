@@ -21,21 +21,24 @@ module.exports = function(app, express, ensureAuth) {
   });
 
   // user objet pass-through
-  // app.get('/user', ensureAuth, function(req, res) {
-  //   var user = {
-  //     id: req.user.id,
-  //     username: req.user.username,
-  //     displayname: req.user.displayname
-  //   }
-  //   res.json(user);
-  // })
+  app.get('/user', ensureAuth, function(req, res) {
+    var user = {
+      id: req.user.id,
+      username: req.user.username,
+      displayname: req.user.displayname
+    }
+    res.json(user);
+  })
 
   // GitHub authentication
   app.get('/auth/github', passport.authenticate('github'));
-  app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/signin' }), function(req, res) {
-    req.login(req.user, function() {
-      res.redirect('/build');
-    })
+  app.get('/auth/github/callback', passport.authenticate('github', { session: true, failureRedirect: '/signin' }), function(req, res) {
+    var user = {
+      id: req.user.id,
+      username: req.user.username,
+      displayname: req.user.displayname
+    }
+    res.redirect('/build');
   });
 
   //logout

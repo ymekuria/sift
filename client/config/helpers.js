@@ -17,11 +17,11 @@ let helpers = {
 			credentials: 'same-origin'
 		})
 		.then((response) => {
-			callback(response)
+			return response.text()
 		})
-		// .then((responseText) => {
-		// 	callback(responseText);
-		// })
+		.then((responseText) => {
+			callback(responseText);
+		})
 		.catch((err) => {
 			console.log(err)
 		})
