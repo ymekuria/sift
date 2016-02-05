@@ -11,7 +11,7 @@ class Signin extends Component {
     }
   }
 
-  signin(e) {
+  localSignin(e) {
     e.preventDefault();
 
     let user = {
@@ -46,10 +46,10 @@ class Signin extends Component {
           <button type='submit'>Sign in with GitHub</button>
         </form>
        <span> -- OR -- </span>
-       <form onSubmit={ this.signin.bind(this) }>
+       <form onSubmit={ this.localSignin.bind(this) }>
          <input type='email' ref='username' placeholder='email address' />
          <input type='password' ref='password' placeholder='password' />
-         <button>Sign In</button>
+         <button type='submit'>Sign In</button>
        </form>
        <a href='#/signup'>Need an account?</a>
       </div>

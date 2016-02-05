@@ -57,10 +57,12 @@ require('./utils/routes.js')(app, express, utils.isAuth);
 // });
 
 passport.serializeUser(function(user, done) {
+	console.log('serializeUser: ', user)
   done(null, user.email);
 });
 
 passport.deserializeUser(function(email, done) {
+	console.log('deserializeUser: ', email)
 	userController.findUser(email, function(err, user) {
 		done(err, user);
 	});
@@ -73,6 +75,7 @@ passport.use(new GitHubStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
   	userController.findOrCreateGitHubUser(profile, accessToken, refreshToken, function(err, user) {
+  		console.log('gitbub user: ', user)
   		done(err, user);
   	})
   }
