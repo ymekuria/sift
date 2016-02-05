@@ -31,6 +31,7 @@ class DataEntry extends Component {
       this.forceUpdate()
       }
     );
+  }
 
     var user = localStorage.getItem('sift-user');
     if (!user) {

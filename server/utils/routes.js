@@ -12,28 +12,30 @@ module.exports = function(app, express, ensureAuth) {
   });
 
   app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/signin' }), function(req, res) {
-    var user = {
-      id: req.user.id,
-      username: req.user.username,
-      displayname: req.user.displayname
-    }
-    res.json(user);
+    // var user = {
+    //   id: req.user.id,
+    //   username: req.user.username,
+    //   displayname: req.user.displayname
+    // }
+    res.json(req.user);
   });
 
   // user objet pass-through
-  app.get('/user', ensureAuth, function(req, res) {
-    var user = {
-      id: req.user.id,
-      username: req.user.username,
-      displayname: req.user.displayname
-    }
-    res.json(user);
-  })
+  // app.get('/user', ensureAuth, function(req, res) {
+  //   var user = {
+  //     id: req.user.id,
+  //     username: req.user.username,
+  //     displayname: req.user.displayname
+  //   }
+  //   res.json(user);
+  // })
 
   // GitHub authentication
   app.get('/auth/github', passport.authenticate('github'));
   app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/signin' }), function(req, res) {
-    res.redirect('/build');
+    req.login(req.user, function() {
+      res.redirect('/build');
+    })
   });
 
   //logout
@@ -43,10 +45,10 @@ module.exports = function(app, express, ensureAuth) {
   });
 
   // endpoints for creating, receiving, and deleting tables
-  app.get('/api/users/tables', dbController.getTables);
-  app.post('/api/users/tables', dbController.createUserTable);
+  app.get('/api/users/tables', ensureAuth, dbController.getTables);
+  app.post('/api/users/tables', ensureAuth, dbController.createUserTable);
   // app.put('/api/users/tables/:id'); // do we need to have users update their tables?
-  app.delete('/api/users/tables/:id', dbController.deleteTable);
+  app.delete('/api/users/tables/:id', ensureAuth, dbController.deleteTable);
 
   // external routs for users to access their data
   app.get('/sand/:tablename/:username', dbController.getOneTable);

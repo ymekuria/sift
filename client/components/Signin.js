@@ -21,7 +21,7 @@ class Signin extends Component {
 
     console.log(user);
 
-    fetch('/signin', {
+    return fetch('/signin', {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
@@ -30,11 +30,15 @@ class Signin extends Component {
       },
       body: JSON.stringify(user)
     })
-    .then((res) => { return res.json(); })
+    .then((res) => { return res.text(); })
     .then(function(json) {
+      console.log(json)
       var user = JSON.stringify(json)
       localStorage.setItem('sift-user', user);
       window.location.assign('/build')
+    })
+    .catch((err) => {
+      console.log('Err: ', err)
     })
   }
 	

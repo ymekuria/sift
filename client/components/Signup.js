@@ -2,23 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 class Signup extends Component {
-
-  // signup() {
-  //   var = user {
-  //     first: this.refs.first,
-  //     last: this.refs.last,
-  //     email: this.refs.email,
-  //     username: this.refs.email.replace(/[^a-zA-Z0-9 ]/g, ""),
-  //     password: this.refs.password
-  //   }
-
-  //   fetch('/api/users', {
-  //     method: 'POST'
-  //   })
-  //   .then(function(res) {
-
-  //   })
-  // }
 	
   render() {
     return (
