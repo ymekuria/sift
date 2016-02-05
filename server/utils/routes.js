@@ -12,12 +12,12 @@ module.exports = function(app, express, ensureAuth) {
   });
 
   app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/signin' }), function(req, res) {
-    // var user = {
-    //   id: req.user.id,
-    //   username: req.user.username,
-    //   displayname: req.user.displayname
-    // }
-    res.json(req.user);
+    var user = {
+      id: req.user.id,
+      username: req.user.username,
+      displayname: req.user.displayname
+    }
+    res.json(user);
   });
 
   // user objet pass-through
