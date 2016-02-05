@@ -21,8 +21,8 @@ userMethods = {
     });
   },
 
-  findUser: function(user, callback) {
-    client.query('SELECT * FROM Users WHERE email=($1)', [user.email], function(err, rows) {
+  findUser: function(email, callback) {
+    client.query('SELECT * FROM Users WHERE email=($1)', [email], function(err, rows) {
       if (err) { throw callback(err); }
       if (rows.rows.length === 0) {
         callback(null, null) // user does not exist

@@ -16,12 +16,12 @@ var app = express();
 var cors = require('cors');
 
 // Middleware. Add below as needed
-app.use(cors());
-app.use(morgan('dev'));
+// app.use(cors());
+// app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true }));
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: false, cookie: { maxAge: 60000 }}));
-app.use(cookieParser('secret'));
+app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./utils/routes.js')(app, express, utils.isAuth);
@@ -58,12 +58,14 @@ require('./utils/routes.js')(app, express, utils.isAuth);
 
 passport.serializeUser(function(user, done) {
 	console.log('serialize called')
-  done(null, user);
+	console.log('serialized user: ', user);
+  done(null, user.email);
 });
 
-passport.deserializeUser(function(user, done) {
-	console.log('serialize called')
-	userController.findUser({ username: user.username }, function(err, user) {
+passport.deserializeUser(function(email, done) {
+	console.log('deserialize called')
+	userController.findUser(email, function(err, user) {
+		console.log('deserialized user: ', user)
 		done(err, user);
 	});
 });
@@ -82,7 +84,8 @@ passport.use(new GitHubStrategy({
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		userController.findUser({ email: username }, function(err, user) {
+		console.log('username in local stategy: ', username);
+		userController.findUser(username, function(err, user) {
 			if (err) { done(err); }
 			if (!user) {
 				done(null, false) // user does not exist
