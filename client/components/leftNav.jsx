@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {router} from 'react-router'
+import { router } from 'react-router'
 import { routeActions } from 'react-router-redux'
 import { FontIcon, IconButton, LeftNav} from 'material-ui'
 import store from '../store.jsx'
@@ -29,9 +29,8 @@ class LeftNavbar extends Component {
     super(props)
   }
   navigation(path) {
-    console.log('navigating');
+    const store = this.context.store;
     store.dispatch(routeActions.push(path));
-    console.log('this is the thing', this.context.store.getState())
   }
 
   render() {
@@ -42,7 +41,7 @@ class LeftNavbar extends Component {
           width={55}
           open={true}
         >
-        <IconButton onClick={() => this.navigation('/')} style={iconStyles}>
+        <IconButton onClick={() => this.navigation('/home')} style={iconStyles}>
           <Home/>
         </IconButton>
         <IconButton onClick={() => this.navigation('/build')} style={iconStyles}>

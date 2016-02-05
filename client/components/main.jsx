@@ -12,12 +12,22 @@ require('../css/style.css')
 //this will be the top level app that renders everyting to root
 class Main extends Component {
 
+  inApplication() {
+    //a helper to render our app based on location
+    let location = this.props.location.pathname;
+    if (location === '/' || location === '/signup' || location === '/signin') {
+      return false;
+    }
+    return true;
+  }
+
+
   render() {
     return (
       <div className='container'>
-        <Nav/>
+        {this.inApplication() ? <Nav/> : ''}
           <div className='routeContainer'>
-          {this.props.children || <Homepage/>}
+          {this.props.children}
           </div>
       </div>
     )

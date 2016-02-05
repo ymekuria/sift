@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 import { createTable } from '../utils/utils.js'
 import Selections from './selections.jsx'
@@ -24,6 +25,7 @@ class DataEntry extends Component {
   componentDidMount() {
     //subscribe to the store
     const { store } = this.context;
+    console.log(store.getState());
 
     this.unsubscribe = store.subscribe(() => {
       console.log('updatin disptachid');
