@@ -16,7 +16,9 @@ let helpers = {
 		fetch('/user', {
 			credentials: 'same-origin'
 		})
-		.then((response) => response.text())
+		.then((response) => {
+			return response.text()
+		})
 		.then((responseText) => {
 			callback(responseText);
 		})

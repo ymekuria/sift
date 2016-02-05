@@ -5,70 +5,65 @@ var session = require('express-session');
 var GitHubStrategy = require('passport-github').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var userController = require('./controllers/userController.js');
-var socketController = require('./controllers/socketController.js');
+// var socketController = require('./controllers/socketController.js');
 var token = require('./auth/authTokens.js');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var utils = require('./utils/utils')
 var pg = require('pg');
-var cors = require('cors');
 var app = express();
+var cors = require('cors');
 
 // Middleware. Add below as needed
-app.use(cors());
-app.use(morgan('dev'));
-// app.use(cookieParser('secret'));
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(cors());
+// app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true }));
+app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 require('./utils/routes.js')(app, express, utils.isAuth);
 
-var port = process.env.PORT || 5001;
 
-var server = app.listen(port, function() {
-	console.log('Sifting on port= ', port)
-});
+// var io = require('socket.io')(server);
 
-var io = require('socket.io')(server);
+// io.sockets.on('connection', function (socket) {
+// 	socket.on('show table', function(table) {
+// 		// send DB table info back to client
+// 	})
 
-io.sockets.on('connection', function (socket) {
-	socket.on('show table', function(table) {
-		// send DB table info back to client
-	})
+// 	socket.on('edit', function(node) {
+// 		// edit node and send data back to client
+// 		socketController.editNode(node, function(data) {
+// 			socket.emit('data change', data);
+// 		})
+// 	});
 
-	socket.on('edit', function(node) {
-		// edit node and send data back to client
-		socketController.editNode(node, function(data) {
-			socket.emit('data change', data);
-		})
-	});
+// 	socket.on('add', function(node) {
+// 		// add node to database and send data back to client
+// 		socketController.addNode(node, function(data) {
+// 			socket.emit('data change', data);
+// 		})
+// 	});
 
-	socket.on('add', function(node) {
-		// add node to database and send data back to client
-		socketController.addNode(node, function(data) {
-			socket.emit('data change', data);
-		})
-	});
-
-	socket.on('delete', function(node) {
-		// delete node from database and send data back to client
-		socketController.removeNode(node, function(data) {
-			socket.emit('data change', data);
-		})
-	})
-});
+// 	socket.on('delete', function(node) {
+// 		// delete node from database and send data back to client
+// 		socketController.removeNode(node, function(data) {
+// 			socket.emit('data change', data);
+// 		})
+// 	})
+// });
 
 passport.serializeUser(function(user, done) {
 	console.log('serializeUser: ', user)
-  done(null, user);
+  done(null, user.email);
 });
 
-passport.deserializeUser(function(user, done) {
-	console.log('deserializeUser: ', user)
-	userController.findUser({ username: user.username }, function(err, user) {
+passport.deserializeUser(function(email, done) {
+	console.log('deserializeUser: ', email)
+	userController.findUser(email, function(err, user) {
 		done(err, user);
 	});
 });
@@ -80,6 +75,7 @@ passport.use(new GitHubStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
   	userController.findOrCreateGitHubUser(profile, accessToken, refreshToken, function(err, user) {
+  		console.log('gitbub user: ', user)
   		done(err, user);
   	})
   }
@@ -87,10 +83,7 @@ passport.use(new GitHubStrategy({
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		console.log('username: ', username);
-		console.log('username: ', password);
-		userController.findUser({ email: username }, function(err, user) {
-			console.log('User: ', user);
+		userController.findUser(username, function(err, user) {
 			if (err) { done(err); }
 			if (!user) {
 				done(null, false) // user does not exist
@@ -110,4 +103,10 @@ passport.use(new LocalStrategy(
 		})
 }))
 
-module.exports = app;
+var port = process.env.PORT || 5001;
+
+module.exports.server = app.listen(port, function() {
+	console.log('Sifting on port= ', port)
+});
+
+module.exports.app = app;

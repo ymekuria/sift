@@ -8,14 +8,14 @@ export const createTable = (tableName, selections) => {
   //post data to db
   selections['tableName'] = tableName;
 
-  let url = 'http://localhost:5001/api/users/tables'
-   console.log('URL', url)
+  let url = '/api/users/tables'
   return fetch(url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
+    credentials: 'include',
     body: JSON.stringify(selections)
   })
   .then((response) => response.text())

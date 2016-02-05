@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 import { createTable } from '../utils/utils.js'
 import Selections from './selections.jsx'
 import { Menu, MenuItem} from 'material-ui'
-import h from '../config/helpers'
 import Dropdown from './dropdown.jsx'
 import faker from 'faker'
+import h from '../config/helpers'
 /*
   == Material UI componenets ==
 */
@@ -36,6 +36,7 @@ class DataEntry extends Component {
     var user = localStorage.getItem('sift-user');
     if (!user) {
       h.setUser(function(dbUser) {
+        JSON.stringify(dbUser);
         localStorage.setItem('sift-user', dbUser);
       })
     }

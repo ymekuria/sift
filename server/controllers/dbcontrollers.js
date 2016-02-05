@@ -1,18 +1,19 @@
-var pg = require('pg');
+var client = require('../utils/dbconnect').client;
 var r = require('rethinkdb');
+// var connection = require('../utils/dbconnect').connection;
 var faker = require('faker');
 var _ = require('lodash');
-var psqlDB = require('../utils/dbconnect.js');
 var utils = require('../utils/generateData.js');
-var tableConnections = require('../models/dbTableConnections.js');
+// var sockio = require('socket.io');
+var config = require('../server.js')
 
 // setting up Postgres connection
-var client = new pg.Client(psqlDB.connectionString);
-client.connect();
+// var io = sockio.listen(config.server);
+// var client = new pg.Client(psqlDB.connectionString);
+// client.connect();
 
-// setting up RethinkDB connection
 var connection = null;
-r.connect( { host: 'localhost', db: 'apiTables' }, function(err, conn) {
+r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
   if (err) throw err;
   connection = conn;
   console.log('Connected to RethinkDB')
@@ -20,7 +21,6 @@ r.connect( { host: 'localhost', db: 'apiTables' }, function(err, conn) {
     console.log('Tables DB created in RethinkDB')
   });
 });
-
 
 module.exports = {
 
@@ -52,9 +52,10 @@ module.exports = {
     console.log(req.user);
     
     var columns = utils.parseColumnNames(req.body)
-    var tablename = 'zack' + '_' + req.body.tableName;
+    var tablename = req.user.username + '_' + req.body.tableName;
     var fakeData = utils.generateData(req.body, columns, 20); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
     
+    console.log('This is the rethinkDB connection: ', connection)
     // creating a new table
     r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
       if (err) throw err;
@@ -89,11 +90,12 @@ module.exports = {
   getOneTable: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
 
-    r.table(tablename).run(connection, function(err, cursor) {
+    r.table(tablename).changes().run(connection, function(err, cursor) {
       if (err) { throw err; }
-      cursor.toArray(function(err, results) {
+      cursor.each(function(err, data) {
+        // io.sockets.emit(tablename, data);
         cursor.close();
-        res.status(200).send(results);
+        // res.status(200).send(results);
       });
     });
   },

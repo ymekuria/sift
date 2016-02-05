@@ -11,13 +11,13 @@ class DataVis extends Component {
     }
   }
 
-  componentDidMount() {
-    socket.on('data change', function (data) {
-      this.setState({
-        data: data
-      })
-    });
-  }
+  // componentDidMount() {
+  //   // socket.on('data change', function (data) {
+  //   //   this.setState({
+  //   //     data: data
+  //   //   })
+  //   // });
+  // }
 
   render() {
     return(

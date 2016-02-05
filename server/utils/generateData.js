@@ -47,6 +47,7 @@ module.exports = {
             // generating the fake data from faker and pushing the row into an array
             var ref = dataIndex[fakerCategory][fakerField];
             var value = eval("faker." + ref + "()");
+            console.log('value: ', typeof value);
             if (value.indexOf('\'') > -1) {
               value = eval("faker." + ref + "()");
             } else {

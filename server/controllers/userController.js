@@ -3,23 +3,7 @@ var db = require('../utils/dbconnect.js');
 var bcrypt = require('bcrypt-nodejs');
 var SALT_WORK_FACTOR = 10;
 var jwt = require('jwt-simple');
-// var request = require('request');
-
-var client = new pg.Client(db.connectionString);
-client.connect();
-
-// create the Users table
-client.query('CREATE TABLE IF NOT EXISTS Users (' +
-  'id SERIAL PRIMARY KEY, ' +
-  'username VARCHAR(120), ' +
-  'displayname VARCHAR(120), ' +
-  'password VARCHAR(60) DEFAULT null,' +
-  'email VARCHAR(120), ' +
-  'salt VARCHAR(60) DEFAULT null,' +
-  'githubtoken VARCHAR(60) DEFAULT false )', function(err, result) {
-    if (err) { throw new Error(err); }
-    console.log('Users table created');
-})
+var client = require('../utils/dbconnect').client;
 
 userMethods = {
 
@@ -30,15 +14,16 @@ userMethods = {
 
   isUserInDB: function(user, callback) {
     client.query('SELECT username FROM Users WHERE username=($1)', [user.username], function(err, rows) {
+      console.log(user)
       if (err) { throw new Error(err); }
       var inDB = rows.rows.length > 0;
       callback(inDB);
     });
   },
 
-  findUser: function(user, callback) {
-    client.query('SELECT * FROM Users WHERE email=($1)', [user.email], function(err, rows) {
-      if (err) { throw callback(err); }
+  findUser: function(email, callback) {
+    client.query('SELECT * FROM Users WHERE email=($1)', [email], function(err, rows) {
+      if (err) { callback(err); }
       if (rows.rows.length === 0) {
         callback(null, null) // user does not exist
       } else {
@@ -48,7 +33,8 @@ userMethods = {
   },
 
   findOrCreateGitHubUser: function(user, accessToken, refreshToken, next) {
-    client.query('SELECT username, displayname, githubtoken FROM Users WHERE email=($1)', [user._json.email], function(err, rows) {
+    console.log('Here is the GitHub user: ', user);
+    client.query('SELECT id, email, displayname, githubtoken FROM Users WHERE email=($1)', [user._json.email], function(err, rows) {
       if (err) { throw new Error(err); }
       if (rows.rows.length === 0) { // does not exist, create a new one
         userMethods.createGitHubUser(user, accessToken, function(err, newUser) {
@@ -57,7 +43,7 @@ userMethods = {
       } else {
         var dbUser = rows.rows[0];
         if (!dbUser.githubtoken) {
-          next(null, false, { message: 'Sign in with your username and password' })
+          next(null, false, { message: 'Sign in with your Sift username and password' })
         }
         if (refreshToken) {
           userMethods.updateToken(dbUser, refreshToken, function() {

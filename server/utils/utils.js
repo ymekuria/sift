@@ -3,9 +3,13 @@ var jwt = require('jwt-simple');
 module.exports = {
 
 	isAuth: function(req, res, next) {
+		console.log('ensureAuth called');
+		console.log('req.user in isAuth: ', req.user);
 		if (req.isAuthenticated()) { 
+			console.log('Authenticated!')
 			return next(); 
 		}
+		console.log('NOT Authenticated')
 		res.redirect('/signin');
 	},
 
