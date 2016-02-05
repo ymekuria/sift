@@ -31,9 +31,6 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 class Homepage extends Component {
   constructor() {
     super();
-
-
-
     //initialize userTables request to
     //user table
     //render a spinner while we are 
@@ -50,6 +47,7 @@ class Homepage extends Component {
    // find a better way to bind this
     var that = this;
     console.log('that', that);
+    // making an ajax call to get all the users tablenames at first render of the page
     getTables(function(res){
       that.setState({userTables: res})
       console.log('this.state', that.state)
@@ -61,7 +59,7 @@ class Homepage extends Component {
     
     console.log('path', path);
     store.dispatch(routeActions.push(path));
-    console.log('this is the thing', this.context.store.getState())
+   
   }
 
 
@@ -81,8 +79,6 @@ class Homepage extends Component {
 
           <DashBanner userName={this.state.userTables[0].tablename.split("_")[0].toUpperCase()}/>
        
-
-
         <div className='row'> 
                     <h4 className="col-md-2   ">
             CURRENT TABLES
