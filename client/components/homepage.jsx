@@ -76,26 +76,14 @@ class Homepage extends Component {
   }
 
   removeTable (tableID) {
-    console.log('tableID', tableID);
-    console.log('this.state', this.state);
     var that = this;
-    console.log('that in remove', that);
+    // makes an ajax call to delete the clicked table from the db
     deleteTable(tableID, function(){
-      console.log('that in delete', that);
-      getTables(function(res){
-      console.log('that in getTables', that);  
+      // makes a ajax call to update the state with the list of tables
+      getTables(function(res){ 
         that.setState({userTables: res})
-        console.log('this.state', that.state)
       });
     });
-
-
-
-    // var that = this;
-    // getTables(function(res){
-    //   that.setState({userTables: res})
-    //   console.log('this.state', that.state)
-    // });
 
   }  
 
@@ -191,7 +179,7 @@ class DashBanner extends Component {
     return (
     <div className='dashBanner'>
       <div className='row'>
-          <h2 className="col-md-4 col-md-offset-4 " >
+          <h2 className="col-md-4 col-md-offset-3 " >
             WELCOME BACK TO SIFT {this.props.userName}
           </h2>
           <h4 className="col-md-4 col-md-offset-4 dashOneliner">
@@ -208,39 +196,6 @@ class DashBanner extends Component {
     )
   }
 } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
