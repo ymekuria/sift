@@ -34,8 +34,12 @@ var server = app.listen(port, function() {
  
 var io = require('socket.io')(server);
 
+<<<<<<< HEAD
 io.on('connection', function(socket) {
 
+=======
+io.on('connection', function(socket){
+>>>>>>> loads table data upon mounting component. Is not able to emit changes from the changefeed
 	console.log('user connected.')
 
 	socket.on('edit', function(node) {

@@ -16,6 +16,7 @@ var socketMethods = {
 		// 	username: String,
 		// 	values: Object
 		// }
+		console.log('Node: ', node)
 		var tablename = node.username + '_' + node.tablename;
 		r.db('apiTables').table(tablename).insert(node.values).run(connection, function(err, response) {
 			if (err) { console.log('There was error adding to ' + tablename); }
