@@ -1,6 +1,7 @@
 var r = require('rethinkdb');
 var server = require('../server').server;
-var io = require('socket.io')(server);
+// var io = require('socket.io')(server);
+// var io = require('../server').io
 
 var connection = null;
 r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
@@ -13,7 +14,7 @@ module.exports = {
 	addNode: function(node) {
 		// node = {
 		// 	tablename: String,
-		// 	username: String,
+		// 	username: String,e
 		// 	values: Array
 		// }
 		console.log('Node: ', node)
@@ -54,6 +55,7 @@ module.exports = {
 	},
 
 	getTableAndOpenConnection: function(req, res) {
+		var io = require('../server').io
 		
     var tablename = req.params.tablename;
     
@@ -65,9 +67,11 @@ module.exports = {
 				r.table(tablename).changes({ includeInitial: true }).run(connection, function(err, cursor) {
 					if (err) { throw new Error(err); }
 					console.log('changefeed is open.')
+					console.log('Cursor: ', cursor)
 					cursor.each(function(node) {
 						// socket io needs to emit an 'update' + table message with the item
-						io.sockets.emit('update ' + tablename, node);
+						var emitmessage = 'update ' + tablename;
+						io.emit(emitmessage, node);
 						console.log('Emitting: ', 'update ' + tablename);
 					})
 				});

@@ -31,10 +31,11 @@ var port = process.env.PORT || 5001;
 var server = app.listen(port, function() {
 	console.log('Sifting on port= ', port)
 });
-
+ 
 var io = require('socket.io')(server);
 
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
+
 	console.log('user connected.')
 
 	socket.on('edit', function(node) {
@@ -105,6 +106,6 @@ passport.use(new LocalStrategy(
 
 module.exports = {
 	app: app,
-	// io: io,
+	io: io,
 	server: server
 };
