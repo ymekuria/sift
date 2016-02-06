@@ -1,16 +1,19 @@
-import React from 'react'
+  import React from 'react'
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
 import IconButton from 'material-ui/lib/icon-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/save';
+import TextField from 'material-ui/lib/text-field';
 import _ from 'lodash';
 
 const Selections = ({ selected }, { store }) => {
   return (
     <div>
     <div className='selectionHeader'>
+      <TextField hintText="Name Your Table " />
       <h3>Selections</h3>
+      
       <IconButton
       onClick={() => {
         store.dispatch({
