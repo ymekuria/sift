@@ -67,7 +67,7 @@ module.exports = {
 					console.log('changefeed is open.')
 					cursor.each(function(node) {
 						// socket io needs to emit an 'update' + table message with the item
-						socket.emit('update ' + tablename, node);
+						io.sockets.emit('update ' + tablename, node);
 						console.log('Emitting: ', 'update ' + tablename);
 					})
 				});
