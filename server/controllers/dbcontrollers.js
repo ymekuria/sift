@@ -93,7 +93,26 @@ module.exports = {
   getOneTable: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
 
-    socketController.startIOConnection(tablename)
+    r.table(tablename).run(connection, function(err, cursor) {
+      if (err) { throw err; }
+      cursor.toArray(function(err, results) {
+        res.status(200).send(results);
+      });
+    });
+  },
+
+  getTableAndOpenConnection: function(req, res) {
+    var tablename = req.params.tablename
+    console.log('Tablename: ', tablename);
+
+    r.table(tablename).run(connection, function(err, cursor) {
+      if (err) { throw err; }
+      cursor.toArray(function(err, results) {
+        console.log('Results: ', results)
+        socketController.startIOConnection(tablename)
+        res.status(200).send(results);
+      });
+    });
   },
 
  // this posts to a users tables. The front-end sends a post request with the columns and new values
