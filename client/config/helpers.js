@@ -5,7 +5,7 @@ let helpers = {
 			credentials: 'same-origin'
 		})
 		.then((response) => {
-			return response.text()
+			return response.json()
 		})
 		.then((responseText) => {
 			callback(responseText);
@@ -15,10 +15,16 @@ let helpers = {
 		})
 	},
 
-	startIOConnection: function(tablename) {
-
+	loadTable: function(tablename) {
 		// listens to 'update' + tablename
-			// when updated, re-render view
+		return fetch('/api/users/tables/' + tablename)
+		.then((res) => {
+			return res.text()
+		})
+		.then((response) => {
+			console.log(response);
+		})
+		// when updated, re-render view
 	},
 
 	editNode: function(node, tablename) {
