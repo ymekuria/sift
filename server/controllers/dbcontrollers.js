@@ -101,7 +101,6 @@ module.exports = {
         // res.status(200).send(results);
       });
     });
-
   },
 
  // this posts to a users tables. The front-end sends a post request with the columns and new values
