@@ -37,8 +37,9 @@ class DataVis extends Component {
     // TODO: setState with tablename
     let username = JSON.parse(localStorage.getItem('sift-user')).username;
     let tablename = username + '_' + this.state.tablename;
+    var emitmessage = 'update ' + tablename;
     
-    socket.on('update ' + tablename, function(data) {
+    socket.on(emitmessage, function(data) {
       console.log(data);
       console.log('I heard you.')
     });
