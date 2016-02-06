@@ -34,14 +34,16 @@ var server = app.listen(port, function() {
 
 var io = require('socket.io')(server);
 
-io.sockets.on('connection', function (socket) {
-		
+io.on('connection', function(socket){
+	console.log('user connected.')
+
 	socket.on('edit', function(node) {
 		// edit node and send data back to client
 		socketController.editNode(node);
 	});
 
 	socket.on('add', function(node) {
+		console.log('Add triggered')
 		// add node to database and send data back to client
 		socketController.addNode(node);
 	});
@@ -49,7 +51,11 @@ io.sockets.on('connection', function (socket) {
 	socket.on('remove', function(node) {
 		// delete node from database and send data back to client
 		socketController.removeNode(node);
-	})
+	});
+
+  socket.on('disconnect', function(){
+  	console.log('user disconnected.')
+  });
 });
 
 passport.serializeUser(function(user, done) {
@@ -97,4 +103,8 @@ passport.use(new LocalStrategy(
 }))
 
 
-module.exports = app;
+module.exports = {
+	app: app,
+	// io: io,
+	server: server
+};

@@ -1,7 +1,7 @@
 // add links to controllers here
 var dbController = require('../controllers/dbcontrollers.js');
 var userController = require('../controllers/userController.js');
-// var socketController = require('../controllers/socketController.js');
+var socketController = require('../controllers/socketController.js');
 var passport = require('passport');
 
 module.exports = function(app, express, ensureAuth) {
@@ -48,7 +48,7 @@ module.exports = function(app, express, ensureAuth) {
 
   // endpoints for creating, receiving, and deleting tables
   app.get('/api/users/tables', ensureAuth, dbController.getTables);
-  app.get('/api/users/tables/:tablename', dbController.getTableAndOpenConnection);
+  app.get('/api/users/tables/:tablename', socketController.getTableAndOpenConnection);
   app.post('/api/users/tables', ensureAuth, dbController.createUserTable);
   // app.put('/api/users/tables/:id'); // do we need to have users update their tables?
   app.delete('/api/users/tables/:id', ensureAuth, dbController.deleteTable);
