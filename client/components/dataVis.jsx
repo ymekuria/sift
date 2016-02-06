@@ -25,10 +25,23 @@ class DataVis extends Component {
   }
 
   editNode(node) {
+    var node = {
+      tablename: this.state.tablename,
+      username: JSON.parse(localStorage.getItem('sift-user')).username,
+      rowId: '4006459e-c825-4926-9249-dcead36ffa04',
+      node: {
+        firstName: 'Erik Brown changed this.'
+      }
+    };
     socket.emit('edit', node);
   }
 
   removeNode(node) {
+    var node = {
+      tablename: this.state.tablename,
+      username: JSON.parse(localStorage.getItem('sift-user')).username,
+      rowId: '4006459e-c825-4926-9249-dcead36ffa04'
+    };
     socket.emit('remove', node);
   }
 
