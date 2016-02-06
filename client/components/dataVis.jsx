@@ -51,10 +51,6 @@ class DataVis extends Component {
     let tablename = username + '_' + this.state.tablename;
     var emitmessage = 'update ' + tablename;
     
-    socket.on(emitmessage, function(data) {
-      console.log(data);
-      console.log('I heard you.')
-    });
 
     h.loadTable(tablename, function(data) {
       this.setState({
@@ -62,6 +58,10 @@ class DataVis extends Component {
         );
     }.bind(this));
 
+    socket.on(emitmessage, function(data) {
+      console.log(data);
+      console.log('I heard you.')
+    });
 
     // function (data) {
     //   console.log('I heard that update!')
