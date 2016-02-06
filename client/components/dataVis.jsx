@@ -30,6 +30,7 @@ class DataVis extends Component {
   }
 
   editNode(node) {
+<<<<<<< HEAD
     // node = {
     //   rowId: String,
     //   values: {
@@ -51,6 +52,25 @@ class DataVis extends Component {
       username: JSON.parse(localStorage.getItem('sift-user')).username,
       rowId: rowId
     }
+=======
+    var node = {
+      tablename: this.state.tablename,
+      username: JSON.parse(localStorage.getItem('sift-user')).username,
+      rowId: '4006459e-c825-4926-9249-dcead36ffa04',
+      node: {
+        firstName: 'Erik Brown changed this.'
+      }
+    };
+    socket.emit('edit', node);
+  }
+
+  removeNode(node) {
+    var node = {
+      tablename: this.state.tablename,
+      username: JSON.parse(localStorage.getItem('sift-user')).username,
+      rowId: '4006459e-c825-4926-9249-dcead36ffa04'
+    };
+>>>>>>> user can add, remove and edit placeholder nodes.
     socket.emit('remove', node);
   }
 

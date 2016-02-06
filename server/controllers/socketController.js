@@ -28,7 +28,11 @@ var socketMethods = {
 		// 	tablename: String,
 		// 	username: String,
 		//  rowId = String,
+<<<<<<< HEAD
 		// 	values: Object
+=======
+		// 	node: Object
+>>>>>>> user can add, remove and edit placeholder nodes.
 		// }
 		var tablename = node.username + '_' + node.tablename;
 		// edits node in database using same external API endpoint
