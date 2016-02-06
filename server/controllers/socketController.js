@@ -1,7 +1,5 @@
 var r = require('rethinkdb');
 var server = require('../server').server;
-// var io = require('socket.io')(server);
-// var io = require('../server').io
 
 var connection = null;
 r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
@@ -17,7 +15,6 @@ module.exports = {
 		// 	username: String,e
 		// 	values: Array
 		// }
-		console.log('Node: ', node)
 		var tablename = node.username + '_' + node.tablename;
 		r.db('apiTables').table(tablename).insert(node.values).run(connection, function(err, response) {
 			if (err) { console.log('There was error adding to ' + tablename); }
@@ -58,19 +55,17 @@ module.exports = {
 		var io = require('../server').io
 		
     var tablename = req.params.tablename;
+		var emitmessage = 'update ' + tablename;
     
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { throw err; }
       cursor.toArray(function(err, results) {
-        console.log('Results: ', results)
         res.status(200).send(results);
 				r.table(tablename).changes({ includeInitial: true }).run(connection, function(err, cursor) {
 					if (err) { throw new Error(err); }
-					console.log('changefeed is open.')
 					cursor.each(function(err, node) {
 						console.log('node: ', node)
 						// socket io needs to emit an 'update' + table message with the item
-						var emitmessage = 'update ' + tablename;
 						io.emit(emitmessage, node);
 						console.log('Emitting: ', 'update ' + tablename);
 					})
