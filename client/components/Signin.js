@@ -28,7 +28,7 @@ class Signin extends Component {
       },
       body: JSON.stringify(user)
     })
-    .then((res) => { return res.text(); })
+    .then((res) => { return res.json(); })
     .then(function(json) {
       var user = JSON.stringify(json)
       localStorage.setItem('sift-user', user);
