@@ -1,4 +1,6 @@
 var r = require('rethinkdb');
+var server = require('../server').server;
+var io = require('socket.io')(server);
 
 var connection = null;
 r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
@@ -6,19 +8,7 @@ r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
   connection = conn;
 });
 
-var socketMethods = {
-
-	startIOConnection: function(tablename, callback) {
-		// opens up a stream connection to rethinkDB
-		r.table(tablename).changes({ includeInitial: true }).run(conn, function(err, cursor) {
-			if (err) { throw new Error(err); }
-			console.log('changefeed is open.')
-			cursor.each(function(node) {
-				// socket io needs to emit an 'update' + table message with the item
-				io.sockets.emit("update " + tablename, node);
-			})
-		});
-	},
+module.exports = {
 
 	addNode: function(node) {
 		// node = {
@@ -26,14 +16,13 @@ var socketMethods = {
 		// 	username: String,
 		// 	values: Array
 		// }
+		console.log('Node: ', node)
 		var tablename = node.username + '_' + node.tablename;
-		// adds node to database using same external API endpoint
 		r.db('apiTables').table(tablename).insert(node.values).run(connection, function(err, response) {
 			if (err) { console.log('There was error adding to ' + tablename); }
 			console.log('Added node to ' + tablename);
 		})
 	},
-
 
 	editNode: function(node) {
 		// node = {
@@ -62,8 +51,28 @@ var socketMethods = {
       if (err) { console.log('There was error deleting node from ' + tablename); }
       console.log('Removed node from ' + tablename);
     })
-	}
+	},
 
+	getTableAndOpenConnection: function(req, res) {
+		
+    var tablename = req.params.tablename;
+    
+    r.table(tablename).run(connection, function(err, cursor) {
+      if (err) { throw err; }
+      cursor.toArray(function(err, results) {
+        console.log('Results: ', results)
+        res.status(200).send(results);
+				r.table(tablename).changes({ includeInitial: true }).run(connection, function(err, cursor) {
+					if (err) { throw new Error(err); }
+					console.log('changefeed is open.')
+					cursor.each(function(node) {
+						// socket io needs to emit an 'update' + table message with the item
+						socket.emit('update ' + tablename, node);
+						console.log('Emitting: ', 'update ' + tablename);
+					})
+				});
+      });
+    });
+	}
 };
 
-module.exports = socketMethods;
