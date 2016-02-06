@@ -48,7 +48,7 @@ module.exports = {
   // this method creates a new table with generated data 
   createUserTable: function(req, res) {
     //retrieve user from session store
-     var userID = 2;
+     var userID = 1;
     // console.log('req.user in createUserTable', req.user);
     
     var columns = utils.parseColumnNames(req.body)

@@ -45,7 +45,8 @@ class Homepage extends Component {
       userTables: {}
     }
     this.navigation = this.navigation.bind(this);
-    this.renderDashTable =this.renderDashTable.bind(this);
+    this.renderDashTable = this.renderDashTable.bind(this);
+    this.removeTable = this.removeTable.bind(this);
   }
   
   componentWillMount() {
@@ -70,9 +71,21 @@ class Homepage extends Component {
   renderDashTable(table) {
    
     return(
-      <DashTable nav={this.navigation} table={table} index={table} />
+      <DashTable nav={this.navigation} removeTable = {this.removeTable} table={table} index={table} />
       )
   }
+
+  removeTable (tableID) {
+    console.log('tableID', tableID);
+    console.log('this.state', this.state);
+    deleteTable(tableID);
+    var that = this;
+    getTables(function(res){
+      that.setState({userTables: res})
+      console.log('this.state', that.state)
+    });
+
+  }  
 
 
   render() {
@@ -103,11 +116,7 @@ class Homepage extends Component {
 
 class DashTable extends Component {
 
-  removeTable (tableID) {
-    console.log('tableID', tableID);
-    deleteTable(tableID);
 
-  }  
 
   render() {
     const style = {
@@ -130,9 +139,9 @@ class DashTable extends Component {
        height: '10px',
         width: '1px'
     }
-    return (
+    return ( 
         <Paper style={style}  zDepth={5} rounded={false}>
-          <IconButton onClick={()=>this.removeTable(this.props.table.id)} style={iconStyle}>
+          <IconButton onClick={()=>this.props.removeTable(this.props.table.id)} style={iconStyle}>
             <Delete style={svgStyle}/>
           </IconButton>
           <h5>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
