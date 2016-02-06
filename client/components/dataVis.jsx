@@ -59,7 +59,6 @@ class DataVis extends Component {
     let username = JSON.parse(localStorage.getItem('sift-user')).username;
     let tablename = username + '_' + this.state.tablename;
     var emitmessage = 'update ' + tablename;
-    
 
     h.loadTable(tablename, function(data) {
       this.setState({
