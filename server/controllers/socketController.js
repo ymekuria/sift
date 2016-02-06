@@ -26,7 +26,7 @@ module.exports = {
 		// node = {
 		// 	tablename: String,
 		// 	username: String,
-		//  rowId = Number,
+		//  rowId = String,
 		// 	node: Object
 		// }
 		var tablename = node.username + '_' + node.tablename;
@@ -41,7 +41,7 @@ module.exports = {
 		// node = {
 		// 	tablename: String,
 		// 	username: String,
-		// 	rowId: Number
+		// 	rowId: String
 		// }
 		var tablename = node.username + '_' + node.tablename;
 		// removes node from database using same external API endpoint
