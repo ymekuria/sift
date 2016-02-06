@@ -11,7 +11,8 @@ const initialState = {
     currentCategory: 'names',
     all: all.all,
     byItem: by_item.items,
-    byCategory: by_category.categories
+    byCategory: by_category.categories,
+    tableName: ''
   },
   CurrentSelections: [],
   BuildOrder: {}

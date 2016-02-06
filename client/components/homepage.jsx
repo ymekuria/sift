@@ -76,15 +76,24 @@ class Homepage extends Component {
   }
 
   removeTable (tableID) {
+
+    
+    //console.log('tableID', tableID);
+    console.log('are you sure')
     var that = this;
     // makes an ajax call to delete the clicked table from the db
-    deleteTable(tableID, function(){
-      // makes a ajax call to update the state with the list of tables
-      getTables(function(res){ 
-        that.setState({userTables: res})
+    if( confirm("Are you sure want to delete all records of this table?") ) {
+      deleteTable(tableID, function(){
+        // makes a ajax call to update the state with the list of tables
+        getTables(function(res){ 
+          if( res === undefined) {
+            that.setState
+          }
+          that.setState({userTables: res})
+        });
       });
-    });
-
+     } 
+ 
   }  
 
 
@@ -94,18 +103,19 @@ class Homepage extends Component {
  
       <div className='container'>
 
-          <DashBanner userName={this.state.userTables[0].tablename.split("_")[0].toUpperCase()}/>
+          <DashBanner userName={ this.state.userTables[0].tablename.split("_")[0].toUpperCase()}r/>
        
 
 
         <div className='row'> 
-                    <h4 className="col-md-2   ">
+                    <h4 className="col-md-2  ">
             CURRENT TABLES
           </h4> 
           <div className='col-md-12'>
-           {/*pass in an object as props that has the table name and other relevant infor for the display*/}
-           {_.map(this.state.userTables,this.renderDashTable)}     
-           
+           {/*pass in an object as props that has the table name and other relevant infor for the display if usertables are indefined, display a messege*/}
+           {
+              _.map(this.state.userTables,this.renderDashTable)    
+           }
            
           </div>    
         </div>
@@ -145,6 +155,7 @@ class DashTable extends Component {
             <Delete style={svgStyle}/>
           </IconButton>
           <h5>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
+          
           <RaisedButton label="View Table" onClick={() => this.props.nav('/vis')} style={{margin: 5,
             position: 'relative',
            bottom: -50,
@@ -180,7 +191,7 @@ class DashBanner extends Component {
     <div className='dashBanner'>
       <div className='row'>
           <h2 className="col-md-4 col-md-offset-3 " >
-            WELCOME BACK TO SIFT {this.props.userName}
+            WELCOME BACK TO SIFT {this.props.userName||''}
           </h2>
           <h4 className="col-md-4 col-md-offset-4 dashOneliner">
             
@@ -196,6 +207,14 @@ class DashBanner extends Component {
     )
   }
 } 
+
+class DeleteOption extends Component {
+
+  render() {
+
+    <div>are you sure?</div>
+  }
+}
 
 
 

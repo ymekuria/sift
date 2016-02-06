@@ -11,14 +11,17 @@ const Selections = ({ selected }, { store }) => {
   return (
     <div>
     <div className='selectionHeader'>
-      <TextField hintText="Name Your Table " />
+      <form onClick={console.log('submit')}>
+        <input default='enterTable nae'></input>
+        <input type="submit" value="Submit"></input>
+      </form>
       <h3>Selections</h3>
       
       <IconButton
-      onClick={() => {
+      onClick={() => { console.log('this',this)
         store.dispatch({
         type: 'submit_table',
-        tableName: 'newTable'
+        tableName: 'Table'
       })}} 
       className='saveButton' 
       tooltip='save'>
