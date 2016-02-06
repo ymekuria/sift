@@ -7,14 +7,8 @@ var client = require('../utils/dbconnect').client;
 
 userMethods = {
 
-  getUser: function(req, res, next) {
-    // console.log(req);
-    next()
-  },
-
   isUserInDB: function(user, callback) {
     client.query('SELECT username FROM Users WHERE username=($1)', [user.username], function(err, rows) {
-      console.log(user)
       if (err) { throw new Error(err); }
       var inDB = rows.rows.length > 0;
       callback(inDB);
@@ -33,7 +27,6 @@ userMethods = {
   },
 
   findOrCreateGitHubUser: function(user, accessToken, refreshToken, next) {
-    console.log('Here is the GitHub user: ', user);
     client.query('SELECT id, email, displayname, githubtoken FROM Users WHERE email=($1)', [user._json.email], function(err, rows) {
       if (err) { throw new Error(err); }
       if (rows.rows.length === 0) { // does not exist, create a new one
@@ -114,8 +107,8 @@ userMethods = {
 
     client.query('INSERT INTO Users (username, displayName, email, githubtoken) VALUES ($1, $2, $3, $4)', [user.username, user.displayName, user.email, user.githubtoken], function(err, res) {
       if (err) { next(err); }
-      var token = jwt.encode(user.username, 'greenVeranda');
-      user.token = token;
+      // var token = jwt.encode(user.username, 'greenVeranda');
+      // user.token = token;
       callback(null, user);
     })
   },
