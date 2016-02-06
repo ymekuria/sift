@@ -90,16 +90,14 @@ const updateValue = (username, tableName, row) => {
   })
 }
 
-const deleteTable = (username, tableName) => {
+export const deleteTable = (tableId) => {
   //api/deleteTable:?usr=<username>
-  //delete a table
-  let url = 'api/deleteTable:?usr=' + username;
+  console.log('tableID in deletTabl ajax', tableId);
+  let url = 'http://localhost:5001/api/users/tables/' + tableId;
   return fetch(url, {
     method: 'DELETE',
     headers: {},
-    body: JSON.stringify({
-      tableName: tableName
-    })
+    body: {}
   })
   .then((response) => response.text())
   .then((text) => {

@@ -147,10 +147,14 @@ module.exports = {
   // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"} 
   // returns the table that was deleted.
   deleteTable: function(req, res) {
-    var username = req.user.username;
-    var userId = req.user.id;
+    //var username = req.user.username;
+    // var userId = req.user.id;
+    // hardcoded for testing
+    var userId = 1;
     
     var tableId = req.params.id
+    console.log('req.params',req.params);
+    console.log('tableID', tableId);
 
     client.query('SELECT tablename FROM Tables WHERE id = ' + tableId, function(err, results) {
       if (err) { throw err; }

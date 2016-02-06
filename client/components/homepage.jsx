@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash';
 import {getTables} from '../utils/utils.js'
+import {deleteTable} from '../utils/utils.js'
 
 
 // Material UI components
@@ -20,6 +21,7 @@ import Stats from 'material-ui/lib/svg-icons/action/assessment'
 import Info from 'material-ui/lib/svg-icons/action/info'
 import Home from 'material-ui/lib/svg-icons/action/home'
 import Settings from 'material-ui/lib/svg-icons/action/settings'
+import Delete from 'material-ui/lib/svg-icons/action/highlight-off'
 
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
@@ -68,7 +70,7 @@ class Homepage extends Component {
   renderDashTable(table) {
    
     return(
-      <DashTable nav={this.navigation} tableName={table.tablename} index={table} />
+      <DashTable nav={this.navigation} table={table} index={table} />
       )
   }
 
@@ -101,6 +103,11 @@ class Homepage extends Component {
 
 class DashTable extends Component {
 
+  removeTable (tableID) {
+    console.log('tableID', tableID);
+    deleteTable(tableID);
+
+  }  
 
   render() {
     const style = {
@@ -125,10 +132,10 @@ class DashTable extends Component {
     }
     return (
         <Paper style={style}  zDepth={5} rounded={false}>
-          <IconButton onClick={() => console.log('click')} style={iconStyle}>
-            <Settings style={svgStyle}/>
+          <IconButton onClick={()=>this.removeTable(this.props.table.id)} style={iconStyle}>
+            <Delete style={svgStyle}/>
           </IconButton>
-          <h5>{this.props.tableName.split("_")[1]}</h5>
+          <h5>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
           <RaisedButton label="View Table" onClick={() => this.props.nav('/vis')} style={{margin: 5,
             position: 'relative',
            bottom: -50,
