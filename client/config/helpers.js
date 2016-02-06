@@ -19,10 +19,10 @@ let helpers = {
 		// listens to 'update' + tablename
 		return fetch('/api/users/tables/' + tablename)
 		.then((res) => {
-			return res.text()
+			return res.json()
 		})
-		.then((response) => {
-			callback(response);
+		.then((json) => {
+			callback(json);
 		})
 		// when updated, re-render view
 	},

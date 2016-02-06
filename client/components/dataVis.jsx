@@ -14,7 +14,6 @@ class DataVis extends Component {
   }
 
   addNode(node) {
-    console.log('clicked')
     var node = {
       tablename: this.state.tablename,
       username: JSON.parse(localStorage.getItem('sift-user')).username,
@@ -45,8 +44,10 @@ class DataVis extends Component {
     });
 
     h.loadTable(tablename, function(data) {
-      console.log(data);
-    });
+      this.setState({
+        data: data }
+        );
+    }.bind(this));
 
 
     // function (data) {
