@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import h from '../config/helpers'
 import io from 'socket.io-client'
 
-let socket;
+let socket = io();
 
 class DataVis extends Component {
   constructor() {
@@ -35,7 +35,6 @@ class DataVis extends Component {
 
   componentDidMount() {
     // TODO: setState with tablename
-    socket = io();
     let username = JSON.parse(localStorage.getItem('sift-user')).username;
     let tablename = username + '_' + this.state.tablename;
     
