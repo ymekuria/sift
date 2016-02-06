@@ -67,8 +67,8 @@ module.exports = {
 				r.table(tablename).changes({ includeInitial: true }).run(connection, function(err, cursor) {
 					if (err) { throw new Error(err); }
 					console.log('changefeed is open.')
-					console.log('Cursor: ', cursor)
-					cursor.each(function(node) {
+					cursor.each(function(err, node) {
+						console.log('node: ', node)
 						// socket io needs to emit an 'update' + table message with the item
 						var emitmessage = 'update ' + tablename;
 						io.emit(emitmessage, node);
