@@ -15,14 +15,14 @@ let helpers = {
 		})
 	},
 
-	loadTable: function(tablename) {
+	loadTable: function(tablename, callback) {
 		// listens to 'update' + tablename
 		return fetch('/api/users/tables/' + tablename)
 		.then((res) => {
 			return res.text()
 		})
 		.then((response) => {
-			console.log(response);
+			callback(response);
 		})
 		// when updated, re-render view
 	},
