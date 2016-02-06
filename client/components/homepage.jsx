@@ -78,12 +78,24 @@ class Homepage extends Component {
   removeTable (tableID) {
     console.log('tableID', tableID);
     console.log('this.state', this.state);
-    deleteTable(tableID);
     var that = this;
-    getTables(function(res){
-      that.setState({userTables: res})
-      console.log('this.state', that.state)
+    console.log('that in remove', that);
+    deleteTable(tableID, function(){
+      console.log('that in delete', that);
+      getTables(function(res){
+      console.log('that in getTables', that);  
+        that.setState({userTables: res})
+        console.log('this.state', that.state)
+      });
     });
+
+
+
+    // var that = this;
+    // getTables(function(res){
+    //   that.setState({userTables: res})
+    //   console.log('this.state', that.state)
+    // });
 
   }  
 
