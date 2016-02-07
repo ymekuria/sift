@@ -8,9 +8,12 @@ let socket = io();
 class DataVis extends Component {
   constructor() {
     super()
-    this.state={
+    this.state = {
       tablename: 'newTable',
-      data: {}
+      data: {
+        name: '',
+        children: []
+      }
     }
   }
 
@@ -29,9 +32,9 @@ class DataVis extends Component {
     var node = {
       tablename: this.state.tablename,
       username: JSON.parse(localStorage.getItem('sift-user')).username,
-      rowId: '4006459e-c825-4926-9249-dcead36ffa04',
+      rowId: "39136d4d-dd5b-4235-87bf-53901ed3fd5a",
       node: {
-        firstName: 'Erik Brown changed this.'
+        lastName: 'Erik Brown changed this.'
       }
     };
     socket.emit('edit', node);
@@ -41,7 +44,7 @@ class DataVis extends Component {
     var node = {
       tablename: this.state.tablename,
       username: JSON.parse(localStorage.getItem('sift-user')).username,
-      rowId: '4006459e-c825-4926-9249-dcead36ffa04'
+      rowId: "433a7a25-0b17-4cee-90f5-9a1e53cba7ab"
     };
     socket.emit('remove', node);
   }
@@ -61,7 +64,7 @@ class DataVis extends Component {
 
     socket.on(emitmessage, function(data) {
       this.handleData(data)
-    });
+    }.bind(this));
 
   }
 
@@ -70,11 +73,11 @@ class DataVis extends Component {
     var tabledata = this.state.data;
     // inserting new data
     if (!data.old_val) {
-      update = tabledata.children
-      update.push(data.new_val)
+      update = h.formatData(data.new_val)
+      tabledata.children.push(update);
     // deleting data
     } else if (!data.new_val) {
-      update = tabledata.children.filter(function(row) {
+      tabledata.children = tabledata.children.filter(function(row) {
         return row.name !== data.old_val.id
       })
     // updating existing nodes
@@ -95,7 +98,7 @@ class DataVis extends Component {
     }
 
     this.setState({
-      data: update
+      data: tabledata
     })
   }
 
