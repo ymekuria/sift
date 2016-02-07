@@ -13,11 +13,11 @@ module.exports = {
 	addNode: function(node) {
 		// node = {
 		// 	tablename: String,
-		// 	username: String,e
-		// 	values: Array
+		// 	username: String,
+		// 	node: Object
 		// }
 		var tablename = node.username + '_' + node.tablename;
-		r.db('apiTables').table(tablename).insert(node.values).run(connection, function(err, response) {
+		r.db('apiTables').table(tablename).insert(node.node).run(connection, function(err, response) {
 			if (err) { console.log('There was error adding to ' + tablename); }
 			console.log('Added node to ' + tablename);
 		})
