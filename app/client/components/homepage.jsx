@@ -12,10 +12,6 @@ import { routeActions } from 'react-router-redux'
 //import { FontIcon, IconButton, LeftNav} from 'material-ui'
 import store from '../store.jsx'
 
-import Build from 'material-ui/lib/svg-icons/action/build'
-import Stats from 'material-ui/lib/svg-icons/action/assessment'
-import Info from 'material-ui/lib/svg-icons/action/info'
-import Home from 'material-ui/lib/svg-icons/action/home'
 import Settings from 'material-ui/lib/svg-icons/action/settings'
 import Delete from 'material-ui/lib/svg-icons/action/highlight-off'
 
@@ -26,10 +22,8 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 class Homepage extends Component {
   constructor() {
     super();
-    //initialize userTables request to
-    //user table
-    //render a spinner while we are 
-    //getting the tables
+
+
     this.state={
       info: {},
       userTables: {}
@@ -149,10 +143,7 @@ class DashTable extends Component {
           
           <RaisedButton label="View Table" onClick={() => this.props.nav('/vis')} style={{margin: 5,
             position: 'relative',
-           bottom: -50,
-           
-
-         }} />
+           bottom: -50, }} />
 
        </Paper>
 

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import IconButton from 'material-ui/lib/icon-button';
+import Paper from 'material-ui/lib/paper';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 class Signup extends Component {
 
@@ -51,14 +54,26 @@ class Signup extends Component {
   }
 	
   render() {
+        const style = {
+    height: 400,
+    width: 300,
+    margin: 20,
+    textAlign: 'center',
+    display: 'inline-block'
+
+
+  };
     return (
-      <div className='signin'>
-        <form action='/auth/github' method='get'>
-          <button type='submit'>Sign up with GitHub</button>
-        </form>
-       <span> -- OR -- </span>
-       { this.state.message }
-       <form onSubmit={ this.localSignup.bind(this) }>
+
+      <div className="signupBackground">
+        <div className='col-md-4 col-md-offset-4 signinPaper'>
+          <Paper style={style}  zDepth={5} rounded={true}>
+            <form action='/auth/github' method='get'>
+              <RaisedButton type='submit'>Sign up with GitHub</RaisedButton>
+            </form>
+
+                   <form action='/api/users' method='post'>
+
          <input type='text' ref='first' name='first' placeholder='First Name' />
          <input type='text' ref='last' name='last' placeholder='Last Name' />
          <input type='email' ref='email' name='email' placeholder='email address' />
@@ -67,7 +82,13 @@ class Signup extends Component {
          <button type='submit'>Sign Up</button>
          <a href='#/signin'>Already have an account?</a>
        </form>
-      </div>
+
+              
+
+
+          </Paper>
+        </div>  
+      </div>  
     );
   }
 };
