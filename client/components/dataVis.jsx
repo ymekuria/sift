@@ -24,8 +24,8 @@ class DataVis extends Component {
     //   }
     // };
 
-    node.tablename: this.state.tablename;
-    node.username: JSON.parse(localStorage.getItem('sift-user')).username;
+    node.tablename = this.state.tablename;
+    node.username = JSON.parse(localStorage.getItem('sift-user')).username;
     socket.emit('add', node);
   }
 
@@ -38,8 +38,8 @@ class DataVis extends Component {
     //   }
     // };
 
-    node.tablename: this.state.tablename;
-    node.username: JSON.parse(localStorage.getItem('sift-user')).username;
+    node.tablename = this.state.tablename;
+    node.username = JSON.parse(localStorage.getItem('sift-user')).username;
     socket.emit('edit', node);
   }
 
