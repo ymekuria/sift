@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import h from '../config/helpers'
 import io from 'socket.io-client'
+import _ from 'underscore'
 
 let socket = io();
 
@@ -9,7 +10,7 @@ class DataVis extends Component {
     super()
     this.state={
       tablename: 'newTable',
-      data: []
+      data: {}
     }
   }
 
@@ -59,26 +60,43 @@ class DataVis extends Component {
     }.bind(this));
 
     socket.on(emitmessage, function(data) {
-      console.log(data);
-      console.log('I heard you.')
+      this.handleData(data)
     });
 
-    // function (data) {
-    //   console.log('I heard that update!')
-    //   // if !new_val
-    //   // if (!data.new_val) {
-    //   //   // delete data.old_val from data
-    //   //   // this.state.data.push(data);
-    //   // // if !old_val
-    //   // } else if (!data.old_val) {
-    //   //   // add new_val as a new node
+  }
 
-    //   // // else
-    //   // } else {
-    //   //   // update old_val node with new_val node
-        
-    //   // }
-    // });
+  handleData(data) {
+    var update;
+    var tabledata = this.state.data;
+    // inserting new data
+    if (!data.old_val) {
+      update = tabledata.children
+      update.push(data.new_val)
+    // deleting data
+    } else if (!data.new_val) {
+      update = tabledata.children.filter(function(row) {
+        return row.name !== data.old_val.id
+      })
+    // updating existing nodes
+    } else {
+      update = tabledata.children.each(function(row) {
+        if (row.name === data.new_val.id) {
+          var newChildren = [];
+          _.each(data.new_val, function(value, key) {
+            if (key !== 'id') {
+              var obj = {};
+              obj[key] = value;
+              newChildren.push(obj);
+            }
+          })
+          row.children = newChildren;
+        }
+      })
+    }
+
+    this.setState({
+      data: update
+    })
   }
 
   render() {

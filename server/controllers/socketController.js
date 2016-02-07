@@ -1,5 +1,6 @@
 var r = require('rethinkdb');
 var server = require('../server').server;
+var _ = require('lodash');
 
 var connection = null;
 r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
@@ -56,12 +57,32 @@ module.exports = {
 		
     var tablename = req.params.tablename;
 		var emitmessage = 'update ' + tablename;
+		var data = {
+			name: tablename,
+			children: []
+		};
     
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { throw err; }
       cursor.toArray(function(err, results) {
-        res.status(200).send(results);
-				r.table(tablename).changes({ includeInitial: true }).run(connection, function(err, cursor) {
+      	console.log('Results: ', results)
+      	_.each(results, function(row) {
+      		var rowObject = {
+      			children: []
+      		};
+      		_.each(row, function(value, key) {
+      			if (key === 'id') {
+      				rowObject.name = value;
+      			} else {
+      				var object = {};
+      				object[key] = value;
+      				rowObject.children.push(object);
+      			}
+      		})
+      		data.children.push(rowObject);
+      	})
+
+				r.table(tablename).changes().run(connection, function(err, cursor) {
 					if (err) { throw new Error(err); }
 					cursor.each(function(err, node) {
 						console.log('node: ', node)
@@ -70,6 +91,8 @@ module.exports = {
 						console.log('Emitting: ', 'update ' + tablename);
 					})
 				});
+
+				res.status(200).send(data);
       });
     });
 	}
