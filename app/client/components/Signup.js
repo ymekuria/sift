@@ -72,18 +72,23 @@ class Signup extends Component {
               <RaisedButton type='submit'>Sign up with GitHub</RaisedButton>
             </form>
 
-                   <form action='/api/users' method='post'>
-
-         <input type='text' ref='first' name='first' placeholder='First Name' />
+            <span> -- OR -- </span>
+                 <form className ="form-group" action='/api/users' method='post'>
+                    <label>First Name:</label>
+                    <input type='text' ref='first' name='first' placeholder='First Name' />
+                    <label>Last Name:</label>
          <input type='text' ref='last' name='last' placeholder='Last Name' />
+         <label>Email:</label>
          <input type='email' ref='email' name='email' placeholder='email address' />
+         <label>Password:</label>
          <input type='password' ref='password' name='password' placeholder='password' />
+         <label>Confirm Password:</label>
          <input type='password' ref='confomr' name='confirm' placeholder='Comfirm Password' />
-         <button type='submit'>Sign Up</button>
+         <RaisedButton type='submit'style ={{'display':'block','width':'60%','position':'relative','left': '20%'}} >Sign Up</RaisedButton>
          <a href='#/signin'>Already have an account?</a>
        </form>
 
-              
+
 
 
           </Paper>
