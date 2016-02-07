@@ -9,7 +9,7 @@ class DataVis extends Component {
   constructor() {
     super()
     this.state = {
-      tablename: 'newTable',
+      tablename: '',
       data: {
         name: '',
         children: []
@@ -18,18 +18,18 @@ class DataVis extends Component {
   }
 
   addNode(node) {
-    var node = {
+    node = node || {
       tablename: this.state.tablename,
       username: JSON.parse(localStorage.getItem('sift-user')).username,
-      values: {
-        lastname: 'Brown'
+      node: {
+        lastName: 'Brown'
       }
     };
     socket.emit('add', node);
   }
 
   editNode(node) {
-    var node = {
+    node = node || {
       tablename: this.state.tablename,
       username: JSON.parse(localStorage.getItem('sift-user')).username,
       rowId: "39136d4d-dd5b-4235-87bf-53901ed3fd5a",
@@ -41,7 +41,7 @@ class DataVis extends Component {
   }
 
   removeNode(node) {
-    var node = {
+    node = node || {
       tablename: this.state.tablename,
       username: JSON.parse(localStorage.getItem('sift-user')).username,
       rowId: "433a7a25-0b17-4cee-90f5-9a1e53cba7ab"
