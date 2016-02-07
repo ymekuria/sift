@@ -27,6 +27,22 @@ let helpers = {
 		// when updated, re-render view
 	},
 
+	formatData(node) {
+		var rowObject = {
+			children: []
+		};
+		_.each(node, function(value, key) {
+			if (key === 'id') {
+				rowObject.name = value;
+			} else {
+				var object = {};
+				object[key] = value;
+				rowObject.children.push(object);
+			}
+		});
+		return rowObject;
+	},
+
 	editNode: function(node, tablename) {
 		// emits to 'edit ' + tablename
 	},
