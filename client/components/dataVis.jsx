@@ -18,34 +18,39 @@ class DataVis extends Component {
   }
 
   addNode(node) {
-    node = node || {
-      tablename: this.state.tablename,
-      username: JSON.parse(localStorage.getItem('sift-user')).username,
-      node: {
-        lastName: 'Brown'
-      }
-    };
+    // node = {
+    //   values: {
+    //     lastName: 'Brown'
+    //   }
+    // };
+
+    node.tablename: this.state.tablename;
+    node.username: JSON.parse(localStorage.getItem('sift-user')).username;
     socket.emit('add', node);
   }
 
   editNode(node) {
-    node = node || {
-      tablename: this.state.tablename,
-      username: JSON.parse(localStorage.getItem('sift-user')).username,
-      rowId: "39136d4d-dd5b-4235-87bf-53901ed3fd5a",
-      node: {
-        lastName: 'Erik Brown changed this.'
-      }
-    };
+    // node = {
+    //   rowId: String,
+    //   values: {
+    //     lastName: 'Erik Brown changed this.'
+    //     all other key/value pairs
+    //   }
+    // };
+
+    node.tablename: this.state.tablename;
+    node.username: JSON.parse(localStorage.getItem('sift-user')).username;
     socket.emit('edit', node);
   }
 
-  removeNode(node) {
-    node = node || {
+  removeNode(rowId) {
+    // rowId = "433a7a25-0b17-4cee-90f5-9a1e53cba7ab"
+
+    var node = {
       tablename: this.state.tablename,
       username: JSON.parse(localStorage.getItem('sift-user')).username,
-      rowId: "433a7a25-0b17-4cee-90f5-9a1e53cba7ab"
-    };
+      rowId: rowId
+    }
     socket.emit('remove', node);
   }
 
@@ -105,9 +110,6 @@ class DataVis extends Component {
   render() {
     return (
       <div className='dataVis'>
-        <button onClick={ this.addNode.bind(this) }>Add Node</button>
-        <button onClick={ this.editNode.bind(this) }>Edit Node</button>
-        <button onClick={ this.removeNode.bind(this) }>Remove Node</button>
       </div>
     );
   }
