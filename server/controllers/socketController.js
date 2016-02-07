@@ -14,10 +14,10 @@ module.exports = {
 		// node = {
 		// 	tablename: String,
 		// 	username: String,
-		// 	node: Object
+		// 	values: Object
 		// }
 		var tablename = node.username + '_' + node.tablename;
-		r.db('apiTables').table(tablename).insert(node.node).run(connection, function(err, response) {
+		r.db('apiTables').table(tablename).insert(node.values).run(connection, function(err, response) {
 			if (err) { console.log('There was error adding to ' + tablename); }
 			console.log('Added node to ' + tablename);
 		})
@@ -28,11 +28,11 @@ module.exports = {
 		// 	tablename: String,
 		// 	username: String,
 		//  rowId = String,
-		// 	node: Object
+		// 	values: Object
 		// }
 		var tablename = node.username + '_' + node.tablename;
 		// edits node in database using same external API endpoint
-		r.table(tablename).get(node.rowId).update(node.node).run(connection, function(err, results) {
+		r.table(tablename).get(node.rowId).update(node.values).run(connection, function(err, results) {
       if (err) { console.log('There was error updating to ' + tablename); }
       console.log('Edited node on ' + tablename);
     })
