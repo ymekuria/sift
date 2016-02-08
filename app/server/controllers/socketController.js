@@ -1,3 +1,4 @@
+
 var r = require('rethinkdb');
 var server = require('../server').server;
 var _ = require('lodash');
@@ -97,4 +98,3 @@ var socketMethods = {
     });
 	}
 };
-

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { createTable } from '../utils/utils.js'
 import Selections from './selections.jsx'

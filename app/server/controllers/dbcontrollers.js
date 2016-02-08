@@ -1,3 +1,4 @@
+
 var client = require('../utils/dbconnect').client;
 var r = require('rethinkdb');
 var socketController = require('./socketController')
@@ -12,6 +13,13 @@ var config = require('../server.js')
 // var io = sockio.listen(config.server);
 // var client = new pg.Client(psqlDB.connectionString);
 // client.connect();
+var rConnectConfig;
+
+if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
+  rConnectConfig = { host: 'rethink', port: 28015, db: 'apiTables' }
+} else {
+  rConnectConfig =  { host: 'localhost', db: 'apiTables' }
+}
 
 var connection = null;
 r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
