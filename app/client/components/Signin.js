@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Paper from 'material-ui/lib/paper';
 
 class Signin extends Component {
 
@@ -40,8 +41,17 @@ class Signin extends Component {
   }
 	
   render() {
+            const style = {
+    height: 400,
+    width: 300,
+    margin: 20,
+    textAlign: 'center',
+    display: 'inline-block'
+ };
     return (
-      <div className='signin'>
+      <div className='signupBackground'>
+        <div className='col-md-4 col-md-offset-4 signinPaper'>
+          <Paper style={style}  zDepth={5} rounded={true}>
         <form action='/auth/github' method='get'>
           <button type='submit'>Sign in with GitHub</button>
         </form>
@@ -52,6 +62,8 @@ class Signin extends Component {
          <button type='submit'>Sign In</button>
        </form>
        <a href='#/signup'>Need an account?</a>
+        </Paper>
+       </div>
       </div>
     );
   }
