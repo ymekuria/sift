@@ -128,21 +128,14 @@ var test = React.createClass({
 			<h5>Table Name :</h5>
 			<div>{this.state.tableValue}</div>
 			<h5>column Created :</h5>
-
 			{columns.map(function(a){return <div>{a}</div>})}
-
 			{/*//////CREATE TABLE BUTTON////////*/}
 			<div style={{ marginTop: 14 }}>
 				<button type="button" onClick={this.focusStateSelect}>Create table</button>
 			</div>
-
-
 			</div>
 		);
 	}
-
 });
-
-
 
 export default test
