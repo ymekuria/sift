@@ -1,4 +1,4 @@
-  import React from 'react'
+import React from 'react'
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
@@ -56,4 +56,3 @@ Selections.contextTypes = {
 }
 
 export default Selections
-

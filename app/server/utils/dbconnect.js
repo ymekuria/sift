@@ -1,6 +1,13 @@
+
 var pg = require('pg');
 // var r = require('rethinkdb');
-var connectionString = process.env.DATABASE_URL || 'postgres://postgres@localhost:5432/sift',
+var connectionString;
+
+if (process.env.POSTGRES_PORT_5432_TCP_ADDR) {
+  connectionString = 'postgres://postgres@postgres:5432';
+} else {
+  connectionString = 'postgres://postgres@localhost:5432/sift'
+}
 
 // postgres connection
 client = new pg.Client(connectionString);
@@ -31,3 +38,4 @@ client.query('CREATE TABLE IF NOT EXISTS Tables (' +
 module.exports = {
 	client: client
 }
+

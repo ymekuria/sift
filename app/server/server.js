@@ -14,7 +14,7 @@ var utils = require('./utils/utils')
 var pg = require('pg');
 var app = express();
 var cors = require('cors');
-
+console.log('here')
 // Middleware. Add below as needed
 // app.use(cors());
 // app.use(morgan('dev'));

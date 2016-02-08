@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
@@ -20,6 +21,3 @@ ReactDOM.render(
     <Router history={browserHistory}>{routes}</Router>
   </Provider>, document.getElementById('root')
  )
-
-
-

@@ -7,10 +7,10 @@
     "node": "4.2.2"
   },
   "scripts": {
-    "test_client": "mocha client/spec",
+    "test_client": "mocha 'client/spec/*.test.js' --compilers js:babel-core/register",
     "test": "mocha server/spec",
-    "start": "nodemon server/server.js",
-    "webpack": "node devServer.js"
+    "start": "nodemon devServer.js",
+    "webpack": "node app/devServer.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "autobind-decorator": "^1.3.3",
     "babel-preset-stage-2": "^6.3.13",
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.2.2",
     "body-parser": "^1.14.2",
     "chai": "^3.4.1",
     "cookie-parser": "^1.4.1",
@@ -55,6 +56,7 @@
     "react-tap-event-plugin": "^0.2.1",
     "redux": "^3.2.1",
     "request": "^2.69.0",
+    "request-promise": "^2.0.0",
     "rethinkdb": "^2.2.1",
     "sinon": "^1.17.2",
     "socket.io": "^1.4.5",
@@ -74,8 +76,10 @@
     "eslint-plugin-babel": "^3.0.0",
     "eslint-plugin-react": "^3.16.1",
     "eventsource-polyfill": "^0.9.6",
-    "expect": "^1.13.4",
+    "expect": "^1.14.0",
+    "expect-jsx": "^2.3.0",
     "mocha": "^2.4.5",
+    "react-addons-test-utils": "^0.14.7",
     "rimraf": "^2.5.1",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.12",

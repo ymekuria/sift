@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { router } from 'react-router'
 import { routeActions } from 'react-router-redux'

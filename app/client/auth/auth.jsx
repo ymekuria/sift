@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { routeActions } from 'react-router-redux'
 import store from '../store.jsx'
 
@@ -10,7 +10,10 @@ import store from '../store.jsx'
 
 export function requireAuth(Component) {
 
-  class AuthenticatedComponent extends Component {
+  class AuthenticatedComponent extends React.Component {
+    constructor() {
+      super();
+    }
     //the below logic relies on the token being in local
     //storage and being able to check it.
     componentWillMount() {
