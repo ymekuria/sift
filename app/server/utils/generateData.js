@@ -1,4 +1,4 @@
-var faker = require('Faker');
+var faker = require('faker');
 var _ = require('lodash');
 // var underscore = require('underscore')
 var dataIndex = require('./dataIndex/write.js');
