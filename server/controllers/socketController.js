@@ -1,55 +1,100 @@
-var pg = require('pg');
-var app = require('../server.js')
-var db = require('../utils/dbconnect.js');
+var r = require('rethinkdb');
+var server = require('../server').server;
+var _ = require('lodash');
 
-var client = new pg.Client(db.connectionString);
-client.connect();
+var connection = null;
+r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
+  if (err) throw err;
+  connection = conn;
+});
 
-module.exports = {
+var socketMethods = {
 
-	addNode: function(node, callback) {
+	addNode: function(node) {
 		// node = {
 		// 	tablename: String,
 		// 	username: String,
-		// 	values: Array
+		// 	values: Object
 		// }
-		var table = node.username + '_' + node.tablename;
-		var values = node.values.join(', ');
-		var queryString = 'INSERT INTO ' + table + 'VALUES (' + values + ');'; 
-		db.query(queryString, function(err, res) {
-			callback(res);
+		var tablename = node.username + '_' + node.tablename;
+		r.db('apiTables').table(tablename).insert(node.values).run(connection, function(err, response) {
+			if (err) { console.log('There was error adding to ' + tablename); }
+			console.log('Added node to ' + tablename);
 		})
-
 	},
 
-
-	editNode: function(node, callback) {
+	editNode: function(node) {
 		// node = {
 		// 	tablename: String,
 		// 	username: String,
-		//  rowId = Number,
-		// 	updatedColumns: Array,
-		// 	updatedValues: Array
+		//  rowId = String,
+		// 	values: Object
 		// }
-		var table = node.username + '_' + node.tablename;
-		var columns = node.updatedColumns.join(',');
-		var values = node.updatedValues.join(',');
-		var queryString = 'UPDATE ' + table + ' SET (' + columns + ') = (' + values + ') WHERE id = ' + node.rowId;
-		db.query(queryString, function(err, data) {
-			console.log(data);
-		});
+		var tablename = node.username + '_' + node.tablename;
+		// edits node in database using same external API endpoint
+		r.table(tablename).get(node.rowId).update(node.values).run(connection, function(err, results) {
+      if (err) { console.log('There was error updating to ' + tablename); }
+      console.log('Edited node on ' + tablename);
+    })
 	},
 
-	removeNode: function(node, callback) {
+	removeNode: function(node) {
 		// node = {
 		// 	tablename: String,
 		// 	username: String,
-		// 	rowId: Number
+		// 	rowId: String
 		// }
-		var queryString = 'DELETE FROM ' + node.username + '_' + node.tablename + ' WHERE id = ' + node.rowId;
-		db.query(queryString, function(err, data) {
-			console.log(data);
-		})
+		var tablename = node.username + '_' + node.tablename;
+		// removes node from database using same external API endpoint
+		r.table(tablename).get(node.rowId).delete().run(connection, function(err, results) {
+      if (err) { console.log('There was error deleting node from ' + tablename); }
+      console.log('Removed node from ' + tablename);
+    })
+	},
+
+	getTableAndOpenConnection: function(req, res) {
+		var io = require('../server').io
+		
+    var tablename = req.params.tablename;
+		var emitmessage = 'update ' + tablename;
+		var data = {
+			name: tablename,
+			children: []
+		};
+    
+    r.table(tablename).run(connection, function(err, cursor) {
+      if (err) { throw err; }
+      cursor.toArray(function(err, results) {
+      	console.log('Results: ', results)
+      	_.each(results, function(row) {
+      		var rowObject = {
+      			children: []
+      		};
+      		_.each(row, function(value, key) {
+      			if (key === 'id') {
+      				rowObject.name = value;
+      			} else {
+      				var object = {};
+      				object[key] = value;
+      				rowObject.children.push(object);
+      			}
+      		})
+      		data.children.push(rowObject);
+      	})
+
+				r.table(tablename).changes().run(connection, function(err, cursor) {
+					if (err) { throw new Error(err); }
+					cursor.each(function(err, node) {
+						console.log('node: ', node)
+						// socket io needs to emit an 'update' + table message with the item
+						io.emit(emitmessage, node);
+						console.log('Emitting: ', 'update ' + tablename);
+					})
+				});
+
+				res.status(200).send(data);
+      });
+    });
 	}
-
 };
+
