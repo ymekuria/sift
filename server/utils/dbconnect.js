@@ -1,6 +1,6 @@
 var pg = require('pg');
 // var r = require('rethinkdb');
-var connectionString = process.env.DATABASE_URL || 'postgres://postgres@localhost:5432/sift',
+var connectionString = process.env.DATABASE_URL || 'postgres://seraph@localhost:5432/sift',
 
 // postgres connection
 client = new pg.Client(connectionString);
