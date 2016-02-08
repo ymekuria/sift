@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 import { createTable } from '../utils/utils.js'
 import Selections from './selections.jsx'
@@ -65,4 +66,6 @@ class DataEntry extends Component {
 DataEntry.contextTypes = {
   store: React.PropTypes.object
 }
+
 export default DataEntry
+

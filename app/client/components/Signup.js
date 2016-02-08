@@ -4,6 +4,9 @@ import IconButton from 'material-ui/lib/icon-button';
 import Paper from 'material-ui/lib/paper';
 import RaisedButton from 'material-ui/lib/raised-button';
 
+import FontIcon from 'material-ui/lib/font-icon';
+
+
 class Signup extends Component {
 
   constructor() {
@@ -68,7 +71,7 @@ class Signup extends Component {
       'position':'relative',
       'left': '20%',
       'color': 'blue',
-      'marginTop': '5'
+      'marginTop': '15'
 
     }; 
 
@@ -78,7 +81,7 @@ class Signup extends Component {
         <div className='col-md-4 col-md-offset-4 signinPaper'>
           <Paper style={style}  zDepth={5} rounded={true}>
             <form action='/auth/github' method='get'>
-              <RaisedButton type='submit'style={buttonStyle}>Sign up with GitHub</RaisedButton>
+              <RaisedButton type='submit'secondary={true} label="SIGIN WITH GITHUB" style={buttonStyle}></RaisedButton>
             </form>
 
             <span> -- OR -- </span><br/>
@@ -93,7 +96,9 @@ class Signup extends Component {
                 <input className =" form-group form-control" type='password' ref='password' name='password' placeholder='password' />
                  
                 <input className ="form-group form-control" type='password' ref='confomr' name='confirm' placeholder='Comfirm Password' />
-                 <RaisedButton type='submit'style ={buttonStyle} >Sign Up</RaisedButton>
+
+                 <RaisedButton secondary={true} label = 'SIGN UP' type='submit'style ={buttonStyle} ></RaisedButton>
+
                 <a href='#/signin'>Already have an account?</a>
            </form>
 

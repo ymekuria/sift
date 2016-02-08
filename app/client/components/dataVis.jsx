@@ -1,121 +1,123 @@
-import React, { Component } from 'react'
-import h from '../config/helpers'
-import io from 'socket.io-client'
-import _ from 'underscore'
-import dndTree from './dndTree.js'
-import store from '../store'
 
-let socket = io();
+// import React, { Component } from 'react'
+// import h from '../config/helpers'
+// import io from 'socket.io-client'
+// import _ from 'underscore'
+// import dndTree from './dndTree.js'
+// import store from '../store'
 
-class DataVis extends Component {
-  constructor() {
-    super()
-    this.state = {
-      tablename: store.getState().buildTable.dataVisTable,
-      data: {
-        name: '',
-        children: []
-      }
-    }
-  }
+// let socket = io();
 
-  addNode(node) {
-    // node = {
-    //   values: {
-    //     lastName: 'Brown'
-    //   }
-    // };
+// class DataVis extends Component {
+//   constructor() {
+//     super()
+//     this.state = {
+//       tablename: store.getState().buildTable.dataVisTable,
+//       data: {
+//         name: '',
+//         children: []
+//       }
+//     }
+//   }
 
-    node.tablename = this.state.tablename;
-    node.username = JSON.parse(localStorage.getItem('sift-user')).username;
-    socket.emit('add', node);
-  }
+//   addNode(node) {
+//     // node = {
+//     //   values: {
+//     //     lastName: 'Brown'
+//     //   }
+//     // };
 
-  editNode(node) {
-    // node = {
-    //   rowId: String,
-    //   values: {
-    //     lastName: 'Erik Brown changed this.'
-    //     all other key/value pairs
-    //   }
-    // };
+//     node.tablename = this.state.tablename;
+//     node.username = JSON.parse(localStorage.getItem('sift-user')).username;
+//     socket.emit('add', node);
+//   }
 
-    node.tablename = this.state.tablename;
-    node.username = JSON.parse(localStorage.getItem('sift-user')).username;
-    socket.emit('edit', node);
-  }
+//   editNode(node) {
+//     // node = {
+//     //   rowId: String,
+//     //   values: {
+//     //     lastName: 'Erik Brown changed this.'
+//     //     all other key/value pairs
+//     //   }
+//     // };
 
-  removeNode(rowId) {
-    // rowId = "433a7a25-0b17-4cee-90f5-9a1e53cba7ab"
+//     node.tablename = this.state.tablename;
+//     node.username = JSON.parse(localStorage.getItem('sift-user')).username;
+//     socket.emit('edit', node);
+//   }
 
-    var node = {
-      tablename: this.state.tablename,
-      username: JSON.parse(localStorage.getItem('sift-user')).username,
-      rowId: rowId
-    }
-    socket.emit('remove', node);
-  }
+//   removeNode(rowId) {
+//     // rowId = "433a7a25-0b17-4cee-90f5-9a1e53cba7ab"
 
-  componentDidMount() {
-    // TODO: setState with tablename
+//     var node = {
+//       tablename: this.state.tablename,
+//       username: JSON.parse(localStorage.getItem('sift-user')).username,
+//       rowId: rowId
+//     }
+//     socket.emit('remove', node);
+//   }
 
-    let username = JSON.parse(localStorage.getItem('sift-user')).username;
-    let tablename = username + '_' + this.state.tablename;
-    var emitmessage = 'update ' + tablename;
+//   componentDidMount() {
+//     // TODO: setState with tablename
 
-    h.loadTable(tablename, function(data) {
-      this.setState({
-        data: data 
-      });
-    }.bind(this));
+//     let username = JSON.parse(localStorage.getItem('sift-user')).username;
+//     let tablename = username + '_' + this.state.tablename;
+//     var emitmessage = 'update ' + tablename;
 
-    socket.on(emitmessage, function(data) {
-      this.handleData(data)
-    }.bind(this));
+//     h.loadTable(tablename, function(data) {
+//       this.setState({
+//         data: data 
+//       });
+//     }.bind(this));
 
-  }
+//     socket.on(emitmessage, function(data) {
+//       this.handleData(data)
+//     }.bind(this));
 
-  handleData(data) {
-    var update;
-    var tabledata = this.state.data;
-    // inserting new data
-    if (!data.old_val) {
-      update = h.formatData(data.new_val)
-      tabledata.children.push(update);
-    // deleting data
-    } else if (!data.new_val) {
-      tabledata.children = tabledata.children.filter(function(row) {
-        return row.name !== data.old_val.id
-      })
-    // updating existing nodes
-    } else {
-      update = tabledata.children.each(function(row) {
-        if (row.name === data.new_val.id) {
-          var newChildren = [];
-          _.each(data.new_val, function(value, key) {
-            if (key !== 'id') {
-              var obj = {};
-              obj[key] = value;
-              newChildren.push(obj);
-            }
-          })
-          row.children = newChildren;
-        }
-      })
-    }
+//   }
 
-    this.setState({
-      data: tabledata
-    })
-  }
+//   handleData(data) {
+//     var update;
+//     var tabledata = this.state.data;
+//     // inserting new data
+//     if (!data.old_val) {
+//       update = h.formatData(data.new_val)
+//       tabledata.children.push(update);
+//     // deleting data
+//     } else if (!data.new_val) {
+//       tabledata.children = tabledata.children.filter(function(row) {
+//         return row.name !== data.old_val.id
+//       })
+//     // updating existing nodes
+//     } else {
+//       update = tabledata.children.each(function(row) {
+//         if (row.name === data.new_val.id) {
+//           var newChildren = [];
+//           _.each(data.new_val, function(value, key) {
+//             if (key !== 'id') {
+//               var obj = {};
+//               obj[key] = value;
+//               newChildren.push(obj);
+//             }
+//           })
+//           row.children = newChildren;
+//         }
+//       })
+//     }
 
-  render() {
-    return(
-      <div className='dataVis'>
-      INSIDE DATA VIZ
-      <div id="tree-container"></div>
-      </div>
-    )  }
-}
+//     this.setState({
+//       data: tabledata
+//     })
+//   }
 
-export default DataVis
+//   render() {
+//     return(
+//       <div className='dataVis'>
+//       INSIDE DATA VIZ
+//       <div id="tree-container"></div>
+//       </div>
+//     )  }
+// }
+
+// export default DataVis
+

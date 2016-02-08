@@ -1,8 +1,12 @@
 
+
+
 var r = require('rethinkdb');
 var server = require('../server').server;
 var _ = require('lodash');
 var connection = null;
+
+
 var rConnectConfig;
 
 if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
@@ -12,6 +16,9 @@ if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
 }
 
 r.connect(rConnectConfig, function(err, conn) {
+
+r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
+
   if (err) throw err;
   connection = conn;
 });
@@ -99,3 +106,4 @@ var socketMethods = {
     });
 	}
 };
+

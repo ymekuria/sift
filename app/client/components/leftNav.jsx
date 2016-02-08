@@ -1,3 +1,7 @@
+<<<<<<< 9d9336632f6def01758f41547e1bdda650eac14f
+=======
+
+>>>>>>> reorganized files
 import React, { Component } from 'react';
 import { router } from 'react-router'
 import { routeActions } from 'react-router-redux'
@@ -67,4 +71,8 @@ LeftNavbar.contextTypes = {
   router: React.PropTypes.object.isRequired
 }
 
+<<<<<<< 9d9336632f6def01758f41547e1bdda650eac14f
 export default LeftNavbar
+=======
+export default LeftNavbar
+>>>>>>> reorganized files

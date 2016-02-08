@@ -118,4 +118,8 @@ userMethods = {
     callback(null, profile);
   }
 }
+<<<<<<< 9d9336632f6def01758f41547e1bdda650eac14f
+=======
+
+>>>>>>> reorganized files
 module.exports = userMethods;

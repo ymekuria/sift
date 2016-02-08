@@ -1,3 +1,5 @@
+
+
 body{
   background-color: #D3D3D3;
   overflow-x: hidden;
@@ -158,8 +160,12 @@ h3 {
 }
 .dashTableButton {
   display: block;
+<<<<<<< 9d9336632f6def01758f41547e1bdda650eac14f
 }
  
+=======
+ } 
+>>>>>>> reorganized files
 .node {
   cursor: pointer;
 }
@@ -173,7 +179,11 @@ h3 {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 1.5px;
+<<<<<<< 9d9336632f6def01758f41547e1bdda650eac14f
 
+=======
+}
+>>>>>>> reorganized files
 .signupBackground {
   background: linear-gradient(169deg,#0c63aa,#7ac4fa);
   width: 100%;

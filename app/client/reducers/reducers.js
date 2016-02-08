@@ -86,4 +86,8 @@ const buildTable = (state = initialState, action) => {
   }
    
 }
+<<<<<<< 9d9336632f6def01758f41547e1bdda650eac14f
 export default buildTable;
+=======
+export default buildTable;
+>>>>>>> reorganized files

@@ -11,6 +11,7 @@
     "test": "mocha server/spec",
     "start": "nodemon devServer.js",
     "webpack": "node app/devServer.js"
+
   },
   "repository": {
     "type": "git",

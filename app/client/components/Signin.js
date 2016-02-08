@@ -53,7 +53,7 @@ class Signin extends Component {
         <div className='col-md-4 col-md-offset-4 signinPaper'>
           <Paper style={style}  zDepth={5} rounded={true}>
         <form action='/auth/github' method='get'>
-          <button type='submit'>Sign in with GitHub</button>
+          <RaisedButton type='submit'secondary={true} label="SIGIN WITH GITHUB" style={buttonStyle}></RaisedButton>
         </form>
        <span> -- OR -- </span>
        <form onSubmit={ this.localSignin.bind(this) }>

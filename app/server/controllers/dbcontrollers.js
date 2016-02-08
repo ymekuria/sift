@@ -1,3 +1,4 @@
+
 var client = require('../utils/dbconnect').client;
 var r = require('rethinkdb');
 var socketController = require('./socketController')
@@ -5,6 +6,8 @@ var faker = require('faker');
 var _ = require('lodash');
 var utils = require('../utils/utils.js');
 var config = require('../server.js')
+
+
 var connection = null;
 var rConnectConfig;
 
@@ -15,6 +18,7 @@ if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
 }
 
 r.connect(rConnectConfig, function(err, conn) {
+
   if (err) throw err;
   connection = conn;
   r.dbCreate('apiTables').run(conn, function(err, conn) {
