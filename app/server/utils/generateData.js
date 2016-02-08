@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var faker = require('Faker');
 var _ = require('lodash');
 // var underscore = require('underscore')

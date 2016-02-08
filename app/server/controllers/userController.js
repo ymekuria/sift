@@ -118,3 +118,4 @@ userMethods = {
     callback(null, profile);
   }
 }
+module.exports = userMethods;

@@ -7,6 +7,8 @@ var passport = require('passport');
 
 module.exports = function(app, express, ensureAuth) {
 
+  console.log(userController)
+
   // local authentication
   app.post('/api/users', userController.createLocalUser, function(req, res) {
     res.redirect('/signin');
