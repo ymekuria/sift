@@ -80,7 +80,6 @@ var socketMethods = {
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { throw err; }
       cursor.toArray(function(err, results) {
-      	console.log('Results: ', results)
       	_.each(results, function(row) {
       		var rowObject = {
       			children: []
