@@ -4,7 +4,7 @@ import React from 'react'
 
 //db call helpers
 //zen - 'https://api.github.com/zen'
-export const createTable = (username, selections) => {
+export const createTable = (selections) => {
   //api/generateTable:?usr=<username>'
   //post data to db
   selections['tableName'] = tableName;
