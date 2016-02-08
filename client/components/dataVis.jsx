@@ -110,20 +110,12 @@ class DataVis extends Component {
   }
 
   render() {
-<<<<<<< d7b77342b6d483cd07b67a70b9448d47ea187a1d
-    return (
-      <div className='dataVis'>
-      </div>
-    );
-=======
     return(
       <div className='dataVis'>
       INSIDE DATA VIZ
       <div id="tree-container"></div>
       </div>
-    )
->>>>>>> broken code for file rearrangement
-  }
+    )  }
 }
 
 export default DataVis
