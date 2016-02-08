@@ -3,7 +3,7 @@ var r = require('rethinkdb');
 var socketController = require('./socketController')
 var faker = require('faker');
 var _ = require('lodash');
-var utils = require('../utils/generateData.js');
+var utils = require('../utils/utils.js');
 var config = require('../server.js')
 var connection = null;
 var rConnectConfig;
@@ -46,37 +46,48 @@ module.exports = {
   // this method creates a new table with generated data
   createUserTable: function(req, res) {
     //retrieve user from session store
-     var userID = 1;
-    // console.log('req.user in createUserTable', req.user);
-
-    var columns = utils.parseColumnNames(req.body)
-    var tablename = 'yoni' + '_' + req.body.tableName;
+    var userID = req.user.id;
+    var columns = utils.parseColumnNames(req.body);
+    var tablename = req.user.username + '_' + req.body.tableName;
     var fakeData = utils.generateData(req.body, columns, 20); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
 
-    //console.log('This is the rethinkDB connection: ', connection)
     // creating a new table
     r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
-      if (err) throw err;
-      // add fakeData to the table
-      r.db('apiTables').table(tablename).insert(fakeData).run(connection, function(err, response) {
-        if (err) { throw err; }
-        // add postgres query to save tablename to user list
-        columns = columns.join(',');
-        client.query('INSERT INTO Tables (userID, tablename, columns) VALUES ($1, $2, $3)', [userID, tablename, columns], function(err, response){
-          if (err) { throw err; }
-          res.sendStatus(200)
+      if (err) { utils.handleError(err); }
+      if (custom) {
+        addToPostgresTables(userID, tablename, columns, function(err) {
+          if (err) { utils.handleError(err); }
+          res.sendStatus(200);
         })
-      });
+      } else {
+        columns = columns.join(',');
+        addToPostgresTables(userID, tablename, columns, function(err) {
+          if (err) { utils.handleError(err); }
+          addFakeData(tablename, fakeData, function(err) {
+            res.sendStatus(200);
+          })
+        });
+      }
+    });
+  },
+
+  addToPostgresTables: function(userID, tablename, columns, cb) {
+    client.query('INSERT INTO Tables (userID, tablename, columns) VALUES ($1, $2, $3)', [userID, tablename, columns], function(err, response){
+      cb(err);
+    })
+  },
+
+  addFakeData: function(tablename, fakedata, cb) {
+    r.db('apiTables').table(tablename).insert(fakeData).run(connection, function(err, response) {
+      cb(err);
     });
   },
 
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
-    //console.log('req.user.id in getTables ', req.user.id)
-   // console.log('userID in getTables', userID);
-    var userID = 1;
-   console.log('userID in getTables', userID);
-    var queryString = "SELECT id, tablename, columns FROM tables WHERE userID = '" + userID + "';";
+    var userID = req.user.id;
+    var queryString = "SELECT id, tablename, columns FROM tables WHERE userID = '" + userID;
+    
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
         _.each(tableNames.rows, function(row) {
@@ -142,14 +153,10 @@ module.exports = {
   // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"}
   // returns the table that was deleted.
   deleteTable: function(req, res) {
-    //var username = req.user.username;
-    // var userId = req.user.id;
     // hardcoded for testing
-    var userId = 1;
-
+    var username = req.user.username;
+    var userId = req.user.id;
     var tableId = req.params.id
-    console.log('req.params',req.params);
-    console.log('tableID', tableId);
 
     client.query('SELECT tablename FROM Tables WHERE id = ' + tableId, function(err, results) {
       if (err) { throw err; }
@@ -169,5 +176,4 @@ module.exports = {
       });
     });
   }
-
 };
