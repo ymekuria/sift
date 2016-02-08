@@ -22,28 +22,24 @@ var test = React.createClass({
 
      ///////UPDATES DATA TYPE ///////
 	updateValue (newValue) {
-		console.log('Data type changed to ' + newValue);
 		this.setState({
 			dataValue: newValue
 		});
 	},
 	///////UPDATES TABLE NAME ///////
   updateTable (event) {
-    console.log('Table changed to ' + event.target.value);
     this.setState({
       tableValue:  event.target.value
     });
   },
 	///////UPDATES COLUMN NAME ///////
   updateColumn (event) {
-    console.log('Column changed to ' + event.target.value);
     this.setState({
       columnValue: event.target.value
     });
   },
 
 	focusStateSelect () {
-    console.log(this.state.columnValue, this.state.tableValue, this.state.dataValue);
 		this.refs.stateSelect.focus();
 	},
 
@@ -54,7 +50,6 @@ var test = React.createClass({
 		this.setState({
 				allColumns: columns,
 		});
-		console.log(this.state.allColumns);
 	},
 //REDUX
 	// componentDidMount() {
