@@ -5,11 +5,13 @@ var Select = require('react-select');
 const STATES = require('../data/dataTypes.js');
 
 var test = React.createClass({
+
 	getDefaultProps () {
 		return {
 			label: 'Select a Data Type:',
 		};
 	},
+
 	getInitialState () {
 		return {
 			country: 'dataTypes',
@@ -20,18 +22,20 @@ var test = React.createClass({
 		};
 	},
 
-     ///////UPDATES DATA TYPE ///////
+  ///////UPDATES DATA TYPE ///////
 	updateValue (newValue) {
 		this.setState({
 			dataValue: newValue
 		});
 	},
+
 	///////UPDATES TABLE NAME ///////
   updateTable (event) {
     this.setState({
       tableValue:  event.target.value
     });
   },
+  
 	///////UPDATES COLUMN NAME ///////
   updateColumn (event) {
     this.setState({
@@ -81,10 +85,8 @@ var test = React.createClass({
 		for (var key in this.state.allColumns ){
 			columns.push("Name : "+ key +" Type: "+ this.state.allColumns[key] );
 		}
-		console.log(columns);
 
 		const { country, dataValue, tableValue, columnValue, completeTable, allColumns } = this.context.store.getState().customTable;
-		console.log(country, dataValue, tableValue, columnValue, completeTable, allColumns)
 		return (
 
 			<div className="section">
