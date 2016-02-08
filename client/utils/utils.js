@@ -25,7 +25,7 @@ export const createTable = (tableName, selections) => {
   .catch((err) => console.log(err));
 }
 
-const getTable = (username, tableName) => {
+export const getTable = (username, tableName) => {
   //api/getOneTable:?usrTable=<username_table>
   //api/getOneTable
   //gets a single table
@@ -37,22 +37,24 @@ const getTable = (username, tableName) => {
   })
   .then((response) => response.text())
   .then((text) => {
-    console.log(text);
+    console.log('response',text);
   })
 }
 
-const getTables = (username) => {
+export const getTables = (cb) => {
   //api/getTables:?usr=<username>
   //retrieve all table names for a specific user
-  let url = 'api/getTables:?usr=' + username;
+  // console.log('username', username);
+  let url = 'http://localhost:5001/api/users/tables' 
   return fetch(url, {
     method: 'GET',
-    headers: {},
+    headers: {}, 
     body: {}
   })
   .then((response) => response.text())
   .then((text) => {
     console.log(text);
+    cb(JSON.parse(text));
   })
 }
 
@@ -88,19 +90,18 @@ const updateValue = (username, tableName, row) => {
   })
 }
 
-const deleteTable = (username, tableName) => {
+export const deleteTable = (tableId,cb) => {
   //api/deleteTable:?usr=<username>
-  //delete a table
-  let url = 'api/deleteTable:?usr=' + username;
+  console.log('tableID in deletTabl ajax', tableId);
+  let url = 'http://localhost:5001/api/users/tables/' + tableId;
   return fetch(url, {
     method: 'DELETE',
     headers: {},
-    body: JSON.stringify({
-      tableName: tableName
-    })
+    body: {}
   })
   .then((response) => response.text())
   .then((text) => {
+    cb();
     console.log(text);
   })
 }

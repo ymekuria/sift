@@ -48,14 +48,14 @@ module.exports = {
   // this method creates a new table with generated data 
   createUserTable: function(req, res) {
     //retrieve user from session store
-    var userID = req.user.id;
-    console.log(req.user);
+     var userID = 1;
+    // console.log('req.user in createUserTable', req.user);
     
     var columns = utils.parseColumnNames(req.body)
-    var tablename = req.user.username + '_' + req.body.tableName;
+    var tablename = 'yoni' + '_' + req.body.tableName;
     var fakeData = utils.generateData(req.body, columns, 20); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
     
-    console.log('This is the rethinkDB connection: ', connection)
+    //console.log('This is the rethinkDB connection: ', connection)
     // creating a new table
     r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
       if (err) throw err;
@@ -66,7 +66,7 @@ module.exports = {
         columns = columns.join(',');
         client.query('INSERT INTO Tables (userID, tablename, columns) VALUES ($1, $2, $3)', [userID, tablename, columns], function(err, response){
           if (err) { throw err; }
-          res.sendStatus(200);
+          res.sendStatus(200)
         })
       });
     });
@@ -74,8 +74,10 @@ module.exports = {
 
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
-
-    var userID = req.user.id;
+    //console.log('req.user.id in getTables ', req.user.id)
+   // console.log('userID in getTables', userID);
+    var userID = 1;
+   console.log('userID in getTables', userID);
     var queryString = "SELECT id, tablename, columns FROM tables WHERE userID = '" + userID + "';";
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
@@ -98,6 +100,7 @@ module.exports = {
         // res.status(200).send(results);
       });
     });
+  
   },
 
  // this posts to a users tables. The front-end sends a post request with the columns and new values
@@ -144,10 +147,14 @@ module.exports = {
   // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"} 
   // returns the table that was deleted.
   deleteTable: function(req, res) {
-    var username = req.user.username;
-    var userId = req.user.id;
+    //var username = req.user.username;
+    // var userId = req.user.id;
+    // hardcoded for testing
+    var userId = 1;
     
     var tableId = req.params.id
+    console.log('req.params',req.params);
+    console.log('tableID', tableId);
 
     client.query('SELECT tablename FROM Tables WHERE id = ' + tableId, function(err, results) {
       if (err) { throw err; }
@@ -157,7 +164,7 @@ module.exports = {
       tablename = results.rows[0].tablename;
       client.query('DELETE FROM Tables WHERE userID = ' + userId + ' AND id = ' + tableId, function(err, entireTable) {
         if (err) { throw new Error(err); }
-        console.log('entireTable', entireTable)
+        //console.log('entireTable', entireTable)
         var deletedTable = entireTable.rows;
 
         r.db('apiTables').tableDrop(tablename).run(connection, function(err, results) {

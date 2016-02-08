@@ -9,6 +9,8 @@ let viewStyles= {
   marginLeft: '47px'
 }
 require('../css/style.css')
+
+
 //this will be the top level app that renders everyting to root
 class Main extends Component {
 
