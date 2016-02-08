@@ -5,13 +5,7 @@ var faker = require('faker');
 var _ = require('lodash');
 var utils = require('../utils/generateData.js');
 var config = require('../server.js')
-
-// setting up Postgres connection
-// var io = sockio.listen(config.server);
-// var client = new pg.Client(psqlDB.connectionString);
-// client.connect();
 var connection = null;
-
 var rConnectConfig;
 
 if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
@@ -19,12 +13,10 @@ if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
 } else {
   rConnectConfig =  { host: 'localhost', db: 'apiTables' }
 }
-console.log('this is our connection for rethink', rConnectConfig)
 
 r.connect(rConnectConfig, function(err, conn) {
   if (err) throw err;
   connection = conn;
-  console.log('Connected to RethinkDB')
   r.dbCreate('apiTables').run(conn, function(err, conn) {
     console.log('Tables DB created in RethinkDB')
   });

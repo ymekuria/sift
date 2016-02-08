@@ -60,9 +60,9 @@ var socketMethods = {
 
 	getTableAndOpenConnection: function(req, res) {
 		var io = require('../server').io
-		
     var tablename = req.params.tablename;
 		var emitmessage = 'update ' + tablename;
+
 		var data = {
 			name: tablename,
 			children: []
@@ -90,13 +90,10 @@ var socketMethods = {
 				r.table(tablename).changes().run(connection, function(err, cursor) {
 					if (err) { throw new Error(err); }
 					cursor.each(function(err, node) {
-						console.log('node: ', node)
-						// socket io needs to emit an 'update' + table message with the item
 						io.emit(emitmessage, node);
-						console.log('Emitting: ', 'update ' + tablename);
 					})
 				});
-
+				
 				res.status(200).send(data);
       });
     });
