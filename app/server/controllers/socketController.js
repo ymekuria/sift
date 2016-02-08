@@ -2,9 +2,7 @@
 var r = require('rethinkdb');
 var server = require('../server').server;
 var _ = require('lodash');
-
 var connection = null;
-
 var rConnectConfig;
 
 if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
@@ -12,11 +10,6 @@ if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
 } else {
   rConnectConfig =  { host: 'localhost', db: 'apiTables' }
 }
-
-console.log('this is our rethink config', rConnectConfig)
-
-
-
 
 r.connect(rConnectConfig, function(err, conn) {
   if (err) throw err;
@@ -46,7 +39,6 @@ var socketMethods = {
 		// 	values: Object
 		// }
 		var tablename = node.username + '_' + node.tablename;
-		// edits node in database using same external API endpoint
 		r.table(tablename).get(node.rowId).update(node.values).run(connection, function(err, results) {
       if (err) { console.log('There was error updating to ' + tablename); }
       console.log('Edited node on ' + tablename);
@@ -60,7 +52,6 @@ var socketMethods = {
 		// 	rowId: String
 		// }
 		var tablename = node.username + '_' + node.tablename;
-		// removes node from database using same external API endpoint
 		r.table(tablename).get(node.rowId).delete().run(connection, function(err, results) {
       if (err) { console.log('There was error deleting node from ' + tablename); }
       console.log('Removed node from ' + tablename);

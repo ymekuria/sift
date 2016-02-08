@@ -1,12 +1,9 @@
-
 var client = require('../utils/dbconnect').client;
 var r = require('rethinkdb');
 var socketController = require('./socketController')
-// var connection = require('../utils/dbconnect').connection;
 var faker = require('faker');
 var _ = require('lodash');
 var utils = require('../utils/generateData.js');
-// var sockio = require('socket.io');
 var config = require('../server.js')
 
 // setting up Postgres connection
