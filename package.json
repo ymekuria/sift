@@ -30,6 +30,7 @@
     "chai": "^3.4.1",
     "cookie-parser": "^1.4.1",
     "cors": "^2.7.1",
+    "d3": "^3.5.14",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "faker": "^3.0.1",

@@ -4,6 +4,9 @@ import io from 'socket.io-client'
 import _ from 'underscore'
 
 let socket = io();
+// import io from 'socket.io-client'
+import dndTree from './dndTree.js'
+// const socket = io();
 
 class DataVis extends Component {
   constructor() {
@@ -107,11 +110,12 @@ class DataVis extends Component {
   }
 
   render() {
-    return (
+    return(
       <div className='dataVis'>
+      INSIDE DATA VIZ
+      <div id="tree-container"></div>
       </div>
-    );
-  }
+    )  }
 }
 
 export default DataVis

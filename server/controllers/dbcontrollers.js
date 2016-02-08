@@ -34,28 +34,26 @@ module.exports = {
     "Name.lastName": "yes",
     "Address.streetAddress": "yes"
 }
-
 //dataIndex = all of our data
 { tableName: 'yoniTable',
-  name: { 
-    firstName: true, 
-    lastName: true}, 
+  name: {
+    firstName: true,
+    lastName: true},
   company: {
     catchPhrase: true}
 }
-
 */
 
-  // this method creates a new table with generated data 
+  // this method creates a new table with generated data
   createUserTable: function(req, res) {
     //retrieve user from session store
      var userID = 1;
     // console.log('req.user in createUserTable', req.user);
-    
+
     var columns = utils.parseColumnNames(req.body)
     var tablename = 'yoni' + '_' + req.body.tableName;
     var fakeData = utils.generateData(req.body, columns, 20); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
-    
+
     //console.log('This is the rethinkDB connection: ', connection)
     // creating a new table
     r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
@@ -112,7 +110,7 @@ module.exports = {
     });
   },
 
-  ///////////PUT/////////// updates a row in a column 
+  ///////////PUT/////////// updates a row in a column
   updateValue: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
     var rowId = req.params.rowId;
@@ -141,15 +139,15 @@ module.exports = {
       res.sendStatus(200);
     })
   },
-  
-  // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"} 
+
+  // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"}
   // returns the table that was deleted.
   deleteTable: function(req, res) {
     //var username = req.user.username;
     // var userId = req.user.id;
     // hardcoded for testing
     var userId = 1;
-    
+
     var tableId = req.params.id
     console.log('req.params',req.params);
     console.log('tableID', tableId);
