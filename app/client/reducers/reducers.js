@@ -59,6 +59,18 @@ const buildTable = (state = initialState, action) => {
         }).toJS()
       )
 
+    //======removing from currently selected======//
+    case 'add_tablename':
+      return (
+        Immutable.fromJS(state)
+        .updateIn(['BuildOrder'], sel => {
+
+          sel = sel.toJS();
+          sel['tableName'] = 'ErikBrown'
+          return sel;
+        })
+    )
+
     //======submitting table======//
     case 'submit_table':
       console.log('submitting table..?', state.BuildOrder)

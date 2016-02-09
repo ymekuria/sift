@@ -48,7 +48,6 @@ class DataEntry extends Component {
 
   render () {
     const { MenuOptions, CurrentSelections } = this.context.store.getState().buildTable;
-    console.log('test',MenuOptions, CurrentSelections)
     return (
       <div className='dataEntry'>
         <Paper className='select'>

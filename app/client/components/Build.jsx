@@ -12,7 +12,7 @@ class Build extends Component {
 	}
 
 	componentDidMount() {
-		this.showMeWhatIWant();
+		// this.showMeWhatIWant();
 	}
 
 	toggle() {
@@ -22,13 +22,6 @@ class Build extends Component {
 		})
 	}
 
-	renderDataEntry() {
-		
-	}
-
-	renderCustom() {
-		
-	}
 
 	render() {
 		if (this.state.select) {
