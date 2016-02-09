@@ -1,6 +1,29 @@
 import React, { Component } from 'react'
 
 
+//in here we should render links to our signin pages
+
+
+// class Welcome extends Component {
+//   constructor() {
+//     super()
+//   }
+//   render () { 
+//   return (<div 
+//     >
+//       <a>Link to the sandbox</a>
+//       <br/>
+//       <a>Link to signin</a>
+//       <br/>
+//       <a>Link to signup</a>
+//       <br/>
+//     this is our welcome page!
+//     </div>)
+//   }
+// }
+
+// export default Welcome
+
 const style = {
   width: '500px',
   height: '500px',

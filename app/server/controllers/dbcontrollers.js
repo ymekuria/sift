@@ -1,4 +1,8 @@
 
+<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
+=======
+
+>>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
 var client = require('../utils/dbconnect').client;
 var r = require('rethinkdb');
 var socketController = require('./socketController')
@@ -7,6 +11,14 @@ var _ = require('lodash');
 var utils = require('../utils/utils.js');
 var config = require('../server.js')
 
+<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
+=======
+// setting up Postgres connection
+// var io = sockio.listen(config.server);
+// var client = new pg.Client(psqlDB.connectionString);
+// client.connect();
+var connection = null;
+>>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
 
 var connection = null;
 var rConnectConfig;
@@ -177,6 +189,7 @@ dbMethods = {
       if (results.rows.length === 0) {
         res.sendStatus(404);
       }
+    if(results.rows[0] !== undefined ) { // error handeling  
       tablename = results.rows[0].tablename;
       client.query('DELETE FROM Tables WHERE userID = ' + userId + ' AND id = ' + tableId, function(err, entireTable) {
         if (err) { throw new Error(err); }
@@ -188,6 +201,8 @@ dbMethods = {
           res.sendStatus(200);
         });
       });
+    }
+
     });
   }
 };

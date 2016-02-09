@@ -58,7 +58,7 @@ class Signup extends Component {
 	
   render() {
     const style = {
-      height: 400,
+      height: 450,
       width: 300,
       margin: 20,
       textAlign: 'center',
@@ -71,7 +71,7 @@ class Signup extends Component {
       'position':'relative',
       'left': '20%',
       'color': 'blue',
-      'marginTop': '15'
+      'marginTop': '5'
 
     }; 
 
@@ -80,8 +80,9 @@ class Signup extends Component {
       <div className="signupBackground">
         <div className='col-md-4 col-md-offset-4 signinPaper'>
           <Paper style={style}  zDepth={5} rounded={true}>
+            <h3>SIGNUP</h3>
             <form action='/auth/github' method='get'>
-              <RaisedButton type='submit'secondary={true} label="SIGIN WITH GITHUB" style={buttonStyle}></RaisedButton>
+              <RaisedButton type='submit'secondary={true} label="WITH GITHUB" style={buttonStyle}></RaisedButton>
             </form>
 
             <span> -- OR -- </span><br/>

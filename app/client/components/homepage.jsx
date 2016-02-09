@@ -26,9 +26,15 @@ class Homepage extends Component {
 
     this.state={
       info: {},
+<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
       userTables: {}
     };
 
+=======
+      userTables: {},
+      tablesExist: '', 
+    }
+>>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
     this.navigation = this.navigation.bind(this);
     this.renderDashTable = this.renderDashTable.bind(this);
     this.removeTable = this.removeTable.bind(this);
@@ -37,10 +43,21 @@ class Homepage extends Component {
   componentWillMount() {
    // find a better way to bind this
     var that = this;
-    console.log('that', that);
+    
     getTables(function(res){
+<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
       that.setState({ userTables: res })
       console.log('this.state', that.state)
+=======
+      if(res === undefined) {
+        that.setState({tablesExist: false})
+      } else {
+      that.setState({userTables: res,
+                    tablesExist: true,
+                    userName: res[0].tablename.split("_")[0].toUpperCase() })
+      
+      }
+>>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
     });
   
   }
@@ -71,24 +88,31 @@ class Homepage extends Component {
       deleteTable(tableID, function(){
         // makes a ajax call to update the state with the list of tables
         getTables(function(res){ 
-          if( res === undefined) {
-            that.setState
+
+          if(res === undefined) {
+        that.setState({tablesExist: false})
+          } else {
+      that.setState({userTables: res,
+                    tablesExist: true,
+                    userName: res[0].tablename.split("_")[0].toUpperCase() })
           }
-          that.setState({userTables: res})
+      
         });
       });
      } 
  
   }  
 
+  
 
   render() {
-    
+    if (this.state.tablesExist) {
     return(
+
  
       <div className='container'>
 
-          <DashBanner userName={ this.state.userTables[0].tablename.split("_")[0].toUpperCase()}r/>
+          <DashBanner userName={ this.state.userName}r/>
        
 
 
@@ -106,6 +130,35 @@ class Homepage extends Component {
         </div>
       </div>   
     )
+
+  } else {
+
+  return(
+
+ 
+      <div className='container'>
+
+          <DashBanner userName={ this.state.userName}r/>
+       
+
+
+        <div className='row'> 
+                    <h4 className="col-md-2  ">
+            CURRENT TABLES
+          </h4> 
+          <div className='col-md-12'>
+          <AddTables nav={this.navigation}/>
+           
+          </div>    
+        </div>
+      </div>   
+    )
+
+
+
+
+
+  }
   }
 }
 
@@ -141,7 +194,13 @@ class DashTable extends Component {
           </IconButton>
           <h5>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
           
-          <RaisedButton label="View Table" onClick={() => this.props.nav('/vis')} style={{margin: 5,
+          <RaisedButton 
+          label="View Table" 
+          onClick={() => {
+            store.dispatch({type: 'adding_vis_table',
+                              newTable: this.props.table.tablename.split("_")[1] })
+            this.props.nav('/vis')}} 
+          style={{margin: 5,
             position: 'relative',
            bottom: -50, }} />
 
@@ -195,6 +254,47 @@ class DeleteOption extends Component {
   render() {
 
     <div>are you sure?</div>
+  }
+}
+class AddTables extends Component {
+  render() {
+    const style = {
+    height: 200,
+    width: 200,
+    margin: 20,
+    textAlign: 'center',
+    display: 'inline-block'
+
+
+  };
+    const iconStyle = {
+    marginLeft: 160,
+     display: 'inline-block',
+     
+    
+  };  
+    const svgStyle = {
+      fontSize: '10px',
+       height: '10px',
+        width: '1px'
+    }
+    return ( 
+        <Paper style={style}  zDepth={5} rounded={false}>
+         
+          <h5>WANT TO ADD A TABLE?</h5>
+          
+          <RaisedButton 
+          label="Create Table" 
+          onClick={() => {
+          
+            this.props.nav('/build')}} 
+          style={{margin: 5,
+            position: 'relative',
+           bottom: -50, }} />
+
+       </Paper>
+
+    ) 
   }
 }
 

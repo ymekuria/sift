@@ -1,4 +1,3 @@
-
 var pg = require('pg');
 var db = require('../utils/dbconnect.js');
 var bcrypt = require('bcrypt-nodejs');
@@ -118,8 +117,5 @@ userMethods = {
     callback(null, profile);
   }
 }
-<<<<<<< 9d9336632f6def01758f41547e1bdda650eac14f
-=======
 
->>>>>>> reorganized files
 module.exports = userMethods;

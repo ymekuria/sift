@@ -16,7 +16,8 @@ const initialState = {
     tableName: ''
   },
   CurrentSelections: [],
-  BuildOrder: {}
+  BuildOrder: {},
+  dataVisTable: ''
 }
 
 const buildTable = (state = initialState, action) => {
@@ -59,6 +60,7 @@ const buildTable = (state = initialState, action) => {
         }).toJS()
       )
 
+<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
     //======removing from currently selected======//
     case 'add_tablename':
       return (
@@ -69,6 +71,13 @@ const buildTable = (state = initialState, action) => {
 
           obj['tablename'] = action.tablename
           return obj;
+=======
+    case 'adding_vis_table':
+      return (
+        Immutable.fromJS(state)
+        .updateIn(['dataVisTable'], currentTable => {
+          return action.newTable;
+>>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
         }).toJS()
       )
 
@@ -86,8 +95,5 @@ const buildTable = (state = initialState, action) => {
   }
    
 }
-<<<<<<< 9d9336632f6def01758f41547e1bdda650eac14f
 export default buildTable;
-=======
-export default buildTable;
->>>>>>> reorganized files
+

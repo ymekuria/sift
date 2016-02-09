@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import main from '../components/main.jsx'
 import { Welcome } from '../components/welcome.jsx'
+<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
 import Build from '../components/Build.jsx'
+=======
+import { Landing } from '../landingPage/landingPage.jsx'
+import dataEntry from '../components/createData.jsx'
+>>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
 import Info from '../components/info.jsx'
 import homepage from '../components/homepage.jsx'
 import dataVis from '../components/dataVis.jsx'
@@ -24,7 +29,7 @@ import { requireAuth } from '../auth/auth'
 
 export default (
   <Route path='/' component={main}>
-    <IndexRoute component={Welcome}/>
+    <IndexRoute component={Landing}/>
     <Route path='signin' component={Signin}/>
     <Route path='signup' component={Signup}/>
     <Route path='home' component={requireAuth(homepage)}/>
