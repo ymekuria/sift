@@ -47,6 +47,7 @@ module.exports = function(app, express, ensureAuth) {
   //logout
   app.get('/signout', ensureAuth, function(req, res) {
     req.logout();
+    res.sendStatus(200);
   });
 
   // endpoints for creating, receiving, and deleting tables // put back ensurAuth

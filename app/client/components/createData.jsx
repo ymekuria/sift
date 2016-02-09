@@ -35,7 +35,8 @@ class DataEntry extends Component {
     var user = localStorage.getItem('sift-user');
     if (!user) {
       h.setUser(function(dbUser) {
-        JSON.stringify(dbUser);
+        console.log('dbUser: ', dbUser)
+        dbUser = JSON.stringify(dbUser);
         localStorage.setItem('sift-user', dbUser);
       })
     }
