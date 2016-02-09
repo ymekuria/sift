@@ -90,11 +90,11 @@ class Homepage extends Component {
         getTables(function(res){ 
 
           if(res === undefined) {
-        that.setState({tablesExist: false})
+            that.setState({tablesExist: false})
           } else {
-      that.setState({userTables: res,
-                    tablesExist: true,
-                    userName: res[0].tablename.split("_")[0].toUpperCase() })
+            that.setState({userTables: res,
+                          tablesExist: true,
+                          userName: res[0].tablename.split("_")[0].toUpperCase() })
           }
       
         });
@@ -153,13 +153,8 @@ class Homepage extends Component {
         </div>
       </div>   
     )
-
-
-
-
-
   }
-  }
+ }
 }
 
 class DashTable extends Component {
