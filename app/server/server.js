@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({extended: true }));
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static(__dirname + '/client/landingPage'))
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 var port = process.env.PORT || 5001;

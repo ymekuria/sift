@@ -26,10 +26,10 @@ import { requireAuth } from '../auth/auth'
 
 //we need to add that function and get the token
 //registered in local storage on sign in
-
+// <IndexRoute component={Landing}/> took out root path 
 export default (
   <Route path='/' component={main}>
-    <IndexRoute component={Landing}/>
+    
     <Route path='signin' component={Signin}/>
     <Route path='signup' component={Signup}/>
     <Route path='home' component={requireAuth(homepage)}/>
