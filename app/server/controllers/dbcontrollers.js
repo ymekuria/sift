@@ -55,10 +55,12 @@ dbMethods = {
     var columnsString, fakeData;
 
     // create the table in RethinkDB
+
     // check postgres first to see if tablename exists
     client.query('SELECT tablename FROM tables WHERE userid = ($1) AND tablename = ($2)', [userID, tablename], function(err, response) {
       if (response.rows.length > 0) {
         res.status(400).send({ message: 'Table already exists' }) // table already exists
+
       } else {
         r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
           // handle custom table

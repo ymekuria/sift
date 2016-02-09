@@ -1,6 +1,15 @@
 import React from 'react'
 import Dialog from 'material-ui/lib/dialog';
 // import request from 'request'
+// var host;
+// if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
+//   host = 'rethink'
+// } else {
+//   host = 'localhost'
+// }
+
+
+
 
 //db call helpers
 //zen - 'https://api.github.com/zen'
