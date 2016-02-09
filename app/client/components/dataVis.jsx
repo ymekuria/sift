@@ -3,6 +3,7 @@ import h from '../config/helpers'
 import io from 'socket.io-client'
 import _ from 'underscore'
 import dndTree from './dndTree.js'
+import store from '../store'
 
 let socket = io();
 
@@ -10,7 +11,7 @@ class DataVis extends Component {
   constructor() {
     super()
     this.state = {
-      tablename: '',
+      tablename: store.getState().buildTable.dataVisTable,
       data: {
         name: '',
         children: []
@@ -57,14 +58,15 @@ class DataVis extends Component {
 
   componentDidMount() {
     // TODO: setState with tablename
+
     let username = JSON.parse(localStorage.getItem('sift-user')).username;
     let tablename = username + '_' + this.state.tablename;
     var emitmessage = 'update ' + tablename;
 
     h.loadTable(tablename, function(data) {
       this.setState({
-        data: data }
-        );
+        data: data 
+      });
     }.bind(this));
 
     socket.on(emitmessage, function(data) {
