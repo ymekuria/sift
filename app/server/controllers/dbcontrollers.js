@@ -94,7 +94,6 @@ dbMethods = {
 
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
-    console.log('Req.user: ', req.user.id)
     var userID = req.user.id;
     var queryString = 'SELECT id, tablename, columns FROM tables WHERE userID = ' + userID;
     
@@ -103,8 +102,6 @@ dbMethods = {
         _.each(tableNames.rows, function(row) {
           row.columns = row.columns.split(',')
         })
-        console.log('tablenames: ', tableNames)
-        console.log('tablenames.rows: ', tableNames.rows)
         res.status(200).json(tableNames.rows);
     });
   },
