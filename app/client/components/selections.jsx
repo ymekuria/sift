@@ -31,7 +31,7 @@ const Selections = ({ selected }, { store }) => {
                       type: 'remove_from_list',
                       id: i
                     })
-                  }} 
+                  }}  
                   className='remove'>{'x'}</div>
                 </div>
                 <Divider/>
