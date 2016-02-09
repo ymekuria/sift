@@ -12,7 +12,6 @@ const Selections = ({ selected }, { store }) => {
     <div>
     <div className='selectionHeader'>
       <form onClick={console.log('submit')}>
-        <input default='enterTable nae'></input>
         <input type="submit" value="Submit"></input>
       </form>
       <h3>Selections</h3>

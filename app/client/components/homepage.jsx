@@ -45,7 +45,7 @@ class Homepage extends Component {
     var that = this;
     console.log('that', that);
     getTables(function(res){
-      that.setState({userTables: res})
+      that.setState({ userTables: res })
       console.log('this.state', that.state)
     });
   

@@ -17,7 +17,7 @@ export const createTable = (selections) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    credentials: 'include',
+    credentials: 'same-origin',
     body: JSON.stringify(selections)
   })
   .then((response) => response.text())
@@ -33,6 +33,7 @@ const createCustomTable = (username, selections) => {
   let url = 'http://localhost:5001/api/makeCustomTable:?usr=' + username
   return fetch(url, {
     method: 'POST',
+    credentials: 'same-origin',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -52,6 +53,7 @@ export const getTable = (username, tableName) => {
   //gets a single table
   let url = 'http://localhost:5001/getOneTable:?usrTable=' + username_tableName;
   return fetch(url, {
+    credentials: 'same-origin',
     method: 'GET',
     headers: {},
     body: {}
@@ -63,11 +65,11 @@ export const getTable = (username, tableName) => {
 }
 
 export const getTables = (cb) => {
-  //api/getTables:?usr=<username>
   //retrieve all table names for a specific user
   // console.log('username', username);
-  let url = 'http://localhost:5001/api/users/tables'
+  let url = '/api/users/tables'
   return fetch(url, {
+    credentials: 'same-origin',
     method: 'GET',
     headers: {},
     body: {}
@@ -84,6 +86,7 @@ const postToTable = (username, tableName, row) => {
   //add a row to a users table
   let url = 'api/postToTable:?usr=' + username;
   return fetch(url, {
+    credentials: 'same-origin',
     method: 'POST',
     headers: {},
     body: {}
@@ -93,11 +96,13 @@ const postToTable = (username, tableName, row) => {
     console.log(text);
   })
 }
+
 const updateValue = (username, tableName, row) => {
   //api/updateValue:?usr=<username>
   //update a specific value
   let url = 'api/updateValue:?usr=' + username;
   return fetch(url, {
+    credentials: 'same-origin',
     method: 'PUT',
     headers: {},
     body: JSON.stringify({
@@ -116,6 +121,7 @@ export const deleteTable = (tableId,cb) => {
   console.log('tableID in deletTabl ajax', tableId);
   let url = 'http://localhost:5001/api/users/tables/' + tableId;
   return fetch(url, {
+    credentials: 'same-origin',
     method: 'DELETE',
     headers: {},
     body: {}
@@ -132,6 +138,7 @@ const deleteRow = (username, tableName, row) => {
   //delete a row
   let url = 'api/deleteRow:?usr=' + username;
   return fetch(url, {
+    credentials: 'same-origin',
     method: 'DELETE',
     headers: {},
     body: JSON.stringify({
