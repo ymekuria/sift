@@ -44,7 +44,7 @@ export const Landing = () => {
 						<div className="col-md-10 wow fadeIn" data-wow-delay="0.3s">
 							<h1 className="text-upper">Simple Integrated Fronted Toolkit</h1>
 							<p className="tm-white">Build full stack web applications without worring about creating  a database or writing server-side code.</p>
-							<img src="../landingPage/../landingPage/images/software-img.png" className="img-responsive" alt="home img"/>
+							<img src="../landingPage/../landingPage/git images/software-img.png" className="img-responsive" alt="home img"/>
 						</div>
 						<div className="col-md-1"></div>
 					</div>
@@ -84,7 +84,7 @@ export const Landing = () => {
 						<p><i className="fa fa-code"></i>Quis autem velis reprehenderit et quis voluptate velit esse quam.</p>
 					</div>
 					<div className="col-md-6 wow fadeInRight" data-wow-delay="0.6s">
-						<img src="../landingPage/images/software-img.png" className="img-responsive" alt="feature img"/>
+						<img src="../landingPage/git images/software-img.png" className="img-responsive" alt="feature img"/>
 					</div>
 				</div>
 			</div>
@@ -94,7 +94,7 @@ export const Landing = () => {
 			<div className="container">
 				<div className="row">
 					<div className="col-md-6 wow fadeInUp" data-wow-delay="0.6s">
-						<img src="../landingPage/images/software-img.png" className="img-responsive" alt="feature img"/>
+						<img src="../landingPage/git images/software-img.png" className="img-responsive" alt="feature img"/>
 					</div>
 					<div className="col-md-6 wow fadeInUp" data-wow-delay="0.6s">
 						<h2 className="text-uppercase">Customize Your Data</h2>
@@ -115,7 +115,7 @@ export const Landing = () => {
 						<button className="btn btn-primary text-uppercase"><i className="fa fa-download"></i> Download</button>
 					</div>
 					<div className="col-md-6 wow fadeInRight" data-wow-delay="0.6s">
-						<img src="../landingPage/images/software-img.png" className="img-responsive" alt="feature img"/>
+						<img src="../landingPage/git images/software-img.png" className="img-responsive" alt="feature img"/>
 					</div>
 				</div>
 			</div>
