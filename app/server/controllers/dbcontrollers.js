@@ -50,7 +50,7 @@ dbMethods = {
     //retrieve user from session store
     var userID = req.user.id;
     var columns = req.body.columns || utils.parseColumnNames(req.body); // custom request have a columns property.
-    var tablename =   req.user.username + '_' + req.body.tablename;
+    var tablename = req.user.username + '_' + req.body.tablename;
     var custom = req.body.custom || false;
     var columnsString, fakeData;
 
