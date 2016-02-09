@@ -17,7 +17,6 @@ userMethods = {
 
   findUser: function(email, callback) {
     client.query('SELECT * FROM Users WHERE email=($1)', [email], function(err, rows) {
-      console.log('rows: ', rows)
       if (err) { callback(err); }
       if (rows.rows.length === 0) {
         callback(null, null) // user does not exist

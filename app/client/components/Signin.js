@@ -34,7 +34,7 @@ class Signin extends Component {
     .then(function(json) {
       var user = JSON.stringify(json)
       localStorage.setItem('sift-user', user);
-      window.location.assign('/build')
+      window.location.assign('/home')
     })
     .catch((err) => {
       console.log('Err: ', err)
