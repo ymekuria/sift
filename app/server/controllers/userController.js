@@ -70,7 +70,7 @@ userMethods = {
 
     userMethods.isUserInDB(user, function(inDB) {
       if (inDB) {
-        res.sendStatus(403); // username exists
+        res.status(403).send({ message: 'Email address already registered.'}); // username exists
       } else {
         bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
           if (err) { throw new Error(err); } // TODO: make sure this is going somewhere

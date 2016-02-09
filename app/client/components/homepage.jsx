@@ -3,13 +3,9 @@ import _ from 'lodash';
 import {getTables} from '../utils/utils.js'
 import {deleteTable} from '../utils/utils.js'
 
-
 // Material UI components
 import Paper from 'material-ui/lib/paper';
 import RaisedButton from 'material-ui/lib/raised-button';
-
-
-
 
 import {router} from 'react-router'
 import { routeActions } from 'react-router-redux'
@@ -27,15 +23,9 @@ import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 
-
-
-
 class Homepage extends Component {
   constructor() {
     super();
-
-
-
     //initialize userTables request to
     //user table
     //render a spinner while we are 
@@ -43,7 +33,8 @@ class Homepage extends Component {
     this.state={
       info: {},
       userTables: {}
-    }
+    };
+
     this.navigation = this.navigation.bind(this);
     this.renderDashTable = this.renderDashTable.bind(this);
     this.removeTable = this.removeTable.bind(this);
@@ -54,7 +45,7 @@ class Homepage extends Component {
     var that = this;
     console.log('that', that);
     getTables(function(res){
-      that.setState({userTables: res})
+      that.setState({ userTables: res })
       console.log('this.state', that.state)
     });
   

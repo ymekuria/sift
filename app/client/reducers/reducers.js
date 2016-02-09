@@ -59,10 +59,23 @@ const buildTable = (state = initialState, action) => {
         }).toJS()
       )
 
+    //======removing from currently selected======//
+    case 'add_tablename':
+      return (
+        Immutable.fromJS(state)
+        .updateIn(['BuildOrder'], obj => {
+
+          obj = obj.toJS();
+
+          obj['tablename'] = action.tablename
+          return obj;
+        }).toJS()
+      )
+
     //======submitting table======//
     case 'submit_table':
       console.log('submitting table..?', state.BuildOrder)
-      createTable(action.tableName, state.BuildOrder);
+      createTable(state.BuildOrder);
       //hook into backend!
       //here we handle the post to our database
       return state;
