@@ -7,7 +7,7 @@ import React from 'react'
 export const createTable = (selections) => {
   //api/generateTable:?usr=<username>'
   //post data to db
-  selections['tableName'] = tableName;
+  // selections['tableName'] = tableName;
 
   let url = '/api/users/tables'
 

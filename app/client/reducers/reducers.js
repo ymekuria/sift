@@ -65,12 +65,9 @@ const buildTable = (state = initialState, action) => {
         Immutable.fromJS(state)
         .updateIn(['BuildOrder'], obj => {
 
-          console.log('before: ',obj)
           obj = obj.toJS();
 
-
           obj['tablename'] = action.tablename
-          console.log('after: ', obj)
           return obj;
         }).toJS()
       )

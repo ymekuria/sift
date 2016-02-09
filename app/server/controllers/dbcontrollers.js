@@ -22,7 +22,7 @@ r.connect(rConnectConfig, function(err, conn) {
   });
 });
 
-module.exports = {
+dbMethods = {
 
 /////////POST///////////
 
@@ -46,9 +46,9 @@ module.exports = {
   // this method creates a new table with generated data
   createUserTable: function(req, res) {
     //retrieve user from session store
-    var userID = 1 // req.user.id;
+    var userID = req.user.id;
     var columns = req.body.columns || utils.parseColumnNames(req.body); // custom request have a columns property.
-    var tablename = 'erikdbrowngmailcom' + '_' + 'usersTable'; //req.user.username + '_' + req.body.tableName;
+    var tablename =   req.user.username + '_' + req.body.tablename;
     var custom = req.body.custom || false;
     var columnsString, fakeData;
 
@@ -58,32 +58,33 @@ module.exports = {
       // handle custom table
       if (custom) {
         columnsString = Object.keys(columns).join(',');
-        addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
+        dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
           if (err) { utils.handleError(err); }
           res.sendStatus(200);
         })
       // create table and add generated data
       } else {
-        fakeData = utils.generateData(req.body, columns, 20); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
-        columnsString = columns.join(',');
-        addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
-          if (err) { utils.handleError(err); }
-          addFakeData(tablename, fakeData, function(err) {
+        fakeData = utils.generateData(req.body, columns, 20, function(data) {
+          columnsString = columns.join(',');
+          dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
             if (err) { utils.handleError(err); }
-            res.sendStatus(200);
-          })
-        });
+            dbMethods.addFakeData(tablename, data, function(err) {
+              if (err) { utils.handleError(err); }
+              res.sendStatus(200);
+            })
+          });
+        }); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
       }
     });
   },
 
-  addToPostgresTables: function(userID, tablename, columns, cb) {
+  addToPostgresTables: function(userID, tablename, columns, custom, cb) {
     client.query('INSERT INTO Tables (userID, tablename, columns, custom) VALUES ($1, $2, $3, $4)', [userID, tablename, columns, custom], function(err, response){
       cb(err);
     })
   },
 
-  addFakeData: function(tablename, fakedata, cb) {
+  addFakeData: function(tablename, fakeData, cb) {
     r.db('apiTables').table(tablename).insert(fakeData).run(connection, function(err, response) {
       cb(err);
     });
@@ -186,3 +187,6 @@ module.exports = {
     });
   }
 };
+
+module.exports = dbMethods;
+

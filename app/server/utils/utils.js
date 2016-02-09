@@ -30,7 +30,7 @@ module.exports = {
   	} else {
 	  	user = jwt.decode(token, 'greenVeranda')
 	  	req.user = {
-	  		displayName: user.displayName
+	  		displayname: user.displayName
 	  	};
   	}
   },
@@ -38,7 +38,7 @@ module.exports = {
   parseColumnNames: function(obj) {
     var results = [];
     for (key in obj) {
-      if (key !== 'tableName') {
+      if (key !== 'tablename') {
         results = results.concat(Object.keys(obj[key]));
       }
     }
@@ -49,14 +49,15 @@ module.exports = {
   //use req.body as a reference to the index file to 
   //pull out the relevant faker queries ---> insert into 
   //the generate data algorithm below. 
-	generateData: function(fields, columns, numberOfRows) {
+	generateData: function(fields, columns, numberOfRows, cb) {
     // var columns = module.exports.parseColumnNames(fields);
-		var data = [];  	
+		var data = [];
+    console.log('Fields: ', fields)
 
     for (var i = 0; i < numberOfRows; i++) { 
       var row = {};
       _.each(fields, function(field, fakerCategory) {
-        if (fakerCategory !== 'tableName') {
+        if (fakerCategory !== 'tablename') {
           _.each(field, function (fakerVal, fakerField) {
             var key = fakerField;
             // generating the fake data from faker and pushing the row into an array
@@ -72,8 +73,8 @@ module.exports = {
         } 
       });
       data.push(row);			
-		}	
-		return data;
+		}
+		cb(data);
   },
 
 	generateValueString: function(n) {
