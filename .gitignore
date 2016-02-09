@@ -7,3 +7,4 @@ bower_components/
 build/
 dist/
 authTokens.js
+rethinkdb_data/*

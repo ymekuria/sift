@@ -49,12 +49,12 @@ module.exports = {
     var userID = 1 // req.user.id;
     var columns = req.body.columns || utils.parseColumnNames(req.body); // custom request have a columns property.
     var tablename = 'erikdbrowngmailcom' + '_' + 'usersTable'; //req.user.username + '_' + req.body.tableName;
-    var custom = req.body.custom;
+    var custom = req.body.custom || false;
     var columnsString, fakeData;
 
     // create the table in RethinkDB
     r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
-      if (err) { utils.handleError(err); }
+      if (err) { console.log(err); }
       // handle custom table
       if (custom) {
         columnsString = Object.keys(columns).join(',');

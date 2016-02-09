@@ -4,13 +4,13 @@ var Select = require('react-select');
 
 const STATES = require('../data/dataTypes.js');
 
-var test = React.createClass({
+class Custom extends Component {
 
 	getDefaultProps () {
 		return {
 			label: 'Select a Data Type:',
 		};
-	},
+	}
 
 	getInitialState () {
 		return {
@@ -20,32 +20,32 @@ var test = React.createClass({
       columnValue: '',
 			allColumns: {},
 		};
-	},
+	}
 
   ///////UPDATES DATA TYPE ///////
 	updateValue (newValue) {
 		this.setState({
 			dataValue: newValue
 		});
-	},
+	}
 
 	///////UPDATES TABLE NAME ///////
   updateTable (event) {
     this.setState({
       tableValue:  event.target.value
     });
-  },
+  }
   
 	///////UPDATES COLUMN NAME ///////
   updateColumn (event) {
     this.setState({
       columnValue: event.target.value
     });
-  },
+  }
 
 	focusStateSelect () {
 		this.refs.stateSelect.focus();
-	},
+	}
 
 	addColumn (event) {
 		var columns = this.state.allColumns;
@@ -54,7 +54,7 @@ var test = React.createClass({
 		this.setState({
 				allColumns: columns,
 		});
-	},
+	}
 //REDUX
 	// componentDidMount() {
   //   //subscribe to the store
@@ -133,6 +133,7 @@ var test = React.createClass({
 			</div>
 		);
 	}
-});
+	
+};
 
-export default test
+export default Custom
