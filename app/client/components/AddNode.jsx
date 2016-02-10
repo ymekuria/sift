@@ -20,6 +20,7 @@ class AddNode extends Component {
 		}.bind(this))
 
 		this.refs.addNodeForm.reset();
+		this.props.addNode(node);
 	}
 
 	render() {
