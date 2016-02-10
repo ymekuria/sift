@@ -6,7 +6,6 @@ var GitHubStrategy = require('passport-github').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var userController = require('./controllers/userController.js');
 var socketController = require('./controllers/socketController.js');
-var token = require('./auth/authTokens.js');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -14,9 +13,15 @@ var utils = require('./utils/utils')
 var pg = require('pg');
 var app = express();
 var cors = require('cors');
-
 var http = require('http');
 var path = require('path');
+var token;
+
+if(process.env.CLIENT_ID || process.env.CLIENT_SECRET) {
+  token = {CLIENT_ID: process.env.CLIENT_ID, CLIENT_SECRET : process.env.CLIENT_SECRET}
+} else {
+  token = require('./auth/authTokens.js');
+}
 // Middleware. Add below as needed
 // app.use(cors());
 // app.use(morgan('dev'));
