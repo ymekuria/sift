@@ -1,4 +1,4 @@
-var r = require('../../node_modules/rethinkdb/rethinkdb');
+var r = require('../../node_modules/rethinkdb/rethinkdb.js');
 var expect = require('../../node_modules/chai/chai').expect;
 var rp = require('request-promise');
 var utils = require('../utils/generateData.js');
