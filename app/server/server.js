@@ -1,8 +1,3 @@
-
-
-console.log('this is our process', process.env);
-
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('passport');
@@ -20,14 +15,9 @@ var app = express();
 var cors = require('cors');
 var http = require('http');
 var path = require('path');
-var token;
+var token = require('./auth/authTokens.js');
 
 
-// if(process.env.CLIENT_ID || process.env.CLIENT_SECRET) {
-//   token = {CLIENT_ID: process.env.CLIENT_ID, CLIENT_SECRET : process.env.CLIENT_SECRET}
-// } else {
-//   token = require('./auth/authTokens.js');
-// }
 // Middleware. Add below as needed
 // app.use(cors());
 // app.use(morgan('dev'));
