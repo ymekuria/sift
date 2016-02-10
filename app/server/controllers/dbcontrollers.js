@@ -163,8 +163,8 @@ dbMethods = {
   },
 
   matchDataTypes(reqColumns, columns, datatypes, callback) {
-    columns = columns.split(',')
-    datatypes = datatypes.split(',')
+    columns = columns.split(',');
+    datatypes = datatypes.split(',');
     var columns_types = {};
     var err = null
 
@@ -178,11 +178,10 @@ dbMethods = {
           column: key,
           expected: columns_types[key],
           received: typeof reqColumns[key]
-        }
-        return callback(err, false)
+        };
+        return callback(err, false);
     }
-
-    callback(err, true)
+    callback(err, true);
   },
 
   ///////////PUT/////////// updates a row in a column
