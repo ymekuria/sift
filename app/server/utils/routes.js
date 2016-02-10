@@ -52,7 +52,7 @@ module.exports = function(app, express, ensureAuth) {
 
   // endpoints for creating, receiving, and deleting tables // put back ensurAuth
   app.get('/api/users/tables', ensureAuth, dbController.getTables);
-  app.post('/api/users/tables', ensureAuth, dbController.createUserTable);
+  app.post('/api/users/tables', dbController.createUserTable);
   // app.put('/api/users/tables/:id'); // do we need to have users update their tables?
   app.delete('/api/users/tables/:id', ensureAuth, dbController.deleteTable);
 

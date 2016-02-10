@@ -48,9 +48,9 @@ dbMethods = {
   // this method creates a new table with generated data
   createUserTable: function(req, res) {
     //retrieve user from session store
-    var userID = req.user.id;
+    var userID = 1 //req.user.id;
     var columns = req.body.columns || utils.parseColumnNames(req.body); // custom request have a columns property.
-    var tablename = req.user.username + '_' + req.body.tablename;
+    var tablename = 'erikdbrowngmailcom' + '_' + req.body.tablename;//req.user.username + '_' + req.body.tablename;
     var custom = req.body.custom || false;
     var columnsString, fakeData;
 
@@ -65,8 +65,11 @@ dbMethods = {
         r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
           // handle custom table
           if (custom) {
-            columnsString = Object.keys(columns).join(',');
-            dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
+            columnsString = Object.keys(columns).join(','); // firstname,lastname,company
+            dataTypesString = _.map(columns, function(value) { // boolean,string,object,array
+              return value;
+            }).join(',')
+            dbMethods.addCustomTableToPostgresTables(userID, tablename, columnsString, dataTypesString, custom, function(err) {
               if (err) { utils.handleError(err); }
               res.sendStatus(200);
             })
@@ -74,7 +77,7 @@ dbMethods = {
           } else {
             fakeData = utils.generateData(req.body, columns, 20, function(data) {
               columnsString = columns.join(',');
-              dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
+              dbMethods.addFakeDataTableToPostgresTables(userID, tablename, columnsString, custom, function(err) {
                 if (err) { utils.handleError(err); }
                 dbMethods.addFakeData(tablename, data, function(err) { // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
                   if (err) { utils.handleError(err); }
@@ -88,8 +91,14 @@ dbMethods = {
     })
   },
 
-  addToPostgresTables: function(userID, tablename, columns, custom, cb) {
+  addFakeDataTableToPostgresTables: function(userID, tablename, columns, custom, cb) {
     client.query('INSERT INTO Tables (userID, tablename, columns, custom) VALUES ($1, $2, $3, $4)', [userID, tablename, columns, custom], function(err, response){
+      cb(err);
+    })
+  },
+
+  addCustomTableToPostgresTables: function(userID, tablename, columns, datatypes, custom, cb) {
+    client.query('INSERT INTO Tables (userID, tablename, columns, datatypes, custom) VALUES ($1, $2, $3, $4, $5)', [userID, tablename, columns, datatypes, custom], function(err, response){
       cb(err);
     })
   },
@@ -131,11 +140,49 @@ dbMethods = {
  // {columnName: value, column2Name: value, ...}
   postToTable: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
+    var columns;
 
-    r.table(tablename).insert(req.body).run(connection, function(err, response) {
-      if (err) { throw err; }
-      res.sendStatus(200);
+    client.query('SELECT custom, datatypes, columns FROM tables WHERE tablename = ($1)', [tablename], function(err, results) {
+      if (results.rows[0].custom) {
+        dbMethods.matchDataTypes(req.body, results.rows[0].columns, results.rows[0].datatypes, function(err, passes) {
+          if (passes) {
+            console.log('You pass. This will write to the database');
+            res.sendStatus(200)
+          } else {
+            res.status(400).send('Incorrect data type for ' + err.column + '. Expected: ' + err.expected + '. Received: ' + err.received);
+          }
+        });
+      } else {
+        r.table(tablename).insert(req.body).run(connection, function(err, response) {
+          if (err) { throw err; }
+          res.sendStatus(200);
+        });
+      }
+    })
+
+  },
+
+  matchDataTypes(reqColumns, columns, datatypes, callback) {
+    columns = columns.split(',')
+    datatypes = datatypes.split(',')
+    var columns_types = {};
+    var err = null
+
+    _.each(columns, function(column, index) {
+      columns_types[column] = datatypes[index];
     });
+
+    for (var key in reqColumns) {
+      if (columns_types[key] !== typeof reqColumns[key])
+        err = {
+          column: key,
+          expected: columns_types[key],
+          received: typeof reqColumns[key]
+        }
+        return callback(err, false)
+    }
+
+    callback(err, true)
   },
 
   ///////////PUT/////////// updates a row in a column
