@@ -60,7 +60,6 @@ export const getTables = (cb) => {
 
 export const deleteTable = (tableId, cb) => {
   //api/deleteTable:?usr=<username>
-  console.log('tableID in deletTabl ajax', tableId);
   let url = '/api/users/tables/' + tableId;
   return fetch(url, {
     credentials: 'same-origin',
