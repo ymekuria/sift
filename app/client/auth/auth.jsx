@@ -26,12 +26,12 @@ export function requireAuth(Component) {
 
     checkAuth() {
       //check local storage
-
-      /*
-      below we are returning true by default - this 
-      simulates being signed in.
-      */
-      return true;
+      var user = JSON.parse(localStorage.getItem('sift-user'));
+      if (user.username) {
+        return true
+      } else {
+        return false
+      }
     }
     navigation(path) {
       //navigating to our desired endpoint IF we are logged in
@@ -42,7 +42,7 @@ export function requireAuth(Component) {
       return (
         <div>
           {
-            this.checkAuth() ? <Component/> : this.navigation('/signup')
+            this.checkAuth() ? <Component/> : this.navigation('/signin')
           }
 
         </div>
