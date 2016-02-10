@@ -65,6 +65,7 @@ module.exports = {
             var ref = dataIndex[fakerCategory][fakerField];
             var value = eval("faker." + ref + "()");
             console.log('value: ', typeof value);
+            console.log(value);
             if (value.indexOf('\'') > -1) {
               value = eval("faker." + ref + "()");
             } else {

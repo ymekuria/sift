@@ -24,7 +24,15 @@ import Delete from 'material-ui/lib/svg-icons/action/highlight-off'
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
 import MenuItem from 'material-ui/lib/menus/menu-item';
+import { getTables } from '../utils/utils'
 
+const apiInfoStyles = {
+  width: '80vw',
+  height: '300px',
+  marginLeft: '65px',
+  marginTop: '15px',
+  textAlign: 'left'
+}
 
 
 
@@ -44,6 +52,14 @@ class Information extends Component {
     }
  
   }
+
+  componentWillMount() {
+    let userObj = window.localStorage.getItem('sift-user');
+    let username = JSON.parse(userObj).username;
+
+    //get tables and display relevant api routes
+  }
+
   
 
   renderDashTable(table) {
@@ -60,13 +76,11 @@ class Information extends Component {
  
       <div className='container'>
 
-          <DashBanner />
-
         <div className='row'> 
-                    <h4 className="col-md-2   ">
-            DOCUMENTATION
-          </h4> 
-          <div className='col-md-12'>
+          <Paper style={apiInfoStyles}>
+            <div>apiEndpoints</div>
+          </Paper>   
+        <div className='col-md-12'>
               
            
            

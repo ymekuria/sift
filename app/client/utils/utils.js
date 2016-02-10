@@ -1,13 +1,6 @@
 import React from 'react'
 import Dialog from 'material-ui/lib/dialog';
 // import request from 'request'
-// var host;
-// if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
-//   host = 'rethink'
-// } else {
-//   host = 'localhost'
-// }
-
 
 
 
@@ -87,8 +80,6 @@ export const getTables = (cb) => {
   .then((text) => {
     console.log('inside get tables',text);
     cb(JSON.parse(text))
-    
-
   })
 }
 

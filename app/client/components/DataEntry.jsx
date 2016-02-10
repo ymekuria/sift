@@ -47,7 +47,7 @@ class DataEntry extends Component {
         </Paper>
         <Paper className='selectionList'>
           <div>
-            <Selections selected={CurrentSelections}/>
+            <Selections selected={CurrentSelections}/>  
           </div>
         </Paper>
       </div>
