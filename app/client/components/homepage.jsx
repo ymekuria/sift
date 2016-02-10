@@ -88,13 +88,13 @@ class Homepage extends Component {
         getTables(function(res){ 
 
           if(res === undefined) {
+            console.log('res in removetable', res)
             that.setState({tablesExist: false})
           } else {
             that.setState({userTables: res,
                           tablesExist: true,
                           userName: res[0].tablename.split("_")[0].toUpperCase() })
           }
-      
         });
       });
      } 
