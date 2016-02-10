@@ -110,7 +110,7 @@ class Homepage extends Component {
  
       <div className='container'>
 
-          <DashBanner userName={ this.state.userName}r/>
+          <DashBanner userName={ this.state.displayname}/>
        
 
 
