@@ -26,7 +26,12 @@ export function requireAuth(Component) {
 
     checkAuth() {
       //check local storage
-      return !!localStorage.getItem('sift-user')
+      var user = JSON.parse(localStorage.getItem('sift-user'));
+      if (user.username) {
+        return true
+      } else {
+        return false
+      }
     }
     navigation(path) {
       //navigating to our desired endpoint IF we are logged in
