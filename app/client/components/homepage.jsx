@@ -87,7 +87,7 @@ class Homepage extends Component {
         // makes a ajax call to update the state with the list of tables
         getTables(function(res){ 
 
-          if(res === undefined) {
+          if(res[0] === undefined) {
             console.log('res in removetable', res)
             that.setState({tablesExist: false})
           } else {
