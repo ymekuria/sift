@@ -7,8 +7,12 @@ class AddNode extends Component {
 	constructor() {
 		super();
 		this.state = {
-			columns: ['lastName', 'firstName', 'company'],
+			columns: []
 		}
+	}
+
+	componentDidMount() {
+		// insert D3 code here
 	}
 
 	addNode(e) {
