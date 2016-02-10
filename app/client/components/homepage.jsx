@@ -57,7 +57,7 @@ class Homepage extends Component {
     
     getTables(function(res){
 
-      if(res === undefined) {
+      if(res[0] === undefined) {
         that.setState({tablesExist: false})
       } else {
       that.setState({userTables: res,

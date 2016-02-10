@@ -55,10 +55,12 @@ dbMethods = {
     var columnsString, fakeData;
 
     // create the table in RethinkDB
+
     // check postgres first to see if tablename exists
     client.query('SELECT tablename FROM tables WHERE userid = ($1) AND tablename = ($2)', [userID, tablename], function(err, response) {
       if (response.rows.length > 0) {
         res.status(400).send({ message: 'Table already exists' }) // table already exists
+
       } else {
         r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
           // handle custom table
@@ -102,12 +104,13 @@ dbMethods = {
   getTables: function(req, res) {
     var userID = req.user.id;
     var queryString = 'SELECT id, tablename, columns FROM tables WHERE userID = ' + userID;
-    
+    console.log(req.user.id, 'this should be the id!!!')
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
         _.each(tableNames.rows, function(row) {
           row.columns = row.columns.split(',')
         })
+        console.log(tableNames.rows);
         res.status(200).json(tableNames.rows);
     });
   },

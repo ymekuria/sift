@@ -8,10 +8,10 @@
   },
   "scripts": {
     "test_client": "mocha 'client/spec/*.test.js' --compilers js:babel-core/register",
-    "test": "mocha server/spec",
-    "start": "nodemon devServer.js",
-    "webpack": "node app/devServer.js"
-
+    "test": "mocha server/spec/rethink-spec.js",
+    "start" : "nodemon server/server.js",
+    "dev": "NODE_ENV=dev nodemon devServer.js",
+    "build": "NODE_ENV=production webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",

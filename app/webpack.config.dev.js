@@ -1,12 +1,18 @@
-var path = require('path');
 var webpack = require('webpack');
+var path = require('path');
+var nodeModulesPath = path.resolve(__dirname, 'node_modules')
+var buildPath = path.resolve(__dirname, 'public', 'build')
+var mainPath = path.resolve(__dirname, 'client', 'app.jsx')
+
+
+
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: [
     'eventsource-polyfill', // necessary for hot reloading with IE
     'webpack-hot-middleware/client',
-    './client/app.jsx'
+    mainPath
   ],
   output: {
     path: path.join(__dirname, 'dist'),
