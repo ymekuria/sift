@@ -1,17 +1,9 @@
 
-<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
-
-
-=======
->>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
 var r = require('rethinkdb');
 var server = require('../server').server;
 var _ = require('lodash');
 var connection = null;
-<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
 
-=======
->>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
 
 var rConnectConfig;
 
@@ -23,11 +15,7 @@ if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
 
 r.connect(rConnectConfig, function(err, conn) {
 
-<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
-r.connect({ host: 'localhost', db: 'apiTables' }, function(err, conn) {
 
-=======
->>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
   if (err) throw err;
   connection = conn;
 });

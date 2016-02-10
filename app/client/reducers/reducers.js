@@ -60,24 +60,25 @@ const buildTable = (state = initialState, action) => {
         }).toJS()
       )
 
-<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
+
     //======removing from currently selected======//
     case 'add_tablename':
       return (
         Immutable.fromJS(state)
         .updateIn(['BuildOrder'], obj => {
-
+          console.log('in here', obj);
           obj = obj.toJS();
 
           obj['tablename'] = action.tablename
           return obj;
-=======
+        }).toJS() 
+        ) 
     case 'adding_vis_table':
       return (
         Immutable.fromJS(state)
         .updateIn(['dataVisTable'], currentTable => {
           return action.newTable;
->>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
+
         }).toJS()
       )
 

@@ -26,15 +26,11 @@ class Homepage extends Component {
 
     this.state={
       info: {},
-<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
-      userTables: {}
-    };
-
-=======
       userTables: {},
-      tablesExist: '', 
+      tablesExist: '',
+      userName: '',
     }
->>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
+
     this.navigation = this.navigation.bind(this);
     this.renderDashTable = this.renderDashTable.bind(this);
     this.removeTable = this.removeTable.bind(this);
@@ -45,10 +41,7 @@ class Homepage extends Component {
     var that = this;
     
     getTables(function(res){
-<<<<<<< 2d135d6fc7a49ef31e2239089c6a037f5df84131
-      that.setState({ userTables: res })
-      console.log('this.state', that.state)
-=======
+
       if(res === undefined) {
         that.setState({tablesExist: false})
       } else {
@@ -57,7 +50,6 @@ class Homepage extends Component {
                     userName: res[0].tablename.split("_")[0].toUpperCase() })
       
       }
->>>>>>> added landing page, styled signup, and added placeholder for no usertables on homepage
     });
   
   }
@@ -197,7 +189,7 @@ class DashTable extends Component {
             this.props.nav('/vis')}} 
           style={{margin: 5,
             position: 'relative',
-           bottom: -50, }} />
+           bottom: -50}} />
 
        </Paper>
 
