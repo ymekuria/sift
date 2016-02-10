@@ -71,13 +71,16 @@ export const getTables = (cb) => {
   return fetch(url, {
     credentials: 'same-origin',
     method: 'GET',
-    headers: {},
+    headers: {
+    },
     body: {}
   })
   .then((response) => response.text())
   .then((text) => {
-    console.log(text);
-    cb(JSON.parse(text));
+    console.log('inside get tables',text);
+    cb(JSON.parse(text))
+    
+
   })
 }
 

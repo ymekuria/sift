@@ -16,7 +16,8 @@ const initialState = {
     tableName: ''
   },
   CurrentSelections: [],
-  BuildOrder: {}
+  BuildOrder: {},
+  dataVisTable: ''
 }
 
 const buildTable = (state = initialState, action) => {
@@ -59,16 +60,25 @@ const buildTable = (state = initialState, action) => {
         }).toJS()
       )
 
+
     //======removing from currently selected======//
     case 'add_tablename':
       return (
         Immutable.fromJS(state)
         .updateIn(['BuildOrder'], obj => {
-
+          console.log('in here', obj);
           obj = obj.toJS();
 
           obj['tablename'] = action.tablename
           return obj;
+        }).toJS() 
+        ) 
+    case 'adding_vis_table':
+      return (
+        Immutable.fromJS(state)
+        .updateIn(['dataVisTable'], currentTable => {
+          return action.newTable;
+
         }).toJS()
       )
 
@@ -87,3 +97,4 @@ const buildTable = (state = initialState, action) => {
    
 }
 export default buildTable;
+

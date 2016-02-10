@@ -14,7 +14,9 @@ var utils = require('./utils/utils')
 var pg = require('pg');
 var app = express();
 var cors = require('cors');
-console.log('here')
+
+
+
 // Middleware. Add below as needed
 // app.use(cors());
 // app.use(morgan('dev'));
@@ -24,6 +26,7 @@ app.use(bodyParser.urlencoded({extended: true }));
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static(__dirname + '/client/landingPage'))
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 var port = process.env.PORT || 5001;

@@ -1,10 +1,11 @@
+
 var client = require('../utils/dbconnect').client;
 var r = require('rethinkdb');
 var socketController = require('./socketController')
 var faker = require('faker');
 var _ = require('lodash');
 var utils = require('../utils/utils.js');
-var config = require('../server.js')
+var config = require('../server.js');
 var connection = null;
 var rConnectConfig;
 
@@ -15,6 +16,7 @@ if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
 }
 
 r.connect(rConnectConfig, function(err, conn) {
+
   if (err) throw err;
   connection = conn;
   r.dbCreate('apiTables').run(conn, function(err, conn) {
@@ -92,7 +94,7 @@ dbMethods = {
 
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
-    console.log('Req.user: ', req.user)
+    console.log('Req.user: ', req.user.id)
     var userID = req.user.id;
     var queryString = 'SELECT id, tablename, columns FROM tables WHERE userID = ' + userID;
     

@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import main from '../components/main.jsx'
 import { Welcome } from '../components/welcome.jsx'
 import Build from '../components/Build.jsx'
+
+import { Landing } from '../landingPage/landingPage.jsx'
+import dataEntry from '../components/DataEntry.jsx'
 import Info from '../components/info.jsx'
 import homepage from '../components/homepage.jsx'
 import dataVis from '../components/dataVis.jsx'
@@ -21,10 +24,10 @@ import { requireAuth } from '../auth/auth'
 
 //we need to add that function and get the token
 //registered in local storage on sign in
-
+// <IndexRoute component={Landing}/> took out root path 
 export default (
   <Route path='/' component={main}>
-    <IndexRoute component={Welcome}/>
+    
     <Route path='signin' component={Signin}/>
     <Route path='signup' component={Signup}/>
     <Route path='home' component={requireAuth(homepage)}/>

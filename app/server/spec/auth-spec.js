@@ -1,4 +1,6 @@
 
+
+
 var pg = require('pg');
 var db = require('../utils/dbconnect.js');
 var expect = require('../../node_modules/chai/chai').expect;
@@ -12,6 +14,9 @@ describe("Authenticating Users", function() {
 
   beforeEach(function(done) {
     client = new pg.Client(db.connectionString);
+
+
+
     client.connect();
 
     var UserTablename = "users";
@@ -54,6 +59,9 @@ describe("Authenticating Users", function() {
     })
   });
 
+
+
+
   it("Should add a user to the database", function(done) {
     // Post the user to the chat server.
     request({ method: "POST",
@@ -63,15 +71,19 @@ describe("Authenticating Users", function() {
       var queryString = "SELECT * FROM users";
       var queryArgs = [];
 
+
       client.query(queryString, function(err, results) {
         console.log('query results', results.rows)
         expect(results.rows.length).to.equal(1);
         expect(results.rows[0].username).to.equal("erikdbrowngmailcom");
 
+
         done();
       });
     });
   });
+
+
 
 
 
@@ -119,6 +131,7 @@ describe("Authenticating Users", function() {
     });
   });
 
+
   // it("Should return a JWT token", function(done) {
   //   request({ method: "POST",
   //             uri: "http://127.0.0.1:5001/api/users",
@@ -133,6 +146,7 @@ describe("Authenticating Users", function() {
   //             })
   //           })
   // });
+
 
   // it("Should return a GitHub authenticated user", function(done) {
 
