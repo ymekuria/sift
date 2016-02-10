@@ -1,15 +1,11 @@
 import React from 'react'
-import Dialog from 'material-ui/lib/dialog';
-// import request from 'request'
 
 
 
 //db call helpers
 //zen - 'https://api.github.com/zen'
 export const createTable = (selections) => {
-  //api/generateTable:?usr=<username>'
   //post data to db
-  // selections['tableName'] = tableName;
   let url = '/api/users/tables'
 
   return fetch(url, {
@@ -29,7 +25,6 @@ export const createTable = (selections) => {
 }
 
 const createCustomTable = (username, selections) => {
-  //api/generateTable:?usr=<username>'
   //post data to db
   let url = '/api/users/tables';
   return fetch(url, {
@@ -48,26 +43,8 @@ const createCustomTable = (username, selections) => {
   .catch((err) => console.log(err));
 }
 
-export const getTable = (username, tableName) => {
-  //api/getOneTable:?usrTable=<username_table>
-  //api/getOneTable
-  //gets a single table
-  let url = 'http://localhost:5001/getOneTable:?usrTable=' + username_tableName;
-  return fetch(url, {
-    credentials: 'same-origin',
-    method: 'GET',
-    headers: {},
-    body: {}
-  })
-  .then((response) => response.text())
-  .then((text) => {
-    console.log('response',text);
-  })
-}
-
 export const getTables = (cb) => {
   //retrieve all table names for a specific user
-  // console.log('username', username);
   let url = '/api/users/tables'
   return fetch(url, {
     credentials: 'same-origin',
@@ -78,6 +55,7 @@ export const getTables = (cb) => {
   })
   .then((response) => response.text())
   .then((text) => {
+<<<<<<< HEAD
     console.log('inside get tables', text);
     cb(JSON.parse(text))
   })
@@ -115,13 +93,20 @@ const updateValue = (username, tableName, row) => {
   .then((response) => response.text())
   .then((text) => {
     console.log(text);
+=======
+    cb(JSON.parse(text))
+>>>>>>> fixed api routes on front end so that it is based on paths vs. full URLs
   })
 }
 
-export const deleteTable = (tableId,cb) => {
+export const deleteTable = (tableId, cb) => {
   //api/deleteTable:?usr=<username>
+<<<<<<< HEAD
   console.log('tableID in deletTabl ajax', tableId);
   let url = '/api/users/tables/' + tableId;
+=======
+  let url = 'api/users/tables/' + tableId;
+>>>>>>> fixed api routes on front end so that it is based on paths vs. full URLs
   return fetch(url, {
     credentials: 'same-origin',
     method: 'DELETE',
@@ -131,24 +116,5 @@ export const deleteTable = (tableId,cb) => {
   .then((response) => response.text())
   .then((text) => {
     cb();
-    console.log(text);
-  })
-}
-
-const deleteRow = (username, tableName, row) => {
-  //api/deleteRow:?usr=<username>
-  //delete a row
-  let url = 'api/deleteRow:?usr=' + username;
-  return fetch(url, {
-    credentials: 'same-origin',
-    method: 'DELETE',
-    headers: {},
-    body: JSON.stringify({
-      tableName: tableName
-    })
-  })
-  .then((response) => response.text())
-  .then((text) => {
-    console.log(text);
   })
 }
