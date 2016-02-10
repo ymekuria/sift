@@ -29,7 +29,7 @@ export const createTable = (selections) => {
 const createCustomTable = (username, selections) => {
   //api/generateTable:?usr=<username>'
   //post data to db
-  let url = 'http://localhost:5001/api/makeCustomTable:?usr=' + username
+  let url = '/api/users/tables';
   return fetch(url, {
     method: 'POST',
     credentials: 'same-origin',

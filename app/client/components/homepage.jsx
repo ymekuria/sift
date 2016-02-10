@@ -121,7 +121,7 @@ class Homepage extends Component {
           <div className='col-md-12'>
            {/*pass in an object as props that has the table name and other relevant infor for the display if usertables are indefined, display a messege*/}
            {
-              _.map(this.state.userTables,this.renderDashTable)    
+            _.map(this.state.userTables, this.renderDashTable)    
            } 
           </div>    
         </div>
