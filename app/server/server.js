@@ -17,6 +17,8 @@ var http = require('http');
 var path = require('path');
 var token;
 
+console.log(process.env);
+
 if(process.env.CLIENT_ID || process.env.CLIENT_SECRET) {
   token = {CLIENT_ID: process.env.CLIENT_ID, CLIENT_SECRET : process.env.CLIENT_SECRET}
 } else {
