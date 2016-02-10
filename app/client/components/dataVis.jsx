@@ -115,7 +115,7 @@ class DataVis extends Component {
       <div className='dataVis'>
         INSIDE DATA VIZ
         <div id="tree-container"></div>
-        <AddNode />
+        <AddNode addNode={ this.addNode.bind(this) }/>
       </div>
     )  
   }
