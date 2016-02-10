@@ -8,7 +8,6 @@ dependencies:
 
 test:
   override:
-    - docker-compose run -d --no-deps web
     - cd app; npm test
 
 deployment: 
