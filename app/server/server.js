@@ -33,8 +33,8 @@ app.use(express.static(__dirname + '/client/landingPage'))
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 //===========uncomment this middleware for production=========
-
 // app.use(express.static(path.join(__dirname, '../build')));
+
 
 
 
@@ -120,14 +120,12 @@ passport.use(new LocalStrategy(
 }))
 
 //===========//uncomment below for production//==========
-
-
 //   app.get('*', function(req, res) {
 //   console.log(path.join(__dirname, '../build/index.html'));
 //   console.log(path.resolve(__dirname, '../build/index.html'));
 //   res.sendFile(path.join(__dirname, '../build/index.html'));
 
-// });
+
 
 
 

@@ -26,12 +26,31 @@ import IconButton from 'material-ui/lib/icon-button';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import { getTables } from '../utils/utils'
 
-const apiInfoStyles = {
-  width: '80vw',
-  height: '300px',
-  marginLeft: '65px',
-  marginTop: '15px',
-  textAlign: 'left'
+const apiInfoHeader = {
+  width: '30vw',
+  height: '90px',
+  marginRight: '2px',
+  display: 'table',
+  float: 'left',
+  textAlign: 'center'
+
+}
+const infoDisplay = {
+  width: "90vw",
+  height: "500px",
+  overflowY: "scroll"
+}
+
+const infoListItem = {
+  width: "900px",
+  height: "100px",
+  margin: "4px auto"
+}
+const itemContent = {
+  // width: "800px",
+  // height: "80px",
+  // display: "inline-block",
+  // marginLeft: "65px",
 }
 
 
@@ -39,8 +58,6 @@ const apiInfoStyles = {
 class Information extends Component {
   constructor() {
     super();
-
-
 
     //initialize userTables request to
     //user table
@@ -56,11 +73,7 @@ class Information extends Component {
   componentWillMount() {
     let userObj = window.localStorage.getItem('sift-user');
     let username = JSON.parse(userObj).username;
-
-    //get tables and display relevant api routes
   }
-
-  
 
   renderDashTable(table) {
    
@@ -73,67 +86,51 @@ class Information extends Component {
   render() {
     
     return(
- 
-      <div className='container'>
+        <div className='infoContainer'> 
+          <div className='infoHeader'>
+            <RaisedButton style={apiInfoHeader}>
+            API
+            </RaisedButton>  
 
-        <div className='row'> 
-          <Paper style={apiInfoStyles}>
-            <div>apiEndpoints</div>
-          </Paper>   
-        <div className='col-md-12'>
+            <RaisedButton style={apiInfoHeader}>
+            GETTING STARTED
+            </RaisedButton> 
+
+            <RaisedButton style={apiInfoHeader}>
+            GUIDE
+            </RaisedButton> 
+          </div>
+
+          <Paper style={infoDisplay}>
+            <div className='infoListItem' style={infoListItem}>
+              <div className='circle'>1</div>
+              <div className='itemContent' style={itemContent}>
+              <h4>Understanding the API</h4>
+              sa;ldfkja;lsdkfjaslkdfjl;k
+              as;dfjas;dklf
+              <br/>
+              a;sldkfj;alskdfj
+              sa;ldfkja;lsdkfjaslkdfjl;k
+              as;dfjas;dklf
+              <br/>
+              a;sldkfj;alskdfj
+              sa;ldfkja;lsdkfjaslkdfjl;k
+              as;dfjas;dklf
+              <br/>
+              a;sldkfj;alskdfj
+              sa;ldfkja;lsdkfjaslkdfjl;k
+              as;dfjas;dklf
+              <br/>
+              a;sldkfj;alskdfj
               
-           
-           
-          </div>    
+              </div>
+            </div>
+          </Paper>
         </div>
-      </div>   
     )
   }
 }
 
-
-
-
-class DashButtons extends Component {
-
-  render() {
-    return (
-      <div>
-        <RaisedButton label="API Docs"  style={{margin:12}} />
-        <RaisedButton label="Examples"  style={{margin:12}} />
-        <RaisedButton label="Quickstart" style={{margin:12}} />
-      
-      </div>
-    )
-  }
-}  
-
-class DashBanner extends Component {
-
-  render() {
-    return (
-    <div className='dashBanner'>
-      <div className='row'>
-          <h2 className="col-md-4 col-md-offset-4 " >
-            SIFT
-          </h2>
-          <h3 className="col-md-3 col-md-offset-3 text-center ">
-          Developer Docs
-            
-          </h3>    
-
-      </div>
-    {/*row for buttons*/}
-      <div className='row'>
-        <div className='col-md-6 col-md-offset-3'>
-        <DashButtons/> 
-          
-        </div>
-      </div>
-    </div> 
-    )
-  }
-} 
 
 
 

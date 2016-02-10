@@ -19,7 +19,7 @@ app.get('/landing', function(req, res) {
   res.sendFile(path.join(__dirname, './client/landingPage/landing.html'));
 });
 app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, './client/index.html'));
+  res.sendFile(path.join(__dirname, '/client/index.html'));
 });
 
 
