@@ -40,12 +40,12 @@ const Selections = ({ selected }, { store }) => {
           })}
         </List>
         <RaisedButton
-        label="Create Table"
-        onClick={() => {
-          store.dispatch({
-          type: 'submit_table'
-        })}} 
-        tooltip='save'>
+          label="Create Table"
+          onClick={() => {
+            store.dispatch({
+            type: 'submit_table'
+          })}} 
+          tooltip='save'>
         </RaisedButton>
       </div>
     </div>

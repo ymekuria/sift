@@ -41,7 +41,7 @@ module.exports = function(app, express, ensureAuth) {
       username: req.user.username,
       displayname: req.user.displayname
     }
-    res.redirect('/build');
+    res.redirect('/home');
   });
 
   //logout

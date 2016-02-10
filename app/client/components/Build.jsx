@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import DataEntry from './DataEntry';
+import FlatButton from 'material-ui/lib/flat-button';
+import CardActions from 'material-ui/lib/card/card-actions';
 import Custom from './Custom';
 
 class Build extends Component {
@@ -27,18 +29,20 @@ class Build extends Component {
 		if (this.state.select) {
 			return (
 			<div>
-			  <ul>
-			    <li onClick={ this.toggle.bind(this) }>Show me Custom</li>
-			  </ul>
+			  <CardActions>
+			    <FlatButton label="Generate Data" backgroundColor='white' hoverColor='white' />
+			    <FlatButton label="Custom Table" onClick={ this.toggle.bind(this) } />
+			  </CardActions>
 			  <DataEntry />
 			</div>
 		)
 		} else {
 			return (
 			<div>
-			  <ul>
-			    <li onClick={ this.toggle.bind(this) }>Show me Data Entry</li>
-			  </ul>
+			  <CardActions>
+			    <FlatButton label="Generate Data"  onClick={ this.toggle.bind(this) }/>
+			    <FlatButton label="Custom Table" backgroundColor='white' hoverColor='white' />
+			  </CardActions>
 			<Custom />
 			</div>
 		)

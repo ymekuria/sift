@@ -7,7 +7,6 @@ import Immutable from 'immutable'
 import { createTable } from '../utils/utils.js'
 
 const initialState = {
-  country: 'dataTypes',
   dataValue: '',
   tableValue: '',
   columnValue: '',

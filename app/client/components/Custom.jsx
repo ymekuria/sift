@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
+import TextField from 'material-ui/lib/text-field';
 var Select = require('react-select');
 
-const STATES = require('../data/dataTypes.js');
+const STATES = require('../data/dataTypes.js').dataTypes;
 
 class Custom extends Component {
 
@@ -12,9 +13,10 @@ class Custom extends Component {
 		};
 	}
 
-	getInitialState () {
-		return {
-			country: 'dataTypes',
+	constructor () {
+		super();
+		this.state = {
+			country: STATES,
 			dataValue: '',
       tableValue: '',
       columnValue: '',
@@ -80,56 +82,53 @@ class Custom extends Component {
   // }
 	//REDUX
 	render () {
-		var options = STATES[this.state.country];
+		var options = this.state.country;
 		var columns = [];
 		for (var key in this.state.allColumns ){
 			columns.push("Name : "+ key +" Type: "+ this.state.allColumns[key] );
 		}
 
-		const { country, dataValue, tableValue, columnValue, completeTable, allColumns } = this.context.store.getState().customTable;
+		// const { country, dataValue, tableValue, columnValue, completeTable, allColumns } = this.context.store.getState().customTable;
 		return (
 
 			<div className="section">
-			<br></br><br></br>
+				<div>
+		      <TextField hintText='Name your table' floatingLabelText='Tablename' onChange={() => {store.dispatch({
+						type: 'updateTable',
+						newCategory: this.state.tableValue
+					})}} value={this.state.tableValue}/>
+				</div>
+				<div>
+		      <TextField hintText='Name your column' floatingLabelText='Column name' onChange={() => {store.dispatch({
+						type: 'updateColumn',
+						newCategory: this.state.columnValue
+					})}} value={this.state.columnValue}/>
 
-			{/*//////CHOOSE A TABLE NAME////////*/}
-      <input type="text" onChange={() => {store.dispatch({
-				type: 'updateTable',
-				newCategory: this.state.tableValue
-			})}} value={this.state.tableValue}/>
-      <h4>Name your table</h4>
+					{/*//////CHOOSE A DATA TYPE////////*/}
+					<h3 className="section-heading">{this.props.label}</h3>
+					<Select ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.dataValue} onChange={() => {store.dispatch({
+						type: 'updateValue',
+						newCategory: this.state.dataValue
+					})}} />
+					<br></br>
 
-			{/*//////CHOOSE A COLUMN NAME////////*/}
-      <input type="text" onChange={() => {store.dispatch({
-				type: 'updateColumn',
-				newCategory: this.state.columnValue
-			})}} value={this.state.columnValue}/>
-      <h4>Name a column</h4>
+		 			{/*///////ADD COLUMN BUTTON////////*/}
+					<div style={{ marginTop: 14 }}>
+					<button type="button" onClick={() => {store.dispatch({
+						type: 'addColumn',
+					})}} >Add Column</button>
+					</div>
 
-			{/*//////CHOOSE A DATA TYPE////////*/}
-			<h3 className="section-heading">{this.props.label}</h3>
-			<Select ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.dataValue} onChange={() => {store.dispatch({
-				type: 'updateValue',
-				newCategory: this.state.dataValue
-			})}} />
-			<br></br>
-
- 			{/*///////ADD COLUMN BUTTON////////*/}
-			<div style={{ marginTop: 14 }}>
-			<button type="button" onClick={() => {store.dispatch({
-				type: 'addColumn',
-			})}} >Add Column</button>
-			</div>
-
-			{/*////// LIST OF CREATED COLUMNS////////*/}
-			<h5>Table Name :</h5>
-			<div>{this.state.tableValue}</div>
-			<h5>column Created :</h5>
-			{columns.map(function(a){return <div>{a}</div>})}
-			{/*//////CREATE TABLE BUTTON////////*/}
-			<div style={{ marginTop: 14 }}>
-				<button type="button" onClick={this.focusStateSelect}>Create table</button>
-			</div>
+					{/*////// LIST OF CREATED COLUMNS////////*/}
+					<h5>Table Name :</h5>
+					<div>{this.state.tableValue}</div>
+					<h5>column Created :</h5>
+					{columns.map(function(a){return <div>{a}</div>})}
+					{/*//////CREATE TABLE BUTTON////////*/}
+					<div style={{ marginTop: 14 }}>
+						<button type="button" onClick={this.focusStateSelect}>Create table</button>
+					</div>
+				</div>
 			</div>
 		);
 	}

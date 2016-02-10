@@ -50,34 +50,40 @@ dbMethods = {
     //retrieve user from session store
     var userID = req.user.id;
     var columns = req.body.columns || utils.parseColumnNames(req.body); // custom request have a columns property.
-    var tablename =   req.user.username + '_' + req.body.tablename;
+    var tablename = req.user.username + '_' + req.body.tablename;
     var custom = req.body.custom || false;
     var columnsString, fakeData;
 
     // create the table in RethinkDB
-    r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
-      if (err) { console.log(err); }
-      // handle custom table
-      if (custom) {
-        columnsString = Object.keys(columns).join(',');
-        dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
-          if (err) { utils.handleError(err); }
-          res.sendStatus(200);
-        })
-      // create table and add generated data
+    // check postgres first to see if tablename exists
+    client.query('SELECT tablename FROM tables WHERE userid = ($1) AND tablename = ($2)', [userID, tablename], function(err, response) {
+      if (response.rows.length > 0) {
+        res.status(400).send({ message: 'Table already exists' }) // table already exists
       } else {
-        fakeData = utils.generateData(req.body, columns, 20, function(data) {
-          columnsString = columns.join(',');
-          dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
-            if (err) { utils.handleError(err); }
-            dbMethods.addFakeData(tablename, data, function(err) {
+        r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
+          // handle custom table
+          if (custom) {
+            columnsString = Object.keys(columns).join(',');
+            dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
               if (err) { utils.handleError(err); }
               res.sendStatus(200);
             })
-          });
-        }); // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
+          // create table and add generated data
+          } else {
+            fakeData = utils.generateData(req.body, columns, 20, function(data) {
+              columnsString = columns.join(',');
+              dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
+                if (err) { utils.handleError(err); }
+                dbMethods.addFakeData(tablename, data, function(err) { // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
+                  if (err) { utils.handleError(err); }
+                  res.sendStatus(200);
+                })
+              });
+            }); 
+          }
+        });
       }
-    });
+    })
   },
 
   addToPostgresTables: function(userID, tablename, columns, custom, cb) {
@@ -94,7 +100,6 @@ dbMethods = {
 
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
-    console.log('Req.user: ', req.user.id)
     var userID = req.user.id;
     var queryString = 'SELECT id, tablename, columns FROM tables WHERE userID = ' + userID;
     
@@ -103,8 +108,6 @@ dbMethods = {
         _.each(tableNames.rows, function(row) {
           row.columns = row.columns.split(',')
         })
-        console.log('tablenames: ', tableNames)
-        console.log('tablenames.rows: ', tableNames.rows)
         res.status(200).json(tableNames.rows);
     });
   },
