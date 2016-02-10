@@ -1,5 +1,5 @@
-
 import React from 'react'
+import Dialog from 'material-ui/lib/dialog';
 // import request from 'request'
 
 //db call helpers
@@ -8,7 +8,6 @@ export const createTable = (selections) => {
   //api/generateTable:?usr=<username>'
   //post data to db
   // selections['tableName'] = tableName;
-
   let url = '/api/users/tables'
 
   return fetch(url, {
@@ -20,9 +19,9 @@ export const createTable = (selections) => {
     credentials: 'same-origin',
     body: JSON.stringify(selections)
   })
-  .then((response) => response.text())
-  .then((text) => {
-    console.log(text);
+  .then((response) => response.json())
+  .then((json) => {
+    console.log('response: ', json)
   })
   .catch((err) => console.log(err));
 }

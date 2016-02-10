@@ -74,7 +74,7 @@ class Signin extends Component {
               <input className =" form-group form-control" type='password' ref='password' placeholder='password' />
               <RaisedButton secondary={true} label = 'SIGNIN' type='submit'style ={buttonStyle} ></RaisedButton>
             </form>
-       <a href='#/signup'>Need an account?</a>
+       <a href='/signup'>Need an account?</a>
        </div>
         </Paper>
        </div>
