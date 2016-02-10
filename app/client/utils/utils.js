@@ -21,9 +21,9 @@ export const createTable = (selections) => {
     credentials: 'same-origin',
     body: JSON.stringify(selections)
   })
-  .then((response) => response.json())
-  .then((json) => {
-    console.log('response: ', json)
+  .then((response) => response)
+  .then((response) => {
+    console.log('response: ', response)
   })
   .catch((err) => console.log(err));
 }
@@ -78,7 +78,7 @@ export const getTables = (cb) => {
   })
   .then((response) => response.text())
   .then((text) => {
-    console.log('inside get tables',text);
+    console.log('inside get tables', text);
     cb(JSON.parse(text))
   })
 }
@@ -121,7 +121,7 @@ const updateValue = (username, tableName, row) => {
 export const deleteTable = (tableId,cb) => {
   //api/deleteTable:?usr=<username>
   console.log('tableID in deletTabl ajax', tableId);
-  let url = 'http://localhost:5001/api/users/tables/' + tableId;
+  let url = '/api/users/tables/' + tableId;
   return fetch(url, {
     credentials: 'same-origin',
     method: 'DELETE',

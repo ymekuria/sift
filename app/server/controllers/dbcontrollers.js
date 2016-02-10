@@ -104,12 +104,13 @@ dbMethods = {
   getTables: function(req, res) {
     var userID = req.user.id;
     var queryString = 'SELECT id, tablename, columns FROM tables WHERE userID = ' + userID;
-    
+    console.log(req.user.id, 'this should be the id!!!')
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
         _.each(tableNames.rows, function(row) {
           row.columns = row.columns.split(',')
         })
+        console.log(tableNames.rows);
         res.status(200).json(tableNames.rows);
     });
   },

@@ -1,7 +1,5 @@
 web:
   build: ./app
-  volumes:
-    - "./app:/src/app"
   ports:
     - "80:5001"
   links:
