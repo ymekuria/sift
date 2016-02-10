@@ -41,20 +41,6 @@ let helpers = {
 			}
 		});
 		return rowObject;
-	},
-
-	editNode: function(node, tablename) {
-		// emits to 'edit ' + tablename
-	},
-
-	addNode: function(node, tablename) {
-		// emits to 'add ' + tablename
-
-	},
-
-	removeNode: function(node, tablename) {
-		// emits to 'remove ' + tablename
-
 	}
 
 }
