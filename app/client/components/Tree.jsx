@@ -1,4 +1,4 @@
-import Reach, { Component } from 'react'
+import React, { Component } from 'react'
 
 class Tree extends Component {
 
