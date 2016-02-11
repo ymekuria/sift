@@ -27,7 +27,7 @@ export function requireAuth(Component) {
     checkAuth() {
       //check local storage
       var user = JSON.parse(localStorage.getItem('sift-user'));
-      if (user.username) {
+      if (user) {
         return true
       } else {
         return false

@@ -8,10 +8,16 @@ import Checkbox from 'material-ui/lib/checkbox';
 import IconButton from 'material-ui/lib/icon-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import { Menu, MenuItem} from 'material-ui';
+import Paper from 'material-ui/lib/paper'
 
 
-//react-select stylesheet
-require('../css/select.css')
+
+const testStyle = {
+  backgroundColor: 'blue',
+  width: "220px",
+  height: "400px",
+  float: "right"
+}
 
 
 const Dropdown = ({ menuOptions }, { store }) => {
@@ -23,12 +29,23 @@ const Dropdown = ({ menuOptions }, { store }) => {
   const subSelection = all[currentCategory]
 
   return (
-    <div className="section dropdown">
+    <div className="dropdown">
       <div className='libHeader'>
         <h3>Library</h3>
       </div>
+      <Menu style={{width: '200px'}}>
+        {Object.keys(all).map(function (category) {
+          return (
+            <MenuItem
+              onClick={() => {store.dispatch({
+                type: 'update_category',
+                newCategory: category
+              })}}
+              primaryText={category}/>
+          )
+        })}
+      </Menu>
       <div className='selectField'>
-        <Select className='search'  simpleValue clearable={true} options={byItem}  name="category" searchable={true} />
           {_.map(subSelection, function (subSelection, c) {
             return (
               <div className='add'>
@@ -37,25 +54,15 @@ const Dropdown = ({ menuOptions }, { store }) => {
                   category: currentCategory,
                   addition: c
                 })}>
-                  <ContentAdd/>
+                  <ContentAdd color="green"/>
                 </IconButton>
                 <div className='addLabel'>{c}</div>
               </div>
             )
           })}
       </div>
-        <Menu style={{width: '200px'}}>
-          {Object.keys(all).map(function (category) {
-            return (
-              <MenuItem
-                onClick={() => {store.dispatch({
-                  type: 'update_category',
-                  newCategory: category
-                })}}
-                primaryText={category}/>
-            )
-          })}
-        </Menu>
+
+
     </div>
   );
 };

@@ -8,6 +8,12 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import _ from 'lodash';
 
+const listStyle = {
+}
+
+
+
+
 const Selections = ({ selected }, { store }) => {
 
   return (
@@ -20,12 +26,12 @@ const Selections = ({ selected }, { store }) => {
             tablename: e.target.value
           })
         }}/>
-        <List>
+        <ul className='list'>
           {selected.map((item, i) => {
             return (
-              <ListItem className='listItem'>
+              <li className='listItem'>
                 <div className='listItemContent'>
-                  {item}
+                  <div>{item}</div>
                   <div onClick={() => {
                     store.dispatch({
                       type: 'remove_from_list',
@@ -35,10 +41,10 @@ const Selections = ({ selected }, { store }) => {
                   className='remove'>{'x'}</div>
                 </div>
                 <Divider/>
-              </ListItem>
+              </li>
             ) 
           })}
-        </List>
+        </ul>
         <RaisedButton
           label="Create Table"
           onClick={() => {
