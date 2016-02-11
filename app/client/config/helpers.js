@@ -17,6 +17,7 @@ let helpers = {
 
 	loadTable: function(tablename, callback) {
 		// listens to 'update' + tablename
+		console.log("tablename received by helper : ",tablename);
 		return fetch('/api/users/tables/' + tablename)
 		.then((res) => {
 			return res.json()
