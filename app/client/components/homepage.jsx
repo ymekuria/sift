@@ -24,13 +24,12 @@ class Homepage extends Component {
   constructor() {
     super();
 
-
     this.state={
       info: {},
       userTables: {},
       tablesExist: '',
       userName: '',
-      displayname: JSON.parse(localStorage.getItem('sift-user')).displayname || ''
+      displayName: JSON.parse(localStorage.getItem('sift-user')).displayname || ''
     }
 
     this.navigation = this.navigation.bind(this);
@@ -38,21 +37,8 @@ class Homepage extends Component {
     this.removeTable = this.removeTable.bind(this);
   }
 
-  componentDidMount() {
-    var user = localStorage.getItem('sift-user');
-    if (!user) {
-      h.setUser(function(dbUser) {
-        dbUser = JSON.stringify(dbUser);
-        localStorage.setItem('sift-user', dbUser);
-        this.setState({
-          displayname: dbUser.displayname
-        })
-      })
-    }
-  }
-  
   componentWillMount() {
-   // find a better way to bind this
+   // find a better way to bind this//use promises instead 
     var that = this;
     
     getTables(function(res){
@@ -60,13 +46,31 @@ class Homepage extends Component {
       if(res[0] === undefined) {
         that.setState({tablesExist: false})
       } else {
-      that.setState({userTables: res,
-                    tablesExist: true,
-                    userName: res[0].tablename.split("_")[0].toUpperCase() })
+        console.log('getables response', res)
+        that.setState({userTables: res,
+          tablesExist: true,
+          userName: res[0].tablename.split("_")[0].toUpperCase() })
       
       }
+      // console.log('this.state in componentWillMount', this.state.userTables);
     });
+    // console.log('this.state in componentWillMount', this.state.userTables);
   }
+  componentDidMount() {
+    var user = localStorage.getItem('sift-user');
+    if (!user) {
+      h.setUser(function(dbUser) {
+        dbUser = JSON.stringify(dbUser);
+        localStorage.setItem('sift-user', dbUser);
+        this.setState({
+          displayName: dbUser.displayname
+        })
+      })
+    }
+    console.log('this.state.displayName in componentDidMount',this.state.userTables)
+  }
+  
+
 
   navigation(path) {
     store.dispatch(routeActions.push(path));
@@ -84,6 +88,7 @@ class Homepage extends Component {
     // makes an ajax call to delete the clicked table from the db
     if (confirm("Are you sure want to delete all records of this table?") ) {
       deleteTable(tableID, function(){
+        console.log('what is going on in this ')
         // makes a ajax call to update the state with the list of tables
         getTables(function(res){ 
 
@@ -92,8 +97,8 @@ class Homepage extends Component {
             that.setState({tablesExist: false})
           } else {
             that.setState({userTables: res,
-                          tablesExist: true,
-                          userName: res[0].tablename.split("_")[0].toUpperCase() })
+              tablesExist: true
+            })
           }
         });
       });
@@ -102,29 +107,24 @@ class Homepage extends Component {
   }  
 
   
-
   render() {
     if (this.state.tablesExist) {
     return(
 
- 
       <div className='container'>
-
-          <DashBanner userName={ this.state.displayname}/>
-       
-
-
+        <DashBanner userName={ this.state.displayName }/>
         <div className='row'> 
-                    <h4 className="col-md-2  ">
-            CURRENT TABLES
-            </h4> 
+          <h4 className="col-md-2  ">CURRENT TABLES</h4>
+        </div>   
+        <div className ='row'>
           <div className='col-md-12'>
-           {/*pass in an object as props that has the table name and other relevant infor for the display if usertables are indefined, display a messege*/}
-           {
-            _.map(this.state.userTables, this.renderDashTable)    
-           } 
+           
+            <AddTables className='addTableCard'/>
+          { _.map(this.state.userTables, this.renderDashTable) } 
+            
+          </div>
           </div>    
-        </div>
+        
       </div>   
     )
 
@@ -132,20 +132,12 @@ class Homepage extends Component {
 
   return(
 
- 
-      <div className='container'>
-
-          <DashBanner userName={ this.state.userName}r/>
-       
-
-
+    <div className='container'>
+      <DashBanner userName={ this.state.displayName}/>
         <div className='row'> 
-                    <h4 className="col-md-2  ">
-            CURRENT TABLES
-          </h4> 
+          <h4 className="col-md-2  ">CURRENT TABLES</h4> 
           <div className='col-md-12'>
-          <AddTables nav={this.navigation}/>
-           
+            <AddTables nav={this.navigation}/>
           </div>    
         </div>
       </div>   
@@ -219,7 +211,7 @@ class DashBanner extends Component {
     <div className='dashBanner'>
       <div className='row'>
         <h2 className="col-md-4 col-md-offset-3 " >
-          Welcome back to SIFT, {this.props.userName||''}
+          Welcome back to SIFT, {this.props.userName}
         </h2>
         <h4 className="col-md-4 col-md-offset-4 dashOneliner"></h4>     
       </div>
@@ -275,7 +267,6 @@ class AddTables extends Component {
            bottom: -50, }} />
 
        </Paper>
-
     ) 
   }
 }

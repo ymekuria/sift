@@ -4,6 +4,7 @@ import TextField from 'material-ui/lib/text-field';
 var Select = require('react-select');
 
 const STATES = require('../data/dataTypes.js').dataTypes;
+import {createTable} from '../utils/utils.js'
 
 class Custom extends Component {
 
@@ -26,27 +27,44 @@ class Custom extends Component {
 
   ///////UPDATES DATA TYPE ///////
 	updateValue (newValue) {
+		console.log('newValue', newValue);
 		this.setState({
 			dataValue: newValue
 		});
+
+		console.log('this.state.dataValue',this.state);
+
 	}
 
 	///////UPDATES TABLE NAME ///////
   updateTable (event) {
+  	console.log('tableName', event.target.value)
     this.setState({
       tableValue:  event.target.value
     });
+    console.log('TableValue State', this.state.tableValue)
   }
   
 	///////UPDATES COLUMN NAME ///////
   updateColumn (event) {
+  	console.log('columnName', event.target.value)
     this.setState({
       columnValue: event.target.value
     });
   }
 
-	focusStateSelect () {
-		this.refs.stateSelect.focus();
+	postTable () {
+		//this.refs.stateSelect.focus();
+		
+		var selections = {
+			tablename: this.state.tableValue,
+            custom: true,
+            columns: this.state.allColumns
+          }
+        
+		console.log('selections', selections);
+		console.log('this.state.allColumns', this.state.allColumns)
+		createTable(selections)
 	}
 
 	addColumn (event) {
@@ -54,8 +72,9 @@ class Custom extends Component {
 		columns[this.state.columnValue] = this.state.dataValue;
 
 		this.setState({
-				allColumns: columns,
+		  allColumns: columns,
 		});
+
 	}
 //REDUX
 	// componentDidMount() {
@@ -80,6 +99,10 @@ class Custom extends Component {
   // componentWillUnmount() {
   //   this.unsubscribe();
   // }
+  // {
+		// 				type: 'updateTable',
+		// 				newCategory: this.state.tableValue
+		// 			}
 	//REDUX
 	render () {
 		var options = this.state.country;
@@ -93,30 +116,21 @@ class Custom extends Component {
 
 			<div className="section">
 				<div>
-		      <TextField hintText='Name your table' floatingLabelText='Tablename' onChange={() => {store.dispatch({
-						type: 'updateTable',
-						newCategory: this.state.tableValue
-					})}} value={this.state.tableValue}/>
+		      <TextField hintText='Name your table' floatingLabelText='Tablename' onChange={this.updateTable.bind(this)} value={this.state.tableValue}/>
 				</div>
 				<div>
-		      <TextField hintText='Name your column' floatingLabelText='Column name' onChange={() => {store.dispatch({
-						type: 'updateColumn',
-						newCategory: this.state.columnValue
-					})}} value={this.state.columnValue}/>
+		      <TextField hintText='Name your column' floatingLabelText='Column name' onChange={this.updateColumn.bind(this)} value={this.state.columnValue}/>
 
 					{/*//////CHOOSE A DATA TYPE////////*/}
 					<h3 className="section-heading">{this.props.label}</h3>
-					<Select ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.dataValue} onChange={() => {store.dispatch({
-						type: 'updateValue',
-						newCategory: this.state.dataValue
-					})}} />
+					<Select ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.dataValue} onChange={this.updateValue.bind(this)} />
 					<br></br>
 
 		 			{/*///////ADD COLUMN BUTTON////////*/}
 					<div style={{ marginTop: 14 }}>
-					<button type="button" onClick={() => {store.dispatch({
+					<button type="button" onClick={() => this.addColumn({
 						type: 'addColumn',
-					})}} >Add Column</button>
+					})} >Add Column</button>
 					</div>
 
 					{/*////// LIST OF CREATED COLUMNS////////*/}
@@ -126,7 +140,7 @@ class Custom extends Component {
 					{columns.map(function(a){return <div>{a}</div>})}
 					{/*//////CREATE TABLE BUTTON////////*/}
 					<div style={{ marginTop: 14 }}>
-						<button type="button" onClick={this.focusStateSelect}>Create table</button>
+						<button type="button" onClick={this.postTable.bind(this)}>Create table</button>
 					</div>
 				</div>
 			</div>

@@ -100,7 +100,7 @@ class Signup extends Component {
 
                  <RaisedButton secondary={true} label = 'SIGN UP' type='submit'style ={buttonStyle} ></RaisedButton>
 
-                <a href='#/signin'>Already have an account?</a>
+                <a href='/signin'>Already have an account?</a>
            </form>
 
 

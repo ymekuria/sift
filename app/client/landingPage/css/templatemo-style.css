@@ -460,3 +460,9 @@ footer
 .signinBtn {
   margin: 15px
 }
+
+.homeBackground {
+    height: 400px;
+    background: linear-gradient(to right, #2090d2 0%, #4db5f2 100%);
+
+}

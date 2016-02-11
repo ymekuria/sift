@@ -33,7 +33,9 @@ app.use(express.static(__dirname + '/client/landingPage'))
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 //===========uncomment this middleware for production=========
-app.use(express.static(path.join(__dirname, '../build')));
+
+// app.use(express.static(path.resolve(__dirname, '../build')));
+
 
 
 // http.createServer(app).listen(process.env.PORT || 3000, function() {
