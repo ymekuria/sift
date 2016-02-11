@@ -6,6 +6,7 @@ import by_item from '../data/menu_options_by_item.js'
 import db_query_template from '../data/db_query_template.js'
 import Immutable from 'immutable'
 import { createTable } from '../utils/utils.js'
+import store from '../store.jsx'
 
 const initialState = {
   MenuOptions: {
@@ -17,7 +18,8 @@ const initialState = {
   },
   CurrentSelections: [],
   BuildOrder: {},
-  dataVisTable: ''
+  dataVisTable: '',
+  loading: false
 }
 
 const buildTable = (state = initialState, action) => {
@@ -81,13 +83,38 @@ const buildTable = (state = initialState, action) => {
 
         }).toJS()
       )
+    case: 'toggle_loading'
+      return (
+        Immutable.fromJS(state)
+        .updateIn(['loading'], loading => {
+          return loading!
+        }).toJS()
+      )
 
     //======submitting table======//
     case 'submit_table':
-      console.log('submitting table..?', state.BuildOrder)
-      createTable(state.BuildOrder);
-      //hook into backend!
-      //here we handle the post to our database
+      if (state.MenuOptions.tableName === '') {
+        alert('Please enter table name before submitting table!')
+        console.log('nope')
+      } else {
+        createTable(state.BuildOrder)
+        .then(function (res) {
+          store.dispatch({type:'toggle_loading'});
+        })
+        return (
+          Immutable.fromJS(state)
+          .updateIn(['MenuOptions', 'tableName'], tname => {
+            return ''
+          })
+          .updateIn(['BuildOrder'], order => {
+            return {}
+          })
+          .updateIn(['CurrentSelections'], sel => {
+            return [];
+          })
+        )
+      }
+
       return state;
 
     //=======default return state======//
