@@ -101,3 +101,5 @@ var socketMethods = {
 	}
 };
 
+module.exports = socketMethods;
+
