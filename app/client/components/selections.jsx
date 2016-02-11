@@ -8,45 +8,49 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import _ from 'lodash';
 
+const submitStyle = {
+  position: "relative",
+  right: "20px",
+  width: "220px",
+  marginRight: "60px"
+}
+
+
+
+
 const Selections = ({ selected }, { store }) => {
 
   return (
     <div>
-      <div className='selectionHeader'>
-        <h3>Selections</h3>
-        <TextField hintText="Name your table" floatingLabelText="Tablename" onBlur={(e) => {
+    <div className='selectionHeader'>
+      <RaisedButton
+        style={submitStyle}
+        label="Create Table"
+        onClick={() => {
           store.dispatch({
-            type: 'add_tablename',
-            tablename: e.target.value
-          })
-        }}/>
-        <List>
+          type: 'submit_table'
+        })}} 
+        tooltip='save'>
+      </RaisedButton>
+    </div>
+      <div className='selectionBody'>
+        <ul className='list'>
           {selected.map((item, i) => {
             return (
-              <ListItem className='listItem'>
-                <div className='listItemContent'>
+              <li className='listItem' 
+              onClick={() => {
+                store.dispatch({
+                  type: 'remove_from_list',
+                  id: i
+                })
+              }}>
+                <div className='listItemText'>
                   {item}
-                  <div onClick={() => {
-                    store.dispatch({
-                      type: 'remove_from_list',
-                      id: i
-                    })
-                  }}  
-                  className='remove'>{'x'}</div>
                 </div>
-                <Divider/>
-              </ListItem>
+              </li>
             ) 
           })}
-        </List>
-        <RaisedButton
-          label="Create Table"
-          onClick={() => {
-            store.dispatch({
-            type: 'submit_table'
-          })}} 
-          tooltip='save'>
-        </RaisedButton>
+        </ul>
       </div>
     </div>
   )

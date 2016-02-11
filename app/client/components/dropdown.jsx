@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import _ from 'lodash';
+import Selections from './selections.jsx'
+import TextField from 'material-ui/lib/text-field';
 /*
   == Material UI componenets ==
 */
@@ -8,13 +10,18 @@ import Checkbox from 'material-ui/lib/checkbox';
 import IconButton from 'material-ui/lib/icon-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import { Menu, MenuItem} from 'material-ui';
+import Paper from 'material-ui/lib/paper'
 
 
-//react-select stylesheet
-require('../css/select.css')
+
+const testStyle = {
+  width: "40%",
+  height: "400px",
+
+}
 
 
-const Dropdown = ({ menuOptions }, { store }) => {
+const Dropdown = ({ menuOptions, currentSelections }, { store }) => {
 
   const { all } = menuOptions;                
   const { byItem } = menuOptions;
@@ -23,27 +30,17 @@ const Dropdown = ({ menuOptions }, { store }) => {
   const subSelection = all[currentCategory]
 
   return (
-    <div className="section dropdown">
+    <div className="dropdown">
       <div className='libHeader'>
-        <h3>Library</h3>
+        <TextField hintText="Name your table" floatingLabelText="Tablename" onBlur={(e) => {
+          store.dispatch({
+            type: 'add_tablename',
+            tablename: e.target.value
+          })
+        }}/>
       </div>
-      <div className='selectField'>
-        <Select className='search'  simpleValue clearable={true} options={byItem}  name="category" searchable={true} />
-          {_.map(subSelection, function (subSelection, c) {
-            return (
-              <div className='add'>
-                <IconButton onClick={() => store.dispatch({
-                  type: 'add_to_build',
-                  category: currentCategory,
-                  addition: c
-                })}>
-                  <ContentAdd/>
-                </IconButton>
-                <div className='addLabel'>{c}</div>
-              </div>
-            )
-          })}
-      </div>
+
+      <div className='createContainer'>
         <Menu style={{width: '200px'}}>
           {Object.keys(all).map(function (category) {
             return (
@@ -56,6 +53,29 @@ const Dropdown = ({ menuOptions }, { store }) => {
             )
           })}
         </Menu>
+        <div className='selectField'>
+            {_.map(subSelection, function (subSelection, c) {
+              return (
+                <div className='add'>
+                  <IconButton onClick={() => store.dispatch({
+                    type: 'add_to_build',
+                    category: currentCategory,
+                    addition: c
+                  })}>
+                    <ContentAdd color="green"/>
+                  </IconButton>
+                  <div className='addLabel'>{c}</div>
+                </div>
+              )
+            })}
+        </div>
+        <Paper className='selectionList'>
+          <div>
+            <Selections selected={currentSelections}/>  
+          </div>
+        </Paper>
+
+      </div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 
 
 body{
-  background-color: #D3D3D3;
+  background-color: #E7E8EF;
   overflow-x: hidden;
 }
 h3 {
@@ -24,54 +24,76 @@ h3 {
 .dataEntry {}
 
 .select {
-  width: 550px;
+  width: 90vw;
   height: 550px;
   text-align: left;
   margin: 0 10px 0 5px;
   float: left;
+  overflow: hidden;
 }
 
 .libHeader {
   width: 100%;
-  height: 50px;
+  height: 70px;
   margin-bottom: 5px;
 }
 
 .dropdown {
-  width: 500px;
+  width: 80;
   height: 550px;
   margin-left: 15px;
 }
+.createContainer {
+  display: flex;
+}
 .add {
+  border: 1px solid #C5CAD9;
+  background-color: #E7E8EF;
+  border-radius: 2px;
   width: 200px;
   height: 48px;
-  margin: 20px 0 0 20px;
+  margin: 5px 0 0 20px;
 }
 
 .selectField {
-  width: 250px;
+  width: 240px;
   height: 450px;
-  float: right;
-}
-
-.add {
-  width: 200px;
-  height: 48px;
+  margin-right: 10px;
 }
 
 .addLabel {
   width: 150px;
   height: 20px;
-  margin-bottom: 13px;
+  margin-bottom: 17px;
   display: inline-block;
   vertical-align: middle;
 }
-.listItem {
-  display: inline-block;
+.list {
   width: 200px;
+  list-style: none;
+  padding-left: 0;
+}
+.listItem {
+  width: 130px;
+  height: 40px;
+  vertical-align: middle;
+  margin-top: 5px;
+  padding-right: 5px;
+  border: 1px solid #C5CAD9;
+  background-color: #E7E8EF;
+  border-radius: 2px;
+}
+
+.listItem:hover {
+  background-color: #FD575D;
+  border-radius: 3px;
 }
 .listItemContent {
   width: 150px;
+  height: 30px;
+}
+.listItemText {
+  margin: 5px auto 0 5px;
 }
 .remove {
   color: red;
@@ -84,6 +106,11 @@ h3 {
   height: 50px;
   padding-left: 10px;
 }
+.selectionBody {
+  width: 200px;
+  height: 50px;
+  padding-left: 10px;
+}
 .saveButton {
   position: relative;
   top: 6px;
@@ -91,9 +118,11 @@ h3 {
 }
 .selectionList {
   width: 200px;
-  height: 550px;
+  height: 400px;
   display: inline-block;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-left: 5px;
 }
 
 /*======Other========*/
@@ -121,6 +150,24 @@ h3 {
   background-color: lightgray;
   margin: 20px 0 0 20px;
 }
+/*======Info View========*/
+.infoContainer {
+  width: 95vw;
+}
+.infoHeader {
+  width: 95vw;
+  height: 100px;
+}
+
+.infoDisplay: {
+  width: 50px;
+}
+.itemContent {
+  float: left;
+  margin-left: 40px;
+} 
+
+
 
 /*======HomePage View========*/
 
