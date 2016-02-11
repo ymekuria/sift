@@ -24,13 +24,12 @@ class Homepage extends Component {
   constructor() {
     super();
 
-
     this.state={
       info: {},
       userTables: {},
       tablesExist: '',
       userName: '',
-      displayname: JSON.parse(localStorage.getItem('sift-user')).displayname || ''
+      displayName: JSON.parse(localStorage.getItem('sift-user')).displayname || ''
     }
 
     this.navigation = this.navigation.bind(this);
@@ -45,10 +44,11 @@ class Homepage extends Component {
         dbUser = JSON.stringify(dbUser);
         localStorage.setItem('sift-user', dbUser);
         this.setState({
-          displayname: dbUser.displayname
+          displayName: dbUser.displayname
         })
       })
     }
+    console.log('this.state.displayName in componentDidMount',this.state.displayName)
   }
   
   componentWillMount() {
@@ -60,9 +60,9 @@ class Homepage extends Component {
       if(res[0] === undefined) {
         that.setState({tablesExist: false})
       } else {
-      that.setState({userTables: res,
-                    tablesExist: true,
-                    userName: res[0].tablename.split("_")[0].toUpperCase() })
+        that.setState({userTables: res,
+          tablesExist: true,
+          userName: res[0].tablename.split("_")[0].toUpperCase() })
       
       }
     });
@@ -93,8 +93,8 @@ class Homepage extends Component {
             that.setState({tablesExist: false})
           } else {
             that.setState({userTables: res,
-                          tablesExist: true,
-                          userName: res[0].tablename.split("_")[0].toUpperCase() })
+              tablesExist: true
+            })
           }
         });
       });
@@ -108,7 +108,7 @@ class Homepage extends Component {
     return(
 
       <div className='container'>
-        <DashBanner userName={ this.state.displayname}/>
+        <DashBanner userName={ this.state.displayName }/>
         <div className='row'> 
           <h4 className="col-md-2  ">CURRENT TABLES</h4> 
           <div className='col-md-12'>
@@ -125,7 +125,7 @@ class Homepage extends Component {
   return(
 
     <div className='container'>
-      <DashBanner userName={ this.state.userName}r/>
+      <DashBanner userName={ this.state.displayName}/>
         <div className='row'> 
           <h4 className="col-md-2  ">CURRENT TABLES</h4> 
           <div className='col-md-12'>
@@ -203,7 +203,7 @@ class DashBanner extends Component {
     <div className='dashBanner'>
       <div className='row'>
         <h2 className="col-md-4 col-md-offset-3 " >
-          Welcome back to SIFT, {this.props.userName||''}
+          Welcome back to SIFT, {this.props.userName}
         </h2>
         <h4 className="col-md-4 col-md-offset-4 dashOneliner"></h4>     
       </div>
