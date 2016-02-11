@@ -51,6 +51,7 @@ class DataVis extends Component {
 
   removeNode(rowId) {
 console.log("REMOVED NODE",rowId);
+console.log("'THIS' AT REMOVE TABLE",this.state.tablename);
     var node = {
       tablename: this.state.tablename,
       username: JSON.parse(localStorage.getItem('sift-user')).username,
@@ -58,6 +59,7 @@ console.log("REMOVED NODE",rowId);
     }
     socket.emit('remove', node);
   }
+
   componentDidMount() {
     // TODO: setState with tablename
 
@@ -65,11 +67,11 @@ console.log("REMOVED NODE",rowId);
     let tablename = username + '_' + this.state.tablename;
     var emitmessage = 'update ' + tablename;
 
-    h.loadTable(this.state.tablename, function(data) {
+    h.loadTable(tablename, function(data) {
       this.setState({
         data: data
       });
-      dndTree(this.state.data, this.removeNode);
+      dndTree(this.state.data, this.removeNode.bind(this));
     }.bind(this));
 
     socket.on(emitmessage, function(data) {

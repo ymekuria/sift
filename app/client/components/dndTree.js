@@ -132,7 +132,7 @@ var showGraph = function(treeData, remove){
     var dragStarted;
     // Calculate total nodes, max label length
     var totalNodes = 0;
-    var maxLabelLength = 10;
+    var maxLabelLength = 1;
     // variables for drag/drop
     var selectedNode = null;
     var draggingNode = null;
