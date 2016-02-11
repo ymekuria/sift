@@ -66,7 +66,7 @@ console.log("REMOVED NODE",rowId);
     let tablename = username + '_' + this.state.tablename;
     var emitmessage = 'update ' + tablename;
 
-    h.loadTable("jonathanfiamorgmailcom_Users", function(data) {
+    h.loadTable("John_Hello", function(data) {
       this.setState({
         data: data
       });

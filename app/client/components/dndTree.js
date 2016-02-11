@@ -138,7 +138,7 @@ console.log("treeData in dndTree",treeData);
     var draggingNode = null;
     // panning variables
     var panSpeed = 200;
-    var panBoundary = 20; // Within 20px from edges will pan when dragging.
+    var panBoundary = 1; // Within 20px from edges will pan when dragging.
     // Misc. variables
     var i = 0;
     var duration = 750;
@@ -343,7 +343,7 @@ console.log("treeData in dndTree",treeData);
                 return;
             }
             var domNode = this;
-            console.log("Node name and rowID" + draggingNode.name +" "+ draggingNode.id);
+            // console.log("Node name and rowID" + draggingNode.name +" "+ draggingNode.id);
 
             var index = draggingNode.parent.children.indexOf(draggingNode);
             if (index > -1) {
@@ -514,7 +514,7 @@ console.log("treeData in dndTree",treeData);
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            d.y = (d.depth * (maxLabelLength * 5)); //maxLabelLength * 10px
+            d.y = (d.depth * (maxLabelLength * 4)); //maxLabelLength * 10px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
             // d.y = (d.depth * 100); //500px per level.
@@ -655,10 +655,10 @@ console.log("treeData in dndTree",treeData);
             .remove();
 
         // Stash the old positions for transition.
-        nodes.forEach(function(d) {
-            d.x0 = d.x;
-            d.y0 = d.y;
-        });
+        // nodes.forEach(function(d) {
+        //     d.x0 = d.x;
+        //     d.y0 = d.y;
+        // });
     }
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.

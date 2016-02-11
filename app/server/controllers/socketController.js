@@ -78,7 +78,7 @@ var socketMethods = {
       		};
       		_.each(row, function(value, key) {
       			if (key === 'id') {
-              rowObject.name = 'Row';
+              rowObject.name = value.slice(0,4);
       				rowObject.id = value;
       			} else {
       				var object = {};
