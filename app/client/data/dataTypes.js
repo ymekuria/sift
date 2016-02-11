@@ -1,13 +1,10 @@
 
 
 exports.dataTypes = [
-    { value: 'boolean', label: 'boolean',},
-    { value: 'date', label: 'date' },
-    { value: 'integer', label: 'integer' },
-    { value: 'money', label: 'money' },
-    { value: 'numeric', label: 'numeric' },
-    { value: 'real', label: 'real' },
-    { value: 'text', label: 'text' },
-    { value: 'time', label: 'time' },
-    { value: 'timestamp', label: 'timestamp' },
+    { value: 'boolean', label: 'Boolean',},
+    { value: 'numbers', label: 'Numbers' },
+    { value: 'null', label: 'Null' },
+    { value: 'array', label: 'Array' },
+    { value: 'string', label: 'String' },
+    { value: 'object', label: 'Object' },
 ];

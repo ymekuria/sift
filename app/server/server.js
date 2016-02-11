@@ -33,7 +33,9 @@ app.use(express.static(__dirname + '/client/landingPage'))
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 //===========uncomment this middleware for production=========
-app.use(express.static(path.join(__dirname, '../build')));
+
+// app.use(express.static(path.resolve(__dirname, '../build')));
+
 
 
 // http.createServer(app).listen(process.env.PORT || 3000, function() {
@@ -119,8 +121,13 @@ passport.use(new LocalStrategy(
 
 //===========//uncomment below for production//==========
 
+<<<<<<< c2941f17df39512d79eeadeb13cefa05196c57e9
   // app.get('*', function(req, res) {
   // res.sendFile(path.join(__dirname, '../build/index.html'));
+=======
+//   app.get('*', function(req, res) {
+//   res.sendFile(path.join(__dirname, '../build/index.html'));
+>>>>>>> created front end view and ajax call to create a custom table
 // });
 
 

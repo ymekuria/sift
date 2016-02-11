@@ -126,7 +126,8 @@ h3 {
 
 .dashBanner {
   height: 250px;
-  background: linear-gradient(169deg,#0c63aa,#7ac4fa);
+  /*background: linear-gradient(169deg,#0c63aa,#7ac4fa);*/
+  background: linear-gradient(to right, #2090d2 0%, #4db5f2 100%);
   color: #FFF;
   margin-left: -50px;
   margin-right: -300px;
@@ -180,7 +181,8 @@ h3 {
 }
 
 .signupBackground {
-  background: linear-gradient(169deg,#0c63aa,#7ac4fa);
+  /*background: linear-gradient(169deg,#0c63aa,#7ac4fa);*/
+  background: linear-gradient(to right, #2090d2 0%, #4db5f2 100%);
   width: 100%;
   height: 100%;
 }

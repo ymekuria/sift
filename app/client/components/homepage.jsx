@@ -52,7 +52,7 @@ class Homepage extends Component {
   }
   
   componentWillMount() {
-   // find a better way to bind this
+   // find a better way to bind this//use promises instead 
     var that = this;
     
     getTables(function(res){
@@ -84,6 +84,7 @@ class Homepage extends Component {
     // makes an ajax call to delete the clicked table from the db
     if (confirm("Are you sure want to delete all records of this table?") ) {
       deleteTable(tableID, function(){
+        console.log('what is going on in this ')
         // makes a ajax call to update the state with the list of tables
         getTables(function(res){ 
 
@@ -102,24 +103,15 @@ class Homepage extends Component {
   }  
 
   
-
   render() {
     if (this.state.tablesExist) {
     return(
 
- 
       <div className='container'>
-
-          <DashBanner userName={ this.state.displayname}/>
-       
-
-
+        <DashBanner userName={ this.state.displayname}/>
         <div className='row'> 
-                    <h4 className="col-md-2  ">
-            CURRENT TABLES
-            </h4> 
+          <h4 className="col-md-2  ">CURRENT TABLES</h4> 
           <div className='col-md-12'>
-           {/*pass in an object as props that has the table name and other relevant infor for the display if usertables are indefined, display a messege*/}
            {
             _.map(this.state.userTables, this.renderDashTable)    
            } 
@@ -132,20 +124,12 @@ class Homepage extends Component {
 
   return(
 
- 
-      <div className='container'>
-
-          <DashBanner userName={ this.state.userName}r/>
-       
-
-
+    <div className='container'>
+      <DashBanner userName={ this.state.userName}r/>
         <div className='row'> 
-                    <h4 className="col-md-2  ">
-            CURRENT TABLES
-          </h4> 
+          <h4 className="col-md-2  ">CURRENT TABLES</h4> 
           <div className='col-md-12'>
-          <AddTables nav={this.navigation}/>
-           
+            <AddTables nav={this.navigation}/>
           </div>    
         </div>
       </div>   
