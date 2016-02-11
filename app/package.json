@@ -9,7 +9,7 @@
   "scripts": {
     "test_client": "mocha 'client/spec/*.test.js' --compilers js:babel-core/register",
     "test": "mocha server/spec/rethink-spec.js",
-    "start" : "nodemon server/server.js",
+    "start": "nodemon server/server.js",
     "dev": "NODE_ENV=dev nodemon devServer.js",
     "build": "NODE_ENV=production webpack --config webpack.config.js"
   },
@@ -32,6 +32,7 @@
     "chai": "^3.4.1",
     "cookie-parser": "^1.4.1",
     "cors": "^2.7.1",
+    "cron": "^1.1.0",
     "d3": "^3.5.14",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
