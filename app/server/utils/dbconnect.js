@@ -34,6 +34,7 @@ client.query('CREATE TABLE IF NOT EXISTS Tables (' +
   'columns VARCHAR(200), ' +
   'datatypes VARCHAR(200) DEFAULT null,' +
   'custom BOOLEAN DEFAULT false,' +
+  'last_used timestamp DEFAULT current_timestamp,' +
   'tablename VARCHAR(120) )', function(err, result) {
     if (err) { throw new Error(err); }
     console.log('"Tables" table created');
