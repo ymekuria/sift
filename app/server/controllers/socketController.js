@@ -65,7 +65,7 @@ var socketMethods = {
     var emitmessage = 'update ' + tablename;
 
     var data = {
-      name: tablename,
+      name: tablename.split('_')[1],
       children: []
     };
 

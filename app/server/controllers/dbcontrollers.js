@@ -47,7 +47,6 @@ dbMethods = {
   // this method creates a new table with generated data
   createUserTable: function(req, res) {
     //retrieve user from session store
-    console.log('req.body in createUserTable',req.body);
     var userID = req.user.id;
     var columns = req.body.columns || utils.parseColumnNames(req.body); // custom request have a columns property.
     var tablename = req.user.username + '_' + req.body.tablename;
@@ -104,7 +103,6 @@ dbMethods = {
   getTables: function(req, res) {
     var userID = req.user.id;
     var queryString = 'SELECT id, tablename, columns FROM tables WHERE userID = ' + userID;
-    console.log(req.user.id, 'this should be the id!!!')
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
         _.each(tableNames.rows, function(row) {
