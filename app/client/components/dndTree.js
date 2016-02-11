@@ -7,151 +7,148 @@ import DataVis from './dataVis.jsx'
 // var flare;
 
 
-// #tree-container {
-//   width: 500px;
-//   height: 900px;
+// var treeData = {
+//   "name": "flare",
+//   "children": [
+//     {
+//         "name": "physics",
+//         "id": "gfjy657564futr75w64wytru",
+//         "children": [{
+//             "name": "DragForce",
+//             "size": 1082
+//         }, {
+//             "name": "GravityForce",
+//             "size": 1336
+//         }, {
+//             "name": "IForce",
+//             "size": 319
+//         }, {
+//             "name": "NBodyForce",
+//             "size": 10498
+//         }, {
+//             "name": "Particle",
+//             "size": 2822
+//         }, {
+//             "name": "Simulation",
+//             "size": 9983
+//         }, {
+//             "name": "Spring",
+//             "size": 2213
+//         }, {
+//             "name": "SpringForce",
+//             "size": 1681
+//         }]
+//     },{
+//         "name": "234567898765432",
+//         "children": [{
+//             "name": "IScaleMap",
+//             "size": 2105
+//         }, {
+//             "name": "LinearScale",
+//             "size": 1316
+//         }, {
+//             "name": "LogScale",
+//             "size": 3151
+//         }, {
+//             "name": "OrdinalScale",
+//             "size": 3770
+//         }, {
+//             "name": "QuantileScale",
+//             "size": 2435
+//         }, {
+//             "name": "QuantitativeScale",
+//             "size": 4839
+//         }, {
+//             "name": "RootScale",
+//             "size": 1756
+//         }, {
+//             "name": "Scale",
+//             "size": 4268
+//         }, {
+//             "name": "ScaleType",
+//             "size": 1821
+//         }, {
+//             "name": "TimeScale",
+//             "size": 5833
+//         }]
+//     }, {
+//         "name": "util",
+//         "children": [{
+//             "name": "Arrays",
+//             "size": 8258
+//         }, {
+//             "name": "Colors",
+//             "size": 10001
+//         }, {
+//             "name": "Dates",
+//             "size": 8217
+//         }, {
+//             "name": "Displays",
+//             "size": 12555
+//         }, {
+//             "name": "Filter",
+//             "size": 2324
+//         }, {
+//             "name": "Geometry",
+//             "size": 10993
+//         }, {
+//             "name": "IEvaluable",
+//             "size": 335
+//         }, {
+//             "name": "IPredicate",
+//             "size": 383
+//         }, {
+//             "name": "IValueProxy",
+//             "size": 874
+//         }, {
+//             "name": "Maths",
+//             "size": 17705
+//         }, {
+//             "name": "Orientation",
+//             "size": 1486
+//         }, {
+//             "name": "Property",
+//             "size": 5559
+//         }, {
+//             "name": "Shapes",
+//             "size": 19118
+//         }, {
+//             "name": "Sort",
+//             "size": 6887
+//         }, {
+//             "name": "Stats",
+//             "size": 6557
+//         }, {
+//             "name": "Strings",
+//             "size": 22026
+//         }]
+//     }]
 // }
 
-var treeData = {
-  "name": "flare",
-  "children": [
-    {
-        "name": "physics",
-        "id": "gfjy657564futr75w64wytru",
-        "children": [{
-            "name": "DragForce",
-            "size": 1082
-        }, {
-            "name": "GravityForce",
-            "size": 1336
-        }, {
-            "name": "IForce",
-            "size": 319
-        }, {
-            "name": "NBodyForce",
-            "size": 10498
-        }, {
-            "name": "Particle",
-            "size": 2822
-        }, {
-            "name": "Simulation",
-            "size": 9983
-        }, {
-            "name": "Spring",
-            "size": 2213
-        }, {
-            "name": "SpringForce",
-            "size": 1681
-        }]
-    },{
-        "name": "234567898765432",
-        "children": [{
-            "name": "IScaleMap",
-            "size": 2105
-        }, {
-            "name": "LinearScale",
-            "size": 1316
-        }, {
-            "name": "LogScale",
-            "size": 3151
-        }, {
-            "name": "OrdinalScale",
-            "size": 3770
-        }, {
-            "name": "QuantileScale",
-            "size": 2435
-        }, {
-            "name": "QuantitativeScale",
-            "size": 4839
-        }, {
-            "name": "RootScale",
-            "size": 1756
-        }, {
-            "name": "Scale",
-            "size": 4268
-        }, {
-            "name": "ScaleType",
-            "size": 1821
-        }, {
-            "name": "TimeScale",
-            "size": 5833
-        }]
-    }, {
-        "name": "util",
-        "children": [{
-            "name": "Arrays",
-            "size": 8258
-        }, {
-            "name": "Colors",
-            "size": 10001
-        }, {
-            "name": "Dates",
-            "size": 8217
-        }, {
-            "name": "Displays",
-            "size": 12555
-        }, {
-            "name": "Filter",
-            "size": 2324
-        }, {
-            "name": "Geometry",
-            "size": 10993
-        }, {
-            "name": "IEvaluable",
-            "size": 335
-        }, {
-            "name": "IPredicate",
-            "size": 383
-        }, {
-            "name": "IValueProxy",
-            "size": 874
-        }, {
-            "name": "Maths",
-            "size": 17705
-        }, {
-            "name": "Orientation",
-            "size": 1486
-        }, {
-            "name": "Property",
-            "size": 5559
-        }, {
-            "name": "Shapes",
-            "size": 19118
-        }, {
-            "name": "Sort",
-            "size": 6887
-        }, {
-            "name": "Stats",
-            "size": 6557
-        }, {
-            "name": "Strings",
-            "size": 22026
-        }]
-    }]
-}
-
-var showGraph = function(data, remove){
-console.log(data, remove);
-
+var showGraph = function(treeData, remove){
+// console.log(data, remove);
+console.log("treeData in dndTree",treeData);
     if (panTimer === undefined){var panTimer = false;}
     var dragStarted;
     // Calculate total nodes, max label length
     var totalNodes = 0;
-    var maxLabelLength = 0;
+    var maxLabelLength = 10;
     // variables for drag/drop
     var selectedNode = null;
     var draggingNode = null;
     // panning variables
     var panSpeed = 200;
-    var panBoundary = 50; // Within 20px from edges will pan when dragging.
+    var panBoundary = 20; // Within 20px from edges will pan when dragging.
     // Misc. variables
     var i = 0;
     var duration = 750;
     var root;
     // size of the diagram
-    // var viewerWidth = 600;
-    // var viewerHeight = 900;
-    var viewerWidth = $('#tree-container').width() ;
+    var viewerWidth = 600;
+    // var viewerHeight = 1500;
+    // var viewerWidth = $('#tree-container').width() ;
+    // var viewerWidth = $(document).width() ;
+
     var viewerHeight = $(document).height();
 
 
@@ -205,7 +202,7 @@ console.log(data, remove);
 
     function pan(domNode, direction) {
         var speed = panSpeed;
-        var translateX = 50;
+        var translateX = 0;
         var translateY = 0;
         if (panTimer) {
             clearTimeout(panTimer);
@@ -273,24 +270,23 @@ console.log(data, remove);
         //             return true;
         //         }).remove();
         // }
-        //
-        // // remove parent link
-        // parentLink = tree.links(tree.nodes(draggingNode.parent));
-        // svgGroup.selectAll('path.link').filter(function(d, i) {
-        //     if (d.target.id == draggingNode.id) {
-        //         return true;
-        //     }
-        //     return false;
-        // }).remove();
+
+        // remove parent link
+        parentLink = tree.links(tree.nodes(draggingNode.parent));
+        svgGroup.selectAll('path.link').filter(function(d, i) {
+            if (d.target.id == draggingNode.id) {
+                return true;
+            }
+            return false;
+        }).remove();
 
         dragStarted = null;
     }
 
     // define the baseSvg, attaching a class for styling and the zoomListener
-
     var baseSvg = d3.select("#tree-container").append("svg")
-        .attr("width", viewerWidth)
-        .attr("height", viewerHeight)
+        .attr("width", viewerWidth )
+        .attr("height", viewerHeight )
         .attr("class", "overlay")
         .call(zoomListener);
 
@@ -418,14 +414,14 @@ console.log(data, remove);
         }
     }
 
-    var overCircle = function(d) {
-        selectedNode = d;
-        updateTempConnector();
-    };
-    var outCircle = function(d) {
-        selectedNode = null;
-        updateTempConnector();
-    };
+    // var overCircle = function(d) {
+    //     selectedNode = d;
+    //     updateTempConnector();
+    // };
+    // var outCircle = function(d) {
+    //     selectedNode = null;
+    //     updateTempConnector();
+    // };
 
     // Function to update the temporary connector indicating dragging affiliation
     var updateTempConnector = function() {
@@ -509,7 +505,7 @@ console.log(data, remove);
             }
         };
         childCount(0, root);
-        var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line
+        var newHeight = d3.max(levelWidth) * 15; // 25 pixels per line
         tree = tree.size([newHeight, viewerWidth]);
 
         // Compute the new tree layout.
@@ -518,7 +514,7 @@ console.log(data, remove);
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+            d.y = (d.depth * (maxLabelLength * 5)); //maxLabelLength * 10px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
             // d.y = (d.depth * 100); //500px per level.

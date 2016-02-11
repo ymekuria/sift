@@ -183,7 +183,6 @@ dbMethods = {
       tablename = results.rows[0].tablename;
       client.query('DELETE FROM Tables WHERE userID = ' + userId + ' AND id = ' + tableId, function(err, entireTable) {
         if (err) { throw new Error(err); }
-        //console.log('entireTable', entireTable)
         var deletedTable = entireTable.rows;
 
         r.db('apiTables').tableDrop(tablename).run(connection, function(err, results) {

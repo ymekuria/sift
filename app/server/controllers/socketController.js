@@ -78,10 +78,11 @@ var socketMethods = {
       		};
       		_.each(row, function(value, key) {
       			if (key === 'id') {
+              rowObject.name = 'Row';
       				rowObject.id = value;
       			} else {
       				var object = {};
-      				object[key] = value;
+      				object.name = value;
       				rowObject.children.push(object);
       			}
       		})
@@ -94,7 +95,7 @@ var socketMethods = {
 						io.emit(emitmessage, node);
 					})
 				});
-				
+
 				res.status(200).send(data);
       });
     });
@@ -102,4 +103,3 @@ var socketMethods = {
 };
 
 module.exports = socketMethods;
-

@@ -59,7 +59,6 @@ console.log("REMOVED NODE",rowId);
     // }
     // socket.emit('remove', node);
   }
-
   componentDidMount() {
     // TODO: setState with tablename
 
@@ -68,21 +67,20 @@ console.log("REMOVED NODE",rowId);
     var emitmessage = 'update ' + tablename;
 
     h.loadTable("jonathanfiamorgmailcom_Users", function(data) {
-      console.log("DATA HERE:", data);
       this.setState({
         data: data
       });
+      dndTree(this.state.data, this.removeNode);
     }.bind(this));
 
     socket.on(emitmessage, function(data) {
       this.handleData(data)
     }.bind(this));
     // console.log("TESTDATA :",this.state.testData);
-dndTree(this.state.testData, this.removeNode);
   }
 
   componentDidUpdate() {
-    dndTree();
+    // dndTree();
   }
 
   handleData(data) {
@@ -125,7 +123,7 @@ dndTree(this.state.testData, this.removeNode);
         <div>
         <div id="tree-container"></div>
 
-        <AddNode />
+        {/*<AddNode />*/}
         </div>
     )
   }
