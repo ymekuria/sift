@@ -37,6 +37,25 @@ class Homepage extends Component {
     this.removeTable = this.removeTable.bind(this);
   }
 
+  componentWillMount() {
+   // find a better way to bind this//use promises instead 
+    var that = this;
+    
+    getTables(function(res){
+
+      if(res[0] === undefined) {
+        that.setState({tablesExist: false})
+      } else {
+        console.log('getables response', res)
+        that.setState({userTables: res,
+          tablesExist: true,
+          userName: res[0].tablename.split("_")[0].toUpperCase() })
+      
+      }
+      // console.log('this.state in componentWillMount', this.state.userTables);
+    });
+    // console.log('this.state in componentWillMount', this.state.userTables);
+  }
   componentDidMount() {
     var user = localStorage.getItem('sift-user');
     if (!user) {
@@ -48,25 +67,10 @@ class Homepage extends Component {
         })
       })
     }
-    console.log('this.state.displayName in componentDidMount',this.state.displayName)
+    console.log('this.state.displayName in componentDidMount',this.state.userTables)
   }
   
-  componentWillMount() {
-   // find a better way to bind this//use promises instead 
-    var that = this;
-    
-    getTables(function(res){
 
-      if(res[0] === undefined) {
-        that.setState({tablesExist: false})
-      } else {
-        that.setState({userTables: res,
-          tablesExist: true,
-          userName: res[0].tablename.split("_")[0].toUpperCase() })
-      
-      }
-    });
-  }
 
   navigation(path) {
     store.dispatch(routeActions.push(path));
@@ -110,13 +114,17 @@ class Homepage extends Component {
       <div className='container'>
         <DashBanner userName={ this.state.displayName }/>
         <div className='row'> 
-          <h4 className="col-md-2  ">CURRENT TABLES</h4> 
+          <h4 className="col-md-2  ">CURRENT TABLES</h4>
+        </div>   
+        <div className ='row'>
           <div className='col-md-12'>
-           {
-            _.map(this.state.userTables, this.renderDashTable)    
-           } 
+           
+            <AddTables className='addTableCard'/>
+          { _.map(this.state.userTables, this.renderDashTable) } 
+            
+          </div>
           </div>    
-        </div>
+        
       </div>   
     )
 
@@ -259,7 +267,6 @@ class AddTables extends Component {
            bottom: -50, }} />
 
        </Paper>
-
     ) 
   }
 }

@@ -121,13 +121,8 @@ passport.use(new LocalStrategy(
 
 //===========//uncomment below for production//==========
 
-<<<<<<< c2941f17df39512d79eeadeb13cefa05196c57e9
   // app.get('*', function(req, res) {
   // res.sendFile(path.join(__dirname, '../build/index.html'));
-=======
-//   app.get('*', function(req, res) {
-//   res.sendFile(path.join(__dirname, '../build/index.html'));
->>>>>>> created front end view and ajax call to create a custom table
 // });
 
 

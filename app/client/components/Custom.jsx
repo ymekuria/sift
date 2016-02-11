@@ -4,7 +4,7 @@ import TextField from 'material-ui/lib/text-field';
 var Select = require('react-select');
 
 const STATES = require('../data/dataTypes.js').dataTypes;
-import {createCustomTable} from '../utils/utils.js'
+import {createTable} from '../utils/utils.js'
 
 class Custom extends Component {
 
@@ -61,10 +61,10 @@ class Custom extends Component {
             custom: true,
             columns: this.state.allColumns
           }
-          console.log('localStorage',localStorage['sift-user'],'username', username);
+        
 		console.log('selections', selections);
 		console.log('this.state.allColumns', this.state.allColumns)
-		createCustomTable(selections)
+		createTable(selections)
 	}
 
 	addColumn (event) {

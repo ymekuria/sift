@@ -1,10 +1,11 @@
 
 
 exports.dataTypes = [
-    { value: 'boolean', label: 'Boolean',},
-    { value: 'numbers', label: 'Numbers' },
-    { value: 'null', label: 'Null' },
-    { value: 'array', label: 'Array' },
-    { value: 'string', label: 'String' },
+    { value: 'string', label: 'String' }, 
     { value: 'object', label: 'Object' },
+    { value: 'array', label: 'Array' },
+    { value: 'numbers', label: 'Numbers'},
+    { value: 'boolean', label: 'Boolean'},
+    { value: 'null', label: 'Null' }
+         
 ];
