@@ -48,16 +48,15 @@ dbMethods = {
   // this method creates a new table with generated data
   createUserTable: function(req, res) {
     //retrieve user from session store
-    var userID = 1 //req.user.id;
+    var userID = req.user.id;
     var columns = req.body.columns || utils.parseColumnNames(req.body); // custom request have a columns property.
-    var tablename = 'erikdbrowngmailcom' + '_' + req.body.tablename;//req.user.username + '_' + req.body.tablename;
+    var tablename = req.user.username + '_' + req.body.tablename;
     var custom = req.body.custom || false;
     var columnsString, fakeData;
 
-    // create the table in RethinkDB
-
     // check postgres first to see if tablename exists
-    client.query('SELECT tablename FROM tables WHERE userid = ($1) AND tablename = ($2)', [userID, tablename], function(err, response) {
+    var queryString = 'SELECT tablename FROM tables WHERE userid = ($1) AND tablename = ($2)';
+    client.query(queryString, [userID, tablename], function(err, response) {
       if (response.rows.length > 0) {
         res.status(400).send({ message: 'Table already exists' }) // table already exists
 
@@ -92,13 +91,15 @@ dbMethods = {
   },
 
   addFakeDataTableToPostgresTables: function(userID, tablename, columns, custom, cb) {
-    client.query('INSERT INTO Tables (userID, tablename, columns, custom) VALUES ($1, $2, $3, $4)', [userID, tablename, columns, custom], function(err, response){
+    var queryString = 'INSERT INTO Tables (userID, tablename, columns, custom) VALUES ($1, $2, $3, $4)';
+    client.query(queryString, [userID, tablename, columns, custom], function(err, response){
       cb(err);
     })
   },
 
   addCustomTableToPostgresTables: function(userID, tablename, columns, datatypes, custom, cb) {
-    client.query('INSERT INTO Tables (userID, tablename, columns, datatypes, custom) VALUES ($1, $2, $3, $4, $5)', [userID, tablename, columns, datatypes, custom], function(err, response){
+    var queryString = 'INSERT INTO Tables (userID, tablename, columns, datatypes, custom) VALUES ($1, $2, $3, $4, $5)';
+    client.query(queryString, [userID, tablename, columns, datatypes, custom], function(err, response){
       cb(err);
     })
   },
@@ -113,13 +114,13 @@ dbMethods = {
   getTables: function(req, res) {
     var userID = req.user.id;
     var queryString = 'SELECT id, tablename, columns FROM tables WHERE userID = ' + userID;
-    console.log(req.user.id, 'this should be the id!!!')
+    
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
         _.each(tableNames.rows, function(row) {
           row.columns = row.columns.split(',')
         })
-        console.log(tableNames.rows);
+        
         res.status(200).json(tableNames.rows);
     });
   },
@@ -142,46 +143,71 @@ dbMethods = {
     var tablename = req.params.username + '_' + req.params.tablename;
     var columns;
 
-    client.query('SELECT custom, datatypes, columns FROM tables WHERE tablename = ($1)', [tablename], function(err, results) {
+    var queryString = 'SELECT custom, datatypes, columns FROM tables WHERE tablename = ($1)';
+    client.query(queryString, [tablename], function(err, results) {
+
       if (results.rows[0].custom) {
-        dbMethods.matchDataTypes(req.body, results.rows[0].columns, results.rows[0].datatypes, function(err, passes) {
+        
+        var dbColumns = results.rows[0].columns;
+        var dbDataTypes = results.rows[0].datatypes;
+
+        dbMethods.matchDataTypes(req.body, dbColumns, dbDataTypes, function(err, passes) {
           if (passes) {
-            console.log('You pass. This will write to the database');
-            res.sendStatus(200)
+
+            r.table(tablename).insert(req.body).run(connection, function(err, response) {
+              if (err) { throw err; }
+              res.sendStatus(200);
+            });
+
           } else {
-            res.status(400).send('Incorrect data type for ' + err.column + '. Expected: ' + err.expected + '. Received: ' + err.received);
+
+            var errorMessage = 'Incorrect data type for ' + err.column + '. Expected: ' + err.expected + '. Received: ' + err.received;
+            res.status(400).send(errorMessage);
+
           }
+
         });
+
       } else {
+
         r.table(tablename).insert(req.body).run(connection, function(err, response) {
           if (err) { throw err; }
           res.sendStatus(200);
         });
+
       }
     })
 
   },
 
-  matchDataTypes(reqColumns, columns, datatypes, callback) {
+  matchDataTypes: function(reqColumns, columns, datatypes, callback) {
     columns = columns.split(',');
-    datatypes = datatypes.split(',');
+    datatypes = datatypes.split(',')
     var columns_types = {};
-    var err = null
 
     _.each(columns, function(column, index) {
       columns_types[column] = datatypes[index];
     });
 
     for (var key in reqColumns) {
-      if (columns_types[key] !== typeof reqColumns[key])
-        err = {
+      var expected = columns_types[key];
+      var actual = reqColumns[key];
+
+      if (expected === 'array' && Array.isArray(actual)) {
+        continue
+      } else if (expected === 'null' && actual === null) {
+        continue
+      }
+      else if (columns_types[key] !== typeof reqColumns[key]) { // does not capture Arrays and null
+        var err = {
           column: key,
           expected: columns_types[key],
           received: typeof reqColumns[key]
         };
         return callback(err, false);
+      }
     }
-    callback(err, true);
+    callback(null, true);
   },
 
   ///////////PUT/////////// updates a row in a column
@@ -220,7 +246,7 @@ dbMethods = {
     // hardcoded for testing
     var username = req.user.username;
     var userId = req.user.id;
-    var tableId = req.params.id
+    var tableId = req.params.id;
 
     client.query('SELECT tablename FROM Tables WHERE id = ' + tableId, function(err, results) {
       if (err) { throw err; }
