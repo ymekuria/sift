@@ -118,7 +118,7 @@ dbMethods = {
     var tablename = req.params.username + '_' + req.params.tablename;
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { throw err; }
-      dbMethods.checkandUpdateTimestamp(tablename);
+      dbMethods.checkandUpdateTimestamp(tablename); 
       cursor.toArray(function(err, results) {
         res.status(200).send(results);
       });
@@ -218,7 +218,7 @@ dbMethods = {
 
     r.table(tablename).get(rowId).update(update).run(connection, function(err, results) {
       if (err) { throw err; }
-      dbMethods.checkandUpdateTimestamp(tablename)
+      dbMethods.checkandUpdateTimestamp(tablename);
       res.sendStatus(200);
     })
   },
