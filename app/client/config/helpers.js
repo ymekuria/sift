@@ -17,7 +17,9 @@ let helpers = {
 
 	loadTable: function(tablename, callback) {
 		// listens to 'update' + tablename
-		return fetch('/api/users/tables/' + tablename)
+		return fetch('/api/users/tables/' + tablename, {
+			credentials: 'same-origin'
+		})
 		.then((res) => {
 			return res.json()
 		})
