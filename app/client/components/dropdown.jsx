@@ -32,13 +32,12 @@ const Dropdown = ({ menuOptions, currentSelections }, { store }) => {
   return (
     <div className="dropdown">
       <div className='libHeader'>
-        <h3>Library</h3>
-          <TextField hintText="Name your table" floatingLabelText="Tablename" onBlur={(e) => {
-            store.dispatch({
-              type: 'add_tablename',
-              tablename: e.target.value
-            })
-          }}/>
+        <TextField hintText="Name your table" floatingLabelText="Tablename" onBlur={(e) => {
+          store.dispatch({
+            type: 'add_tablename',
+            tablename: e.target.value
+          })
+        }}/>
       </div>
 
       <div className='createContainer'>

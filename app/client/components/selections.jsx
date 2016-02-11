@@ -8,7 +8,11 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import _ from 'lodash';
 
-const listStyle = {
+const submitStyle = {
+  position: "relative",
+  right: "20px",
+  width: "220px",
+  marginRight: "60px"
 }
 
 
@@ -18,40 +22,35 @@ const Selections = ({ selected }, { store }) => {
 
   return (
     <div>
-      <div className='selectionHeader'>
-        <TextField hintText="Name your table" floatingLabelText="Tablename" onBlur={(e) => {
+    <div className='selectionHeader'>
+      <RaisedButton
+        style={submitStyle}
+        label="Create Table"
+        onClick={() => {
           store.dispatch({
-            type: 'add_tablename',
-            tablename: e.target.value
-          })
-        }}/>
+          type: 'submit_table'
+        })}} 
+        tooltip='save'>
+      </RaisedButton>
+    </div>
+      <div className='selectionBody'>
         <ul className='list'>
           {selected.map((item, i) => {
             return (
-              <li className='listItem'>
-                <div className='listItemContent'>
-                  <div>{item}</div>
-                  <div onClick={() => {
-                    store.dispatch({
-                      type: 'remove_from_list',
-                      id: i
-                    })
-                  }}  
-                  className='remove'>{'x'}</div>
+              <li className='listItem' 
+              onClick={() => {
+                store.dispatch({
+                  type: 'remove_from_list',
+                  id: i
+                })
+              }}>
+                <div className='listItemText'>
+                  {item}
                 </div>
-                <Divider/>
               </li>
             ) 
           })}
         </ul>
-        <RaisedButton
-          label="Create Table"
-          onClick={() => {
-            store.dispatch({
-            type: 'submit_table'
-          })}} 
-          tooltip='save'>
-        </RaisedButton>
       </div>
     </div>
   )

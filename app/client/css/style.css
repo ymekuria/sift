@@ -72,14 +72,28 @@ h3 {
   width: 200px;
   list-style: none;
   padding-left: 0;
-  height: auto;
 }
 .listItem {
-  display: inline-block;
-/*  width: 200px;*/
+  width: 130px;
+  height: 40px;
+  vertical-align: middle;
+  margin-top: 5px;
+  padding-right: 5px;
+  border: 1px solid #C5CAD9;
+  background-color: #E7E8EF;
+  border-radius: 2px;
+}
+
+.listItem:hover {
+  background-color: #FD575D;
+  border-radius: 3px;
 }
 .listItemContent {
   width: 150px;
+  height: 30px;
+}
+.listItemText {
+  margin: 5px auto 0 5px;
 }
 .remove {
   color: red;
@@ -88,6 +102,11 @@ h3 {
   height: 15px;
 }
 .selectionHeader {
+  width: 200px;
+  height: 50px;
+  padding-left: 10px;
+}
+.selectionBody {
   width: 200px;
   height: 50px;
   padding-left: 10px;
@@ -101,7 +120,8 @@ h3 {
   width: 200px;
   height: 400px;
   display: inline-block;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   margin-left: 5px;
 }
 
