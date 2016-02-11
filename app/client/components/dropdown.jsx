@@ -13,10 +13,9 @@ import Paper from 'material-ui/lib/paper'
 
 
 const testStyle = {
-  backgroundColor: 'blue',
-  width: "220px",
+  width: "40%",
   height: "400px",
-  float: "right"
+
 }
 
 
@@ -33,35 +32,38 @@ const Dropdown = ({ menuOptions }, { store }) => {
       <div className='libHeader'>
         <h3>Library</h3>
       </div>
-      <Menu style={{width: '200px'}}>
-        {Object.keys(all).map(function (category) {
-          return (
-            <MenuItem
-              onClick={() => {store.dispatch({
-                type: 'update_category',
-                newCategory: category
-              })}}
-              primaryText={category}/>
-          )
-        })}
-      </Menu>
-      <div className='selectField'>
-          {_.map(subSelection, function (subSelection, c) {
+
+      <div className='createContainer'>
+        <Menu style={{width: '200px'}}>
+          {Object.keys(all).map(function (category) {
             return (
-              <div className='add'>
-                <IconButton onClick={() => store.dispatch({
-                  type: 'add_to_build',
-                  category: currentCategory,
-                  addition: c
-                })}>
-                  <ContentAdd color="green"/>
-                </IconButton>
-                <div className='addLabel'>{c}</div>
-              </div>
+              <MenuItem
+                onClick={() => {store.dispatch({
+                  type: 'update_category',
+                  newCategory: category
+                })}}
+                primaryText={category}/>
             )
           })}
+        </Menu>
+        <div className='selectField'>
+            {_.map(subSelection, function (subSelection, c) {
+              return (
+                <div className='add'>
+                  <IconButton onClick={() => store.dispatch({
+                    type: 'add_to_build',
+                    category: currentCategory,
+                    addition: c
+                  })}>
+                    <ContentAdd color="green"/>
+                  </IconButton>
+                  <div className='addLabel'>{c}</div>
+                </div>
+              )
+            })}
+        </div>
+        <Paper style={testStyle}/>
       </div>
-
 
     </div>
   );

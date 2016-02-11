@@ -22,11 +22,6 @@ h3 {
   overflow-y: scroll;
 }
 .dataEntry {}
-.test {
-  width: 100px;
-  height: 100px;
-  background-color: blue;
-}
 
 .select {
   width: 90vw;
@@ -48,6 +43,9 @@ h3 {
   height: 550px;
   margin-left: 15px;
 }
+.createContainer {
+  display: flex;
+}
 .add {
   border: 1px solid #C5CAD9;
   background-color: #E7E8EF;
@@ -58,10 +56,9 @@ h3 {
 }
 
 .selectField {
-  width: 250px;
+  width: 240px;
   height: 450px;
-  float: right;
-  margin-right: 30px;
+  margin-right: 10px;
 }
 
 .addLabel {
