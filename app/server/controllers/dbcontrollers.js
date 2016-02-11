@@ -131,6 +131,7 @@ dbMethods = {
 
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { throw err; }
+      dbMethods.checkandUpdateTimestamp(tablename);
       cursor.toArray(function(err, results) {
         res.status(200).send(results);
       });
@@ -182,17 +183,31 @@ dbMethods = {
   },
 
   checkandUpdateTimestamp: function(tablename, savedTimestamp) {
+    var lastUpdate;
     var rightNow = new Date();
-    var lastUpdate = new Date(savedTimestamp);
-    console.log('updating timestamp')
-    if (rightNow - lastUpdate > 86400000) {
-      var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
+
+    if (!savedTimestamp) {
+      var queryString = 'SELECT last_used FROM tables WHERE tablename = ($1)'
       client.query(queryString, [tablename], function(err, results) {
-        if (err) {throw new Erro(err); }
-      });
+        lastUpdate = results.rows[0].last_used;
+
+        if (rightNow - lastUpdate > 86400000) {
+          var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
+          client.query(queryString, [tablename], function(err, results) {
+            if (err) {throw new Erro(err); }
+          });
+        }
+      })
+    } else {
+      lastUpdate = new Date(savedTimestamp);
+      if (rightNow - lastUpdate > 86400000) {
+        var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
+        client.query(queryString, [tablename], function(err, results) {
+          if (err) {throw new Erro(err); }
+        });
+      }
     }
   },
-
 
   matchDataTypes: function(reqColumns, columns, datatypes, callback) {
     columns = columns.split(',');
@@ -236,6 +251,7 @@ dbMethods = {
 
     r.table(tablename).get(rowId).update(update).run(connection, function(err, results) {
       if (err) { throw err; }
+      dbMethods.checkandUpdateTimestamp(tablename)
       res.sendStatus(200);
     })
   },
@@ -250,6 +266,7 @@ dbMethods = {
 
     r.table(tablename).get(rowId).delete().run(connection, function(err, results) {
       if (err) { throw err; }
+      dbMethods.checkandUpdateTimestamp(tablename)
       res.sendStatus(200);
     })
   },
