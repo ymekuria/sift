@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import _ from 'lodash';
+import Selections from './selections.jsx'
+import TextField from 'material-ui/lib/text-field';
 /*
   == Material UI componenets ==
 */
@@ -19,7 +21,7 @@ const testStyle = {
 }
 
 
-const Dropdown = ({ menuOptions }, { store }) => {
+const Dropdown = ({ menuOptions, currentSelections }, { store }) => {
 
   const { all } = menuOptions;                
   const { byItem } = menuOptions;
@@ -31,6 +33,12 @@ const Dropdown = ({ menuOptions }, { store }) => {
     <div className="dropdown">
       <div className='libHeader'>
         <h3>Library</h3>
+          <TextField hintText="Name your table" floatingLabelText="Tablename" onBlur={(e) => {
+            store.dispatch({
+              type: 'add_tablename',
+              tablename: e.target.value
+            })
+          }}/>
       </div>
 
       <div className='createContainer'>
@@ -62,9 +70,13 @@ const Dropdown = ({ menuOptions }, { store }) => {
               )
             })}
         </div>
-        <Paper style={testStyle}/>
-      </div>
+        <Paper className='selectionList'>
+          <div>
+            <Selections selected={currentSelections}/>  
+          </div>
+        </Paper>
 
+      </div>
     </div>
   );
 };

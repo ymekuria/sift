@@ -34,7 +34,7 @@ h3 {
 
 .libHeader {
   width: 100%;
-  height: 50px;
+  height: 70px;
   margin-bottom: 5px;
 }
 
@@ -99,7 +99,7 @@ h3 {
 }
 .selectionList {
   width: 200px;
-  height: 550px;
+  height: 400px;
   display: inline-block;
   overflow: scroll;
   margin-left: 5px;

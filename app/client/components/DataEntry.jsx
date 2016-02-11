@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react'
 import { createTable } from '../utils/utils.js'
-import Selections from './selections.jsx'
 import Dropdown from './dropdown.jsx'
 import faker from 'faker'
 import h from '../config/helpers'
@@ -12,15 +11,8 @@ import Paper from 'material-ui/lib/paper'
 import { Menu, MenuItem} from 'material-ui'
 
 //refactor into css file
-const selectStyle = {
-  backgroundColor: "#F2F3F7"
-};
 
-  // <Paper style={selectStyle} className='selectionList'>
-    // <div>
-      // <Selections selected={CurrentSelections}/>  
-    // </div>
-  // </Paper>
+
 
 class DataEntry extends Component {
 
@@ -42,8 +34,8 @@ class DataEntry extends Component {
     const { MenuOptions, CurrentSelections } = this.context.store.getState().buildTable;
     return (
       <div className='dataEntry'>
-        <Paper style={selectStyle} className='select'>
-          <Dropdown menuOptions={MenuOptions} className='dropdown'/>
+        <Paper className='select'>
+          <Dropdown currentSelections={CurrentSelections} menuOptions={MenuOptions} className='dropdown'/>
         </Paper>
       </div>
     )

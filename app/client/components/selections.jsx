@@ -19,7 +19,6 @@ const Selections = ({ selected }, { store }) => {
   return (
     <div>
       <div className='selectionHeader'>
-        <h3>Selections</h3>
         <TextField hintText="Name your table" floatingLabelText="Tablename" onBlur={(e) => {
           store.dispatch({
             type: 'add_tablename',
