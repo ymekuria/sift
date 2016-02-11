@@ -128,10 +128,66 @@ dbMethods = {
  // {columnName: value, column2Name: value, ...}
   postToTable: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
+    var columns;
 
-    r.table(tablename).insert(req.body).run(connection, function(err, response) {
-      if (err) { throw err; }
-      res.sendStatus(200);
+    var queryString = 'SELECT custom, datatypes, columns, last_used FROM tables WHERE tablename = ($1)';
+    client.query(queryString, [tablename], function(err, results) {
+      var savedTimestamp = results.rows[0].last_used;
+      dbMethods.checkandUpdateTimestamp(tablename, savedTimestamp);
+
+      if (results.rows[0].custom) {  
+        var dbColumns = results.rows[0].columns;
+        var dbDataTypes = results.rows[0].datatypes;
+
+        dbMethods.matchDataTypes(req.body, dbColumns, dbDataTypes, function(err, passes) {
+          if (passes) {
+
+            r.table(tablename).insert(req.body).run(connection, function(err, response) {
+              if (err) { throw err; }
+              res.sendStatus(200);
+            });
+
+          } else {
+
+            var errorMessage = 'Incorrect data type for ' + err.column + '. Expected: ' + err.expected + '. Received: ' + err.received;
+            res.status(400).send(errorMessage);
+
+          }
+
+        });
+
+      } else {
+
+        r.table(tablename).insert(req.body).run(connection, function(err, response) {
+          if (err) { throw err; }
+          res.sendStatus(200);
+        });
+
+      }
+    })
+
+  },
+
+  checkandUpdateTimestamp: function(tablename, savedTimestamp) {
+    var rightNow = new Date();
+    var lastUpdate = new Date(savedTimestamp);
+    console.log('updating timestamp')
+    if (rightNow - lastUpdate > 86400000) {
+      var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
+      client.query(queryString, [tablename], function(err, results) {
+        if (err) {throw new Erro(err); }
+      });
+    }
+  },
+
+
+  matchDataTypes: function(reqColumns, columns, datatypes, callback) {
+    columns = columns.split(',');
+    datatypes = datatypes.split(',')
+    var columns_types = {};
+
+    _.each(columns, function(column, index) {
+      columns_types[column] = datatypes[index];
     });
   },
 
