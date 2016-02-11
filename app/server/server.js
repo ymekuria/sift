@@ -35,9 +35,6 @@ require('./utils/routes.js')(app, express, utils.isAuth);
 //===========uncomment this middleware for production=========
 // app.use(express.static(path.join(__dirname, '../build')));
 
-
-
-
 // http.createServer(app).listen(process.env.PORT || 3000, function() {
 //   console.log('Listening on port ' + (process.env.PORT || 3000));
 // });
