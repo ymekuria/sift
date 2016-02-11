@@ -162,7 +162,7 @@ h3 {
 .dashTableButton {
   display: block;
 
- } 
+ }
 
 .node {
   cursor: pointer;
@@ -221,3 +221,7 @@ h3 {
   position: absolute;
   top: -100px;
 }
+ #tree-container {
+   width: 500px;
+   height: 900px;
+ }

@@ -22,6 +22,7 @@ let helpers = {
 			return res.json()
 		})
 		.then((json) => {
+			console.log('this is the response: ',json)
 			callback(json);
 		})
 		// when updated, re-render view
@@ -46,4 +47,3 @@ let helpers = {
 }
 
 export default helpers;
-

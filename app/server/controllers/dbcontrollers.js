@@ -1,4 +1,3 @@
-
 var client = require('../utils/dbconnect').client;
 var r = require('rethinkdb');
 var socketController = require('./socketController')
@@ -84,7 +83,7 @@ dbMethods = {
                   res.sendStatus(200);
                 })
               });
-            }); 
+            });
           }
         });
       }
@@ -270,4 +269,3 @@ dbMethods = {
 };
 
 module.exports = dbMethods;
-

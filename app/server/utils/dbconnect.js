@@ -7,7 +7,7 @@ var connectionString;
 if (process.env.POSTGRES_PORT_5432_TCP_ADDR) {
   connectionString = 'postgres://postgres@postgres:5432';
 } else {
-  connectionString = 'postgres://postgres@localhost:5432/sift'
+  connectionString = 'postgres://seraph@localhost:5432/sift'
 }
 
 
@@ -42,6 +42,3 @@ client.query('CREATE TABLE IF NOT EXISTS Tables (' +
 module.exports = {
 	client: client
 }
-
-
-

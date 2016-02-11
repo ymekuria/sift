@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import h from '../config/helpers'
-import io from 'socket.io-client'
 import _ from 'underscore'
 import dndTree from './dndTree.js'
+import d3 from 'd3'
+import $ from 'jquery'
+import io from 'socket.io-client'
 import store from '../store'
 import AddNode from './AddNode'
-
 let socket = io();
+
 
 class DataVis extends Component {
   constructor() {
@@ -16,7 +18,8 @@ class DataVis extends Component {
       data: {
         name: '',
         children: []
-      }
+      },
+      testData: "INSIDE TEST DATA"
     }
   }
 
@@ -48,13 +51,13 @@ class DataVis extends Component {
 
   removeNode(rowId) {
     // rowId = "433a7a25-0b17-4cee-90f5-9a1e53cba7ab"
-
-    var node = {
-      tablename: this.state.tablename,
-      username: JSON.parse(localStorage.getItem('sift-user')).username,
-      rowId: rowId
-    }
-    socket.emit('remove', node);
+console.log("REMOVED NODE",rowId);
+    // var node = {
+    //   tablename: this.state.tablename,
+    //   username: JSON.parse(localStorage.getItem('sift-user')).username,
+    //   rowId: rowId
+    // }
+    // socket.emit('remove', node);
   }
 
   componentDidMount() {
@@ -66,14 +69,19 @@ class DataVis extends Component {
 
     h.loadTable(tablename, function(data) {
       this.setState({
-        data: data 
+        data: data
       });
     }.bind(this));
 
     socket.on(emitmessage, function(data) {
       this.handleData(data)
     }.bind(this));
+    // console.log("TESTDATA :",this.state.testData);
+dndTree(this.state.testData, this.removeNode);
+  }
 
+  componentDidUpdate() {
+    dndTree();
   }
 
   handleData(data) {
@@ -112,14 +120,14 @@ class DataVis extends Component {
 
   render() {
     return (
-      <div className='dataVis'>
-        INSIDE DATA VIZ
+
+        <div>
         <div id="tree-container"></div>
-        <AddNode addNode={ this.addNode.bind(this) }/>
-      </div>
-    )  
+
+        <AddNode />
+        </div>
+    )
   }
 }
 
 export default DataVis
-

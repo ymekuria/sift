@@ -1,4 +1,3 @@
-
 // add links to controllers here
 var dbController = require('../controllers/dbcontrollers.js');
 var userController = require('../controllers/userController.js');
@@ -62,7 +61,6 @@ module.exports = function(app, express, ensureAuth) {
   app.post('/sand/:tablename/:username', dbController.postToTable);
   app.put('/sand/:tablename/:username/:rowId', dbController.updateValue);
   app.delete('/sand/:tablename/:username/:rowId', dbController.deleteRow);
- 
+
 
 }
-
