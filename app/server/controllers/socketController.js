@@ -65,7 +65,7 @@ var socketMethods = {
     var emitmessage = 'update ' + tablename;
 
     var data = {
-      name: tablename,
+      name: tablename.split('_')[1],
       children: []
     };
 
@@ -78,10 +78,11 @@ var socketMethods = {
       		};
       		_.each(row, function(value, key) {
       			if (key === 'id') {
-      				rowObject.id = value;
+      				rowObject.name = value;
+              rowObject.id = value;
       			} else {
       				var object = {};
-      				object[key] = value;
+      				object.name = value;
       				rowObject.children.push(object);
       			}
       		})
