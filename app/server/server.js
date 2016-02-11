@@ -119,11 +119,9 @@ passport.use(new LocalStrategy(
 
 //===========//uncomment below for production//==========
 
-  app.get('*', function(req, res) {
-  console.log(path.join(__dirname, '../build/index.html'));
-  console.log(path.resolve(__dirname, '../build/index.html'));
-  res.sendFile(path.join(__dirname, '../build/index.html'));
-});
+  // app.get('*', function(req, res) {
+  // res.sendFile(path.join(__dirname, '../build/index.html'));
+// });
 
 
 

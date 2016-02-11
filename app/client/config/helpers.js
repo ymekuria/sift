@@ -33,7 +33,7 @@ let helpers = {
 		};
 		_.each(node, function(value, key) {
 			if (key === 'id') {
-				rowObject.name = value;
+				rowObject.id = value;
 			} else {
 				var object = {};
 				object[key] = value;

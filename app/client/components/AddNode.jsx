@@ -7,28 +7,36 @@ class AddNode extends Component {
 	constructor() {
 		super();
 		this.state = {
-			columns: ['lastName', 'firstName', 'company']
+			columns: []
 		}
 	}
 
 	componentDidMount() {
-
+		// insert D3 code here
 	}
 
-	addColumn() {
+	addNode(e) {
+		e.preventDefault();
+		var node = {};
 
+		this.state.columns.map(function(column) {
+			node[column] = this.refs[column].getValue();
+		}.bind(this))
+
+		this.refs.addNodeForm.reset();
+		this.props.addNode(node);
 	}
 
 	render() {
 		return (
-			<form>
-				{ this.state.columns.map(function(column) {
+			<form ref='addNodeForm' onSubmit={ this.addNode.bind(this) }>
+				{ this.state.columns.map(function(column, i) {
 				  	return (
-				  		<TextField hintText='Enter value' floatingLabelText={ column } errorText='This field is required'/>
+				  		<TextField hintText='Enter value' ref={ column } key={i} floatingLabelText={ column } />
 				  	)
 					}) 
 				}
-				<RaisedButton label="Default" fullWidth='true' />
+				<RaisedButton type='submit' label="Default" fullWidth='true' />
 			</form>
 		)
 	}

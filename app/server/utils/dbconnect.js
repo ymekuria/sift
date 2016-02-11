@@ -32,6 +32,7 @@ client.query('CREATE TABLE IF NOT EXISTS Tables (' +
 	'id SERIAL PRIMARY KEY, ' +
   'userID INTEGER, ' +
   'columns VARCHAR(200), ' +
+  'datatypes VARCHAR(200) DEFAULT null,' +
   'custom BOOLEAN DEFAULT false,' +
   'tablename VARCHAR(120) )', function(err, result) {
     if (err) { throw new Error(err); }
