@@ -24,10 +24,10 @@ import { requireAuth } from '../auth/auth'
 
 //we need to add that function and get the token
 //registered in local storage on sign in
-// <IndexRoute component={Landing}/> took out root path 
+// <IndexRoute component={Landing}/> took out root path
 export default (
   <Route path='/' component={main}>
-    
+
     <Route path='signin' component={Signin}/>
     <Route path='signup' component={Signup}/>
     <Route path='home' component={requireAuth(homepage)}/>
@@ -48,11 +48,9 @@ export default (
     <Route path='signup' component={Signup}/>
     <Route path='home' component={homepage}/>
 <<<<<<< b40782af99be5f95cab3a2dfdb43b0db7fd7980f
-
     <Route path='home' component={requireAuth(homepage)}/>
     <Route path='build' component={requireAuth(dataEntry)}/>
     <Route path='vis' component={requireAuth(dataVis)}/>
   </Route>
 )
-
 */

@@ -34,7 +34,7 @@ require('./utils/routes.js')(app, express, utils.isAuth);
 
 //===========uncomment this middleware for production=========
 
-// app.use(express.static(path.resolve(__dirname, '../build')));
+// app.use(express.static(path.join(__dirname, '../build')));
 
 
 
@@ -48,7 +48,7 @@ require('./utils/routes.js')(app, express, utils.isAuth);
 var server = http.createServer(app).listen(process.env.PORT || 5001, function() {
   console.log('Listening on port ' + (process.env.PORT || 5001 ));
 });
- 
+
 var io = require('socket.io')(server);
 
 io.on('connection', function(socket) {
@@ -121,8 +121,12 @@ passport.use(new LocalStrategy(
 
 //===========//uncomment below for production//==========
 
-  // app.get('*', function(req, res) {
-  // res.sendFile(path.join(__dirname, '../build/index.html'));
+
+//   app.get('*', function(req, res) {
+//   console.log(path.join(__dirname, '../build/index.html'));
+//   console.log(path.resolve(__dirname, '../build/index.html'));
+//   res.sendFile(path.join(__dirname, '../build/index.html'));
+
 // });
 
 
@@ -132,4 +136,3 @@ module.exports = {
 	io: io,
 	server: server
 };
-

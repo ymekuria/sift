@@ -9,7 +9,7 @@
   "scripts": {
     "test_client": "mocha 'client/spec/*.test.js' --compilers js:babel-core/register",
     "test": "mocha server/spec/rethink-spec.js",
-    "start" : "nodemon server/server.js",
+    "start": "nodemon server/server.js",
     "dev": "NODE_ENV=dev nodemon devServer.js",
     "build": "NODE_ENV=production webpack --config webpack.config.js"
   },
@@ -37,6 +37,7 @@
     "express-session": "^1.13.0",
     "faker": "^3.0.1",
     "immutable": "^3.7.6",
+    "jquery": "^2.2.0",
     "jwt-simple": "^0.4.1",
     "lodash": "^4.1.0",
     "material-ui": "^0.14.3",
