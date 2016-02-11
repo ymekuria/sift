@@ -127,7 +127,7 @@ import DataVis from './dataVis.jsx'
 
 var showGraph = function(treeData, remove){
 // console.log(data, remove);
-console.log("treeData in dndTree",treeData);
+// console.log("treeData in dndTree",treeData);
     if (panTimer === undefined){var panTimer = false;}
     var dragStarted;
     // Calculate total nodes, max label length
@@ -272,7 +272,7 @@ console.log("treeData in dndTree",treeData);
         // }
 
         // remove parent link
-        parentLink = tree.links(tree.nodes(draggingNode.parent));
+         var parentLink = tree.links(tree.nodes(draggingNode.parent));
         svgGroup.selectAll('path.link').filter(function(d, i) {
             if (d.target.id == draggingNode.id) {
                 return true;
@@ -297,7 +297,7 @@ console.log("treeData in dndTree",treeData);
                 return;
             }
             dragStarted = true;
-            nodes = tree.nodes(d);
+            var nodes = tree.nodes(d);
             d3.event.sourceEvent.stopPropagation();
             // it's important that we suppress the mouseover event on the node being dragged. Otherwise it will absorb the mouseover event and the underlying node will not detect it d3.select(this).attr('pointer-events', 'none');
         })
@@ -655,10 +655,10 @@ console.log("treeData in dndTree",treeData);
             .remove();
 
         // Stash the old positions for transition.
-        // nodes.forEach(function(d) {
-        //     d.x0 = d.x;
-        //     d.y0 = d.y;
-        // });
+        nodes.forEach(function(d) {
+            d.x0 = d.x;
+            d.y0 = d.y;
+        });
     }
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.

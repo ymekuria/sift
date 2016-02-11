@@ -50,14 +50,13 @@ class DataVis extends Component {
   }
 
   removeNode(rowId) {
-    // rowId = "433a7a25-0b17-4cee-90f5-9a1e53cba7ab"
 console.log("REMOVED NODE",rowId);
-    // var node = {
-    //   tablename: this.state.tablename,
-    //   username: JSON.parse(localStorage.getItem('sift-user')).username,
-    //   rowId: rowId
-    // }
-    // socket.emit('remove', node);
+    var node = {
+      tablename: this.state.tablename,
+      username: JSON.parse(localStorage.getItem('sift-user')).username,
+      rowId: rowId
+    }
+    socket.emit('remove', node);
   }
   componentDidMount() {
     // TODO: setState with tablename
@@ -66,7 +65,7 @@ console.log("REMOVED NODE",rowId);
     let tablename = username + '_' + this.state.tablename;
     var emitmessage = 'update ' + tablename;
 
-    h.loadTable("John_Hello", function(data) {
+    h.loadTable(this.state.tablename, function(data) {
       this.setState({
         data: data
       });
