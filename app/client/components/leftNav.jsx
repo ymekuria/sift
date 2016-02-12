@@ -9,6 +9,7 @@ import Build from 'material-ui/lib/svg-icons/action/build'
 import Stats from 'material-ui/lib/svg-icons/action/assessment'
 import Info from 'material-ui/lib/svg-icons/action/info'
 import Home from 'material-ui/lib/svg-icons/action/home'
+import Colors from 'material-ui/lib/styles/colors'
 
 
 //todo for 
@@ -21,7 +22,8 @@ let styles = {
   height: '110vh'
 }
 let iconStyles = {
-  marginBottom: '15px'
+  marginBottom: '15px',
+  color: 'white'
 }
 
 
@@ -43,18 +45,18 @@ class LeftNavbar extends Component {
           open={true}
         >
         <IconButton onClick={() => this.navigation('/home')} style={iconStyles}>
-          <Home/>
+          <Home color='white' style={iconStyles}/>
         </IconButton>
-        <IconButton onClick={() => this.navigation('/build')} style={iconStyles}>
-          <Build/>
+        <IconButton iconStyle={iconStyles} onClick={() => this.navigation('/build')} style={iconStyles}>
+          <Build color='white'/>
         </IconButton>
         <br/>
         <IconButton onClick={() => this.navigation('/vis')} style={iconStyles}>
-          <Stats/>
+          <Stats color='white'/>
         </IconButton>
         <br/>
         <IconButton onClick={() => this.navigation('/info')} style={iconStyles}>
-          <Info/>
+          <Info color='white'/>
         </IconButton>
 
         </LeftNav>

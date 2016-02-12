@@ -40,7 +40,6 @@ class Homepage extends Component {
     this.renderDashTable = this.renderDashTable.bind(this);
     this.removeTable = this.removeTable.bind(this);
   }
-
   componentWillMount() {
    // find a better way to bind this//use promises instead 
     var that = this;

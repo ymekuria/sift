@@ -279,8 +279,11 @@ h3 {
 .signupBackground {
   /*background: linear-gradient(169deg,#0c63aa,#7ac4fa);*/
   background: linear-gradient(to right, #2090d2 0%, #4db5f2 100%);
-  width: 100%;
+  position: absolute;
+  right: 1px;
+  width: 105%;
   height: 100%;
+  z-index: 2;
 }
 
 .signinPaper {

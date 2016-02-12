@@ -22,6 +22,13 @@ let styles = {
 let buttonStyle = {
   color: 'white'
 }
+let title = {
+  color: '#FDD53C',
+  position: "relative",
+  marginTop: '5px',
+  right: "15px"
+
+}
 
 class TopNav extends Component {
   constructor() {
@@ -37,11 +44,11 @@ class TopNav extends Component {
   }
   
   render() {
+    let username = localStorage.getItem('sift-user');
     return (
-      <Toolbar style={styles}>
+      <Toolbar color="#FDD53C" style={styles}>
+          <ToolbarTitle style={title} text='SIFT'/>
         <ToolbarGroup float="right">
-          <FontIcon className="muidocs-icon-custom-sort" />
-          <ToolbarSeparator />
           <RaisedButton style={buttonStyle} onClick={ this.signout } label="Sign Out"  />
         </ToolbarGroup>
       </Toolbar>
