@@ -132,7 +132,7 @@ var showGraph = function(treeData, remove){
     var dragStarted;
     // Calculate total nodes, max label length
     var totalNodes = 0;
-    var maxLabelLength = 1;
+    var maxLabelLength = 10;
     // variables for drag/drop
     var selectedNode = null;
     var draggingNode = null;
@@ -514,7 +514,7 @@ var showGraph = function(treeData, remove){
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            d.y = (d.depth * (maxLabelLength * 4)); //maxLabelLength * 10px
+            d.y = (d.depth * (120)); //maxLabelLength * 10px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
             // d.y = (d.depth * 100); //500px per level.
