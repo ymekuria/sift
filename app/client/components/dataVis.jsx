@@ -31,12 +31,6 @@ class DataVis extends Component {
   }
 
   addNode(node) {
-    // node = {
-    //   values: {
-    //     lastName: 'Brown'
-    //   }
-    // };
-
     node.tablename = this.state.tablename;
     node.username = this.state.username;
     socket.emit('add', node);
@@ -56,23 +50,7 @@ class DataVis extends Component {
         updated: true
       });
       console.log("newData",this.state.data.name);
-    this.renderD3(this.state.data, this.removeNode.bind(this));
     }.bind(this));
-  }
-
-
-
-
-
-  renderD3 (data, remove) {
-    dndTree(data, remove);
-  }
-
-
-  addNode(node) {
-    node.tablename = this.state.tablename;
-    node.username = this.state.username;
-    socket.emit('add', node);
   }
 
   editNode(node) {
