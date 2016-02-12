@@ -193,6 +193,7 @@ class DashTable extends Component {
       margin: 20,
       textAlign: 'center',
       display: 'inline-block',
+      marginBottom: '10px'
       //border: '1px solid #C5CAD9',
       //backgroundColor: '#C5CAD9',
     };
@@ -289,7 +290,8 @@ class AddTables extends Component {
     margin: 20,
     textAlign: 'center',
     display: 'inline-block',
-     border: '2px dashed #C5CAD9'
+     border: '2px dashed #C5CAD9',
+    marginBottom: '10px'
       // backgroundColor: '#E7E8EF'
 
 
