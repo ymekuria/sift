@@ -10,6 +10,9 @@ import AddNode from './AddNode'
 import Tree from './Tree'
 import Paper from 'material-ui/lib/paper';
 let socket = io();
+var Select = require('react-select');
+import {getTables} from '../utils/utils.js'
+
 
 
 class DataVis extends Component {
@@ -22,31 +25,35 @@ class DataVis extends Component {
         name: '',
         children: []
       },
-      username: JSON.parse(localStorage.getItem('sift-user')).username
+      username: JSON.parse(localStorage.getItem('sift-user')).username,
+      allUserTables: "",
     }
   }
 
   addNode(node) {
-    // node = {
-    //   values: {
-    //     lastName: 'Brown'
-    //   }
-    // };
-    
     node.tablename = this.state.tablename;
     node.username = this.state.username;
     socket.emit('add', node);
   }
 
-  editNode(node) {
-    // node = {
-    //   rowId: String,
-    //   values: {
-    //     lastName: 'Erik Brown changed this.'
-    //     all other key/value pairs
-    //   }
-    // };
+  updateValue (newValue) {
+    this.setState({
+      tablename: newValue
+    });
 
+    let username = JSON.parse(localStorage.getItem('sift-user')).username;
+    let tablename = username + '_' + newValue;
+
+    h.loadTable(tablename, function(data) {
+      this.setState({
+        data: data,
+        updated: true
+      });
+      console.log("newData",this.state.data.name);
+    }.bind(this));
+  }
+
+  editNode(node) {
     node.tablename = this.state.tablename;
     node.username = this.state.username;
     socket.emit('edit', node);
@@ -61,7 +68,8 @@ class DataVis extends Component {
     socket.emit('remove', node);
   }
 
-  componentDidMount() {
+
+  componentWillMount() {
 
     let username = this.state.username;
     let tablename = username + '_' + this.state.tablename;
@@ -76,6 +84,19 @@ class DataVis extends Component {
     socket.on(emitmessage, function(data) {
       this.handleData(data)
     }.bind(this));
+
+
+    var that = this;
+    getTables(function(res){
+      var filteredTableNames = [];
+    _.each(res, function(i){
+      var tempTable = i.tablename.split("_")[1]
+      filteredTableNames.push({ value: tempTable, label: tempTable });
+    });
+        that.setState({
+          allUserTables: filteredTableNames
+        })
+    });
   }
 
   handleData(data) {
@@ -113,12 +134,13 @@ class DataVis extends Component {
   }
 
   render() {
-    console.log('in datavis render: ', this.state.data)
+    var options = this.state.allUserTables;
     return (
-
         <div className="container">
-          <AddNode columns={ this.state.data.columns } addNode={ this.addNode.bind(this) } />
-          <Tree data={ this.state.data } removeNode={ this.removeNode.bind(this) } />
+        <div>Choose between your tables</div>
+        <Select ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.tablename} onChange={this.updateValue.bind(this)} />
+        <AddNode columns={ this.state.data.columns } addNode={ this.addNode.bind(this) } />
+        <Tree data={ this.state.data } removeNode={ this.removeNode.bind(this) } />
         </div>
     )
   }

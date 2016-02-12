@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import TextField from 'material-ui/lib/text-field';
 var Select = require('react-select');
-
 const STATES = require('../data/dataTypes.js').dataTypes;
 import {createTable} from '../utils/utils.js'
 
@@ -44,7 +43,7 @@ class Custom extends Component {
     });
     console.log('TableValue State', this.state.tableValue)
   }
-  
+
 	///////UPDATES COLUMN NAME ///////
   updateColumn (event) {
   	console.log('columnName', event.target.value)
@@ -55,13 +54,13 @@ class Custom extends Component {
 
 	postTable () {
 		//this.refs.stateSelect.focus();
-		
+
 		var selections = {
 			tablename: this.state.tableValue,
             custom: true,
             columns: this.state.allColumns
           }
-        
+
 		console.log('selections', selections);
 		console.log('this.state.allColumns', this.state.allColumns)
 		createTable(selections)
@@ -76,34 +75,7 @@ class Custom extends Component {
 		});
 
 	}
-//REDUX
-	// componentDidMount() {
-  //   //subscribe to the store
-  //   const { store } = this.context;
-  //   console.log(store.getState());
-	//
-  //   this.unsubscribe = store.subscribe(() => {
-  //     console.log('updatin disptachid');
-  //     this.forceUpdate()
-	// 	};
-	//
-	//
-  //   var user = localStorage.getItem('sift-user');
-  //   if (!user) {
-  //     h.setUser(function(dbUser) {
-  //       localStorage.setItem('sift-user', dbUser);
-  //     })
-  //   }
-  // }
-	//
-  // componentWillUnmount() {
-  //   this.unsubscribe();
-  // }
-  // {
-		// 				type: 'updateTable',
-		// 				newCategory: this.state.tableValue
-		// 			}
-	//REDUX
+
 	render () {
 		var options = this.state.country;
 		var columns = [];
@@ -111,7 +83,6 @@ class Custom extends Component {
 			columns.push("Name : "+ key +" Type: "+ this.state.allColumns[key] );
 		}
 
-		// const { country, dataValue, tableValue, columnValue, completeTable, allColumns } = this.context.store.getState().customTable;
 		return (
 
 			<div className="section">
@@ -146,7 +117,7 @@ class Custom extends Component {
 			</div>
 		);
 	}
-	
+
 };
 
 export default Custom

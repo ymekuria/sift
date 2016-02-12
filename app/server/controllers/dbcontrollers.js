@@ -102,10 +102,10 @@ dbMethods = {
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
     var userID = req.user.id;
-    
+
     var queryString = 'SELECT id, tablename, columns, active FROM tables WHERE userID = ' + userID;
     client.query(queryString, function(err, tableNames){
-        if (err) { throw new Error(err); }
+        if (err) { console.log(err); }
         _.each(tableNames.rows, function(row) {
           row.columns = row.columns.split(',')
         })
@@ -118,8 +118,8 @@ dbMethods = {
   getOneTable: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
     r.table(tablename).run(connection, function(err, cursor) {
-      if (err) { throw err; }
-      dbMethods.checkandUpdateTimestamp(tablename); 
+      if (err) { console.log(err); }
+      dbMethods.checkandUpdateTimestamp(tablename);
       cursor.toArray(function(err, results) {
         res.status(200).send(results);
       });
@@ -129,16 +129,16 @@ dbMethods = {
  // this posts to a users tables. The front-end sends a post request with the columns and new values
  // {columnName: value, column2Name: value, ...}
   postToTable: function(req, res) {
+
     var tablename = req.params.username + '_' + req.params.tablename;
     var columns;
-
     var queryString = 'SELECT custom, datatypes, columns, last_used FROM tables WHERE tablename = ($1)';
     client.query(queryString, [tablename], function(err, results) {
 
       var savedTimestamp = results.rows[0].last_used;
       dbMethods.checkandUpdateTimestamp(tablename, savedTimestamp);
 
-      if (results.rows[0].custom) {  
+      if (results.rows[0].custom) {
         var dbColumns = results.rows[0].columns;
         var dbDataTypes = results.rows[0].datatypes;
 
@@ -151,21 +151,16 @@ dbMethods = {
             });
 
           } else {
-
             var errorMessage = 'Incorrect data type for ' + err.column + '. Expected: ' + err.expected + '. Received: ' + err.received;
             res.status(400).send(errorMessage);
-
           }
-
         });
 
       } else {
-
         r.table(tablename).insert(req.body).run(connection, function(err, response) {
           if (err) { throw err; }
           res.sendStatus(200);
         });
-
       }
     })
 
@@ -219,7 +214,7 @@ dbMethods = {
     update[columnName] = newValue;
 
     r.table(tablename).get(rowId).update(update).run(connection, function(err, results) {
-      if (err) { throw err; }
+      if (err) { console.log(err); }
       dbMethods.checkandUpdateTimestamp(tablename);
       res.sendStatus(200);
     })
@@ -234,7 +229,7 @@ dbMethods = {
     var rowId = req.params.rowId;
 
     r.table(tablename).get(rowId).delete().run(connection, function(err, results) {
-      if (err) { throw err; }
+      if (err) { console.log(err); }
       dbMethods.checkandUpdateTimestamp(tablename)
       res.sendStatus(200);
     })
@@ -249,17 +244,17 @@ dbMethods = {
     var tableId = req.params.id
 
     client.query('SELECT tablename FROM Tables WHERE id = ' + tableId, function(err, results) {
-      if (err) { throw err; }
+      if (err) { console.log(err); }
       if (results.rows.length === 0) {
         res.sendStatus(404);
       }
       tablename = results.rows[0].tablename;
       client.query('DELETE FROM Tables WHERE userID = ' + userId + ' AND id = ' + tableId, function(err, entireTable) {
-        if (err) { throw new Error(err); }
+        if (err) { console.log(err); }
         var deletedTable = entireTable.rows;
 
         r.db('apiTables').tableDrop(tablename).run(connection, function(err, results) {
-          if (err) { throw err; }
+          if (err) { console.log(err); }
           res.sendStatus(200);
         });
       });
