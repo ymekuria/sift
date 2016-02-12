@@ -215,6 +215,48 @@ h3 {
 
  }
 
+.addTable:hover {
+   background-color: #C5CAD9;   
+ }
+
+
+.dashCardTop {
+  border-bottom: 1px solid #C5CAD9;
+  height: 20%;
+  width: 100%; 
+}
+.dashTopBorder {
+ /*border-top: 5px solid #4db5f2 ;*/
+  /*background: linear-gradient(169deg,#0c63aa,#7ac4fa);*/
+  /*background: linear-gradient(to right, #2090d2 0%, #4db5f2 100%);*/
+}
+.dashCardTableName {
+  display: inline-block;
+  float: left;
+  margin: 15px 0px 0px 20px;
+  font-weight: bold;
+  font-size: 130%;
+} 
+.dashEndPointLabel {
+  float: left;
+  display: block;
+  font-weight: bold;
+  
+}
+.dashEndPoint {
+  color:#4db5f2;
+  
+
+ }
+ .addTableCard {
+  position: relative;
+  top: -142px;
+}
+.endPointView {
+  margin: 45px 0px 0px 20px;
+} 
+
+
 .node {
   cursor: pointer;
 }
@@ -271,10 +313,8 @@ h3 {
 .ghostCircle, .activeDrag .ghostCircle{
      display: none;
 }
-.addTableCard {
-  position: relative;
-  top: -75px;
-}
+
+
  #tree-container {
    width: 500px;
    height: 900px;
