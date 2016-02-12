@@ -131,6 +131,11 @@ class DataVis extends Component {
     return (
       <div className="container">
         <div className="row">
+          <div className="col-md-12 endpoint">
+          sift.com/sand/{ this.state.username }/{ this.state.tablename }
+          </div>
+        </div>
+        <div className="row">
           <div className="col-md-5">
             Choose between your tables
             <Select ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.tablename} onChange={this.updateValue.bind(this)} />
