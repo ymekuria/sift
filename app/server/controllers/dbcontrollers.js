@@ -113,7 +113,7 @@ dbMethods = {
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
     var userID = req.user.id;
-    var queryString = 'SELECT id, tablename, columns FROM tables WHERE userID = ' + userID;
+    var queryString = 'SELECT id, tablename, columns, active FROM tables WHERE userID = ' + userID;
     
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
