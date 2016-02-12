@@ -225,8 +225,7 @@ h3 {
   display: block;
 
  }
-<<<<<<< 61354d932f2fa1e151ead3a3c0959da610eadc0f
-=======
+
 .addTable:hover {
    background-color: #C5CAD9;
  }
@@ -263,7 +262,7 @@ h3 {
 .endPointView {
   margin: 45px 0px 0px 20px;
 }
->>>>>>> added dropdown to graph
+
 
 .addTable:hover {
    background-color: #C5CAD9;   
@@ -304,8 +303,13 @@ h3 {
 }*/
  .addTableCard {
   position: relative;
-  top: -142px;
+  top: -140px;
 }
+
+/* .addTableCardEmpty {
+  position: relative;
+  top: -140px;
+}*/
 
 .endPointView {
   margin: 45px 0px 0px 20px;

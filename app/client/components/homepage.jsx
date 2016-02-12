@@ -89,7 +89,7 @@ class Homepage extends Component {
 
   removeTable (tableID) {
     var that = this;
-<<<<<<< 864d1b9249a831b07a4192038390d0f5a3345977
+
     var alertConfig = {
       title: "Are you sure?",
       text: "All records of this table will be deleted?",
@@ -162,6 +162,7 @@ class Homepage extends Component {
 
           </div>
         </div>
+<<<<<<< b2e0e60294f5e0bf92a712c69fb7f881ef72184c
         <div className='row'>
           <h4 className='col-md-3'>ARCHIVED TABLES</h4>
         </div>
@@ -174,6 +175,11 @@ class Homepage extends Component {
         </div>
 
       </div>
+=======
+
+        
+      </div>   
+>>>>>>>  fixed delete table bug
     )
 
   } else {
@@ -233,8 +239,13 @@ class DashTable extends Component {
 
             <h5 className='dashCardTableName'>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
             </div>
+<<<<<<< b2e0e60294f5e0bf92a712c69fb7f881ef72184c
            <div className='endPointView'>
              <div className='dashEndPointLabel'>Endpoint</div>
+=======
+           <div className='endPointView'> 
+             <div className='dashEndPointLabel'>Endpoint</div><br/>
+>>>>>>>  fixed delete table bug
              <div className='dashEndPoint'>sand/{userName}/{tableName}/</div>
            </div>
           <RaisedButton
@@ -327,7 +338,7 @@ class AddTables extends Component {
 =======
     return ( 
       
-        <div className={this.props.class + }  style={style}  zDepth={2} rounded={false}>
+        <div className={'addTableCardEmpty '+this.props.class }  style={style}  zDepth={2} rounded={false}>
          
         
           
