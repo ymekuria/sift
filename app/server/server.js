@@ -29,18 +29,12 @@ app.use(bodyParser.urlencoded({extended: true }));
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use(express.static(__dirname + '/client/landingPage'))
+// app.use(express.static(__dirname + '/client/landingPage'));
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 //===========uncomment this middleware for production=========
-// app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname, '../build')));
 
-// http.createServer(app).listen(process.env.PORT || 3000, function() {
-//   console.log('Listening on port ' + (process.env.PORT || 3000));
-// });
-// var server = app.listen(port, function() {
-// 	console.log('Sifting on port= ', port)
-// });
 
 var server = http.createServer(app).listen(process.env.PORT || 5001, function() {
   console.log('Listening on port ' + (process.env.PORT || 5001 ));
@@ -117,13 +111,9 @@ passport.use(new LocalStrategy(
 }))
 
 //===========//uncomment below for production//==========
-//   app.get('*', function(req, res) {
-//   console.log(path.join(__dirname, '../build/index.html'));
-//   console.log(path.resolve(__dirname, '../build/index.html'));
-//   res.sendFile(path.join(__dirname, '../build/index.html'));
-
-
-
+  app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, '../build/index.html'));
+})
 
 
 module.exports = {

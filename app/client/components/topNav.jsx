@@ -13,7 +13,7 @@ import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
 
 let styles = {
   backgroundColor: '#333333',
-  width: '105%',
+  width: '100vw',
   position: 'relative',
   bottom: '8px',
   right: '10px',
@@ -43,7 +43,7 @@ let signout = {
   textColor: '#333333'
 }
 let signOutGroup = {
-  paddingRight: '10px'
+  paddingRight: '5px'
 }
 
 class TopNav extends Component {

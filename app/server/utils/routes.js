@@ -3,6 +3,7 @@ var dbController = require('../controllers/dbcontrollers.js');
 var userController = require('../controllers/userController.js');
 var socketController = require('../controllers/socketController.js');
 var passport = require('passport');
+var path = require('path');
 
 module.exports = function(app, express, ensureAuth) {
 
@@ -11,6 +12,10 @@ module.exports = function(app, express, ensureAuth) {
   // local authentication
   app.post('/api/users', userController.createLocalUser, function(req, res) {
     res.redirect('/signin');
+  });
+
+  app.get('/landing', function(req, res) {
+    res.sendFile(path.join(__dirname, '../../build/landingPage/landing.html'));
   });
 
   app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/signin' }), function(req, res) {
