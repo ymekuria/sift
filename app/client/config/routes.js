@@ -27,7 +27,6 @@ import { requireAuth } from '../auth/auth'
 // <IndexRoute component={Landing}/> took out root path
 export default (
   <Route path='/' component={main}>
-
     <Route path='signin' component={Signin}/>
     <Route path='signup' component={Signup}/>
     <Route path='home' component={requireAuth(homepage)}/>
