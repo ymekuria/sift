@@ -128,13 +128,13 @@ class Homepage extends Component {
         <div className ='row'>
           <div className='col-md-12'>
 
-            <AddTables className='addTableCard'/>
+            <AddTables class={'addTableCard'} nav={ this.navigation } />
           { _.map(this.state.userTables.active, this.renderDashTable) }
 
           </div>
         </div>
         <div className='row'> 
-          <h4 className="col-md-2  ">ARCHIVED TABLES</h4>
+          <h4 className='col-md-3'>ARCHIVED TABLES</h4>
         </div>   
         <div className ='row'>
           <div className='col-md-12'>
@@ -237,10 +237,10 @@ class DashBanner extends Component {
     return (
     <div className='dashBanner'>
       <div className='row'>
-        <h2 className="col-md-4 col-md-offset-3 " >
+        <h2 className="col-md-6 col-md-offset-3 " >
           Welcome back to SIFT, {this.props.userName}
         </h2>
-        <h4 className="col-md-4 col-md-offset-4 dashOneliner"></h4>     
+        <h4 className="col-md-4 col-md-offset-4 dashOneliner"></h4>
       </div>
     {/*row for buttons*/}
       <div className='row'>
