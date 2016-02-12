@@ -26,7 +26,10 @@ class Homepage extends Component {
 
     this.state={
       info: {},
-      userTables: {},
+      userTables: {
+        active: [],
+        inactive: []
+      },
       tablesExist: '',
       userName: '',
       displayName: JSON.parse(localStorage.getItem('sift-user')).displayname || ''
@@ -40,18 +43,24 @@ class Homepage extends Component {
   componentWillMount() {
    // find a better way to bind this//use promises instead 
     var that = this;
-    
-    getTables(function(res){
-
+    var tables = this.state.userTables;
+    getTables(function(res) { // res in an array of table objects
       if(res[0] === undefined) {
-        that.setState({tablesExist: false})
+        that.setState({ tablesExist: false })
       } else {
-        console.log('getables response', res)
-        that.setState({userTables: res,
-          tablesExist: true,
-          userName: res[0].tablename.split("_")[0].toUpperCase() })
-      
+        _.each(res, function(table) {
+          if (table.active) {
+            tables.active.push(table);
+          } else {
+            tables.inactive.push(table);
+          }
+        })
       }
+      that.setState({
+        userTables: tables,
+        tablesExist: true,
+        userName: res[0].tablename.split("_")[0].toUpperCase()
+      })
       // console.log('this.state in componentWillMount', this.state.userTables);
     });
     // console.log('this.state in componentWillMount', this.state.userTables);
@@ -112,17 +121,28 @@ class Homepage extends Component {
     return(
 
       <div className='container'>
-        
+
         <div className='row dashTopBorder'> 
-          <h4 className="col-md-2  ">CURRENT TABLES</h4>
+          <h4 className="col-md-2  ">CURRENT TABLES</h4> 
         </div>   
         <div className ='row'>
           <div className='col-md-12'>
-            <AddTables class={"addTableCard"} nav={this.navigation}/> 
-          { _.map(this.state.userTables, this.renderDashTable) } 
+
+            <AddTables class={'addTableCard'} nav={ this.navigation } />
+          { _.map(this.state.userTables.active, this.renderDashTable) }
+
+          </div>
+        </div>
+        <div className='row'> 
+          <h4 className='col-md-3'>ARCHIVED TABLES</h4>
+        </div>   
+        <div className ='row'>
+          <div className='col-md-12'>
+
+          { _.map(this.state.userTables.inactive, this.renderDashTable) } 
             
           </div>
-          </div>    
+        </div>
         
       </div>   
     )
@@ -217,10 +237,10 @@ class DashBanner extends Component {
     return (
     <div className='dashBanner'>
       <div className='row'>
-        <h2 className="col-md-4 col-md-offset-3 " >
+        <h2 className="col-md-6 col-md-offset-3 " >
           Welcome back to SIFT, {this.props.userName}
         </h2>
-        <h4 className="col-md-4 col-md-offset-4 dashOneliner"></h4>     
+        <h4 className="col-md-4 col-md-offset-4 dashOneliner"></h4>
       </div>
     {/*row for buttons*/}
       <div className='row'>

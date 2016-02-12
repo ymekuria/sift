@@ -65,13 +65,19 @@ var socketMethods = {
     var emitmessage = 'update ' + tablename;
 
     var data = {
-      name: tablename,
+      columns: [],
+      name: tablename.split('_')[1],
       children: []
     };
 
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { throw err; }
       cursor.toArray(function(err, results) {
+        _.each(results[0], function(value, key) {
+          if (key !== 'id') {
+            data.columns.push(key);
+          }
+        })
         _.each(results, function(row) {
       		var rowObject = {
       			children: []

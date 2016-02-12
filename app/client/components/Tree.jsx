@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
+import showGraph from './dndTree.js'
+import $ from 'jquery'
 
 class Tree extends Component {
 
-	componentDidMount() {
-		// D3 code goes here
-	}
-
-	render() {
-		return (
-			<div id='tree-container'></div>
-		)
+  render() {
+    $('#tree-container').empty();
+    showGraph(this.props.data, this.props.removeNode); 
+		return <div id='tree-container'></div>
 	}
 }
+
+export default Tree;

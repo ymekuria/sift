@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import h from '../config/helpers'
 import _ from 'underscore'
-import dndTree from './dndTree.js'
+import showGraph from './dndTree.js'
 import d3 from 'd3'
 import $ from 'jquery'
 import io from 'socket.io-client'
 import store from '../store'
 import AddNode from './AddNode'
+import Tree from './Tree'
+import Paper from 'material-ui/lib/paper';
 let socket = io();
 
 
@@ -16,10 +18,11 @@ class DataVis extends Component {
     this.state = {
       tablename: store.getState().buildTable.dataVisTable,
       data: {
+        columns: [],
         name: '',
         children: []
       },
-      testData: "INSIDE TEST DATA"
+      username: JSON.parse(localStorage.getItem('sift-user')).username
     }
   }
 
@@ -29,9 +32,9 @@ class DataVis extends Component {
     //     lastName: 'Brown'
     //   }
     // };
-
+    
     node.tablename = this.state.tablename;
-    node.username = JSON.parse(localStorage.getItem('sift-user')).username;
+    node.username = this.state.username;
     socket.emit('add', node);
   }
 
@@ -45,25 +48,22 @@ class DataVis extends Component {
     // };
 
     node.tablename = this.state.tablename;
-    node.username = JSON.parse(localStorage.getItem('sift-user')).username;
+    node.username = this.state.username;
     socket.emit('edit', node);
   }
 
   removeNode(rowId) {
-console.log("REMOVED NODE",rowId);
-console.log("'THIS' AT REMOVE TABLE",this.state.tablename);
     var node = {
       tablename: this.state.tablename,
-      username: JSON.parse(localStorage.getItem('sift-user')).username,
+      username: this.state.username,
       rowId: rowId
     }
     socket.emit('remove', node);
   }
 
   componentDidMount() {
-    // TODO: setState with tablename
 
-    let username = JSON.parse(localStorage.getItem('sift-user')).username;
+    let username = this.state.username;
     let tablename = username + '_' + this.state.tablename;
     var emitmessage = 'update ' + tablename;
 
@@ -71,17 +71,11 @@ console.log("'THIS' AT REMOVE TABLE",this.state.tablename);
       this.setState({
         data: data
       });
-      dndTree(this.state.data, this.removeNode.bind(this));
     }.bind(this));
 
     socket.on(emitmessage, function(data) {
       this.handleData(data)
     }.bind(this));
-    // console.log("TESTDATA :",this.state.testData);
-  }
-
-  componentDidUpdate() {
-    // dndTree();
   }
 
   handleData(data) {
@@ -119,12 +113,12 @@ console.log("'THIS' AT REMOVE TABLE",this.state.tablename);
   }
 
   render() {
+    console.log('in datavis render: ', this.state.data)
     return (
 
-        <div>
-        <div id="tree-container"></div>
-
-        {/*<AddNode />*/}
+        <div className="container">
+          <AddNode columns={ this.state.data.columns } addNode={ this.addNode.bind(this) } />
+          <Tree data={ this.state.data } removeNode={ this.removeNode.bind(this) } />
         </div>
     )
   }

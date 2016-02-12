@@ -2,129 +2,6 @@ import d3 from 'd3'
 import $ from 'jquery'
 import DataVis from './dataVis.jsx'
 
-// var flare = require('json!./flare.json')
-// import flare from './flare.json'
-// var flare;
-
-
-// var treeData = {
-//   "name": "flare",
-//   "children": [
-//     {
-//         "name": "physics",
-//         "id": "gfjy657564futr75w64wytru",
-//         "children": [{
-//             "name": "DragForce",
-//             "size": 1082
-//         }, {
-//             "name": "GravityForce",
-//             "size": 1336
-//         }, {
-//             "name": "IForce",
-//             "size": 319
-//         }, {
-//             "name": "NBodyForce",
-//             "size": 10498
-//         }, {
-//             "name": "Particle",
-//             "size": 2822
-//         }, {
-//             "name": "Simulation",
-//             "size": 9983
-//         }, {
-//             "name": "Spring",
-//             "size": 2213
-//         }, {
-//             "name": "SpringForce",
-//             "size": 1681
-//         }]
-//     },{
-//         "name": "234567898765432",
-//         "children": [{
-//             "name": "IScaleMap",
-//             "size": 2105
-//         }, {
-//             "name": "LinearScale",
-//             "size": 1316
-//         }, {
-//             "name": "LogScale",
-//             "size": 3151
-//         }, {
-//             "name": "OrdinalScale",
-//             "size": 3770
-//         }, {
-//             "name": "QuantileScale",
-//             "size": 2435
-//         }, {
-//             "name": "QuantitativeScale",
-//             "size": 4839
-//         }, {
-//             "name": "RootScale",
-//             "size": 1756
-//         }, {
-//             "name": "Scale",
-//             "size": 4268
-//         }, {
-//             "name": "ScaleType",
-//             "size": 1821
-//         }, {
-//             "name": "TimeScale",
-//             "size": 5833
-//         }]
-//     }, {
-//         "name": "util",
-//         "children": [{
-//             "name": "Arrays",
-//             "size": 8258
-//         }, {
-//             "name": "Colors",
-//             "size": 10001
-//         }, {
-//             "name": "Dates",
-//             "size": 8217
-//         }, {
-//             "name": "Displays",
-//             "size": 12555
-//         }, {
-//             "name": "Filter",
-//             "size": 2324
-//         }, {
-//             "name": "Geometry",
-//             "size": 10993
-//         }, {
-//             "name": "IEvaluable",
-//             "size": 335
-//         }, {
-//             "name": "IPredicate",
-//             "size": 383
-//         }, {
-//             "name": "IValueProxy",
-//             "size": 874
-//         }, {
-//             "name": "Maths",
-//             "size": 17705
-//         }, {
-//             "name": "Orientation",
-//             "size": 1486
-//         }, {
-//             "name": "Property",
-//             "size": 5559
-//         }, {
-//             "name": "Shapes",
-//             "size": 19118
-//         }, {
-//             "name": "Sort",
-//             "size": 6887
-//         }, {
-//             "name": "Stats",
-//             "size": 6557
-//         }, {
-//             "name": "Strings",
-//             "size": 22026
-//         }]
-//     }]
-// }
-
 var showGraph = function(treeData, remove){
 // console.log(data, remove);
 // console.log("treeData in dndTree",treeData);
@@ -144,7 +21,7 @@ var showGraph = function(treeData, remove){
     var duration = 750;
     var root;
     // size of the diagram
-    var viewerWidth = 800;
+    var viewerWidth = $(document).width() * 5 / 12; 
     // var viewerHeight = 1500;
     // var viewerWidth = $('#tree-container').width() ;
     // var viewerWidth = $(document).width() ;
@@ -165,6 +42,7 @@ var showGraph = function(treeData, remove){
     // A recursive helper function for performing some setup by walking through all nodes
 
     function visit(parent, visitFn, childrenFn) {
+        console.log('parent: ', parent)
         if (!parent) return;
 
         visitFn(parent);
@@ -514,7 +392,7 @@ var showGraph = function(treeData, remove){
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            d.y = (d.depth * (120)); //maxLabelLength * 10px
+            d.y = (d.depth * (viewerWidth / 3)); //maxLabelLength * 10px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
             // d.y = (d.depth * 100); //500px per level.

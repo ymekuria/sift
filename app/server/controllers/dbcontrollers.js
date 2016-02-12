@@ -47,7 +47,6 @@ dbMethods = {
   // this method creates a new table with generated data
   createUserTable: function(req, res) {
     //retrieve user from session store
-    console.log('req.body in createUserTable',req.body);
     var userID = req.user.id;
     var columns = req.body.columns || utils.parseColumnNames(req.body); // custom request have a columns property.
     var tablename = req.user.username + '_' + req.body.tablename;
@@ -103,8 +102,8 @@ dbMethods = {
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
     var userID = req.user.id;
-    var queryString = 'SELECT id, tablename, columns FROM tables WHERE userID = ' + userID;
-    console.log(req.user.id, 'this should be the id!!!')
+    
+    var queryString = 'SELECT id, tablename, columns, active FROM tables WHERE userID = ' + userID;
     client.query(queryString, function(err, tableNames){
         if (err) { throw new Error(err); }
         _.each(tableNames.rows, function(row) {
@@ -120,6 +119,7 @@ dbMethods = {
     var tablename = req.params.username + '_' + req.params.tablename;
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { throw err; }
+      dbMethods.checkandUpdateTimestamp(tablename); 
       cursor.toArray(function(err, results) {
         res.status(200).send(results);
       });
@@ -130,10 +130,81 @@ dbMethods = {
  // {columnName: value, column2Name: value, ...}
   postToTable: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
+    var columns;
 
-    r.table(tablename).insert(req.body).run(connection, function(err, response) {
-      if (err) { throw err; }
-      res.sendStatus(200);
+    var queryString = 'SELECT custom, datatypes, columns, last_used FROM tables WHERE tablename = ($1)';
+    client.query(queryString, [tablename], function(err, results) {
+
+      var savedTimestamp = results.rows[0].last_used;
+      dbMethods.checkandUpdateTimestamp(tablename, savedTimestamp);
+
+      if (results.rows[0].custom) {  
+        var dbColumns = results.rows[0].columns;
+        var dbDataTypes = results.rows[0].datatypes;
+
+        dbMethods.matchDataTypes(req.body, dbColumns, dbDataTypes, function(err, passes) {
+          if (passes) {
+
+            r.table(tablename).insert(req.body).run(connection, function(err, response) {
+              if (err) { throw err; }
+              res.sendStatus(200);
+            });
+
+          } else {
+
+            var errorMessage = 'Incorrect data type for ' + err.column + '. Expected: ' + err.expected + '. Received: ' + err.received;
+            res.status(400).send(errorMessage);
+
+          }
+
+        });
+
+      } else {
+
+        r.table(tablename).insert(req.body).run(connection, function(err, response) {
+          if (err) { throw err; }
+          res.sendStatus(200);
+        });
+
+      }
+    })
+
+  },
+
+  checkandUpdateTimestamp: function(tablename, savedTimestamp) {
+    var lastUpdate;
+    var rightNow = new Date();
+
+    if (!savedTimestamp) {
+      var queryString = 'SELECT last_used FROM tables WHERE tablename = ($1)'
+      client.query(queryString, [tablename], function(err, results) {
+        lastUpdate = results.rows[0].last_used;
+
+        if (rightNow - lastUpdate > 86400000) {
+          var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
+          client.query(queryString, [tablename], function(err, results) {
+            if (err) {throw new Erro(err); }
+          });
+        }
+      })
+    } else {
+      lastUpdate = new Date(savedTimestamp);
+      if (rightNow - lastUpdate > 86400000) {
+        var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
+        client.query(queryString, [tablename], function(err, results) {
+          if (err) {throw new Erro(err); }
+        });
+      }
+    }
+  },
+
+  matchDataTypes: function(reqColumns, columns, datatypes, callback) {
+    columns = columns.split(',');
+    datatypes = datatypes.split(',')
+    var columns_types = {};
+
+    _.each(columns, function(column, index) {
+      columns_types[column] = datatypes[index];
     });
   },
 
@@ -149,6 +220,7 @@ dbMethods = {
 
     r.table(tablename).get(rowId).update(update).run(connection, function(err, results) {
       if (err) { throw err; }
+      dbMethods.checkandUpdateTimestamp(tablename);
       res.sendStatus(200);
     })
   },
@@ -163,6 +235,7 @@ dbMethods = {
 
     r.table(tablename).get(rowId).delete().run(connection, function(err, results) {
       if (err) { throw err; }
+      dbMethods.checkandUpdateTimestamp(tablename)
       res.sendStatus(200);
     })
   },
