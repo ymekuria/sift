@@ -24,7 +24,7 @@ client.query('CREATE TABLE IF NOT EXISTS Users (' +
   'email VARCHAR(120), ' +
   'salt VARCHAR(60) DEFAULT null,' +
   'githubtoken VARCHAR(60) DEFAULT false )', function(err, result) {
-    if (err) { throw new Error(err); }
+    if (err) { console.log(err); }
     console.log('Users table created');
 })
 
@@ -37,7 +37,7 @@ client.query('CREATE TABLE IF NOT EXISTS Tables (' +
   'last_used timestamp DEFAULT current_date,' +
   'active boolean DEFAULT true,' +
   'tablename VARCHAR(120) )', function(err, result) {
-    if (err) { throw new Error(err); }
+    if (err) { console.log(err); }
     console.log('"Tables" table created');
 })
 

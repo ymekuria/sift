@@ -13,7 +13,7 @@ if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
 }
 
 r.connect(rConnectConfig, function(err, conn) {
-  if (err) throw err;
+  if (err) { console.log(err); }
   connection = conn;
 });
 
@@ -71,7 +71,7 @@ var socketMethods = {
     };
 
     r.table(tablename).run(connection, function(err, cursor) {
-      if (err) { throw err; }
+      if (err) { console.log(err); }
       cursor.toArray(function(err, results) {
         _.each(results[0], function(value, key) {
           if (key !== 'id') {
@@ -96,7 +96,7 @@ var socketMethods = {
       	})
 
 				r.table(tablename).changes().run(connection, function(err, cursor) {
-					if (err) { throw new Error(err); }
+					if (err) { console.log(err); }
 					cursor.each(function(err, node) {
 						io.emit(emitmessage, node);
 					})

@@ -10,7 +10,7 @@ var job = new CronJob('00 00 00 * * 0-6', function() {
       rConnectConfig =  { host: 'localhost', db: 'apiTables' }
     }
     r.connect(rConnectConfig, function(err, conn) {
-      if (err) throw err;
+      if (err) { console.log(err); }
       connection = conn;
     });
 

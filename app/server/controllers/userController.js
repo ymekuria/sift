@@ -9,7 +9,7 @@ userMethods = {
 
   isUserInDB: function(user, callback) {
     client.query('SELECT username FROM Users WHERE username=($1)', [user.username], function(err, rows) {
-      if (err) { throw new Error(err); }
+      if (err) { console.log(err); }
       var inDB = rows.rows.length > 0;
       callback(inDB);
     });
@@ -28,7 +28,7 @@ userMethods = {
 
   findOrCreateGitHubUser: function(user, accessToken, refreshToken, next) {
     client.query('SELECT id, email, displayname, githubtoken FROM Users WHERE email=($1)', [user._json.email], function(err, rows) {
-      if (err) { throw new Error(err); }
+      if (err) { console.log(err); }
       if (rows.rows.length === 0) { // does not exist, create a new one
         userMethods.createGitHubUser(user, accessToken, function(err, newUser) {
           next(null, newUser)
@@ -53,7 +53,7 @@ userMethods = {
   validatePassword: function(storedHash, password, callback) {
 
     bcrypt.compare(password, storedHash, function(err, isMatch) {
-      if (err) { throw new Error(err); }
+      if (err) { console.log(err); }
       callback(isMatch);
     })
   },
@@ -72,16 +72,16 @@ userMethods = {
         res.status(403).send({ message: 'Email address already registered.'}); // username exists
       } else {
         bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-          if (err) { throw new Error(err); } // TODO: make sure this is going somewhere
+          if (err) { console.log(err); } // TODO: make sure this is going somewhere
 
           bcrypt.hash(user.password, salt, null, function(err, hash) {
-            if (err) { throw new Error(err); } // TODO: make sure this is going somewhere
+            if (err) { console.log(err); } // TODO: make sure this is going somewhere
 
             user.password = hash;
             user.salt = salt;
 
             client.query('INSERT INTO Users (username, displayName, password, email, salt) VALUES ($1, $2, $3, $4, $5)', [user.username, user.displayName, user.password, user.email, user.salt], function(err, response) {
-              if (err) { throw new Error(err); }
+              if (err) { console.log(err); }
               // var token = jwt.encode(user.username, 'greenVeranda');
               // res.json = { token: token };
               next();
