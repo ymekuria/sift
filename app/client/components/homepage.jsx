@@ -78,7 +78,7 @@ class Homepage extends Component {
 
   renderDashTable(table) {
     return(
-      <DashTable nav={this.navigation} removeTable = {this.removeTable} table={table} index={table} />
+      <DashTable nav={this.navigation} removeTable = {this.removeTable} displayName={this.state.displayName} table={table} index={table} />
     )
   }
 
@@ -105,15 +105,15 @@ class Homepage extends Component {
      } 
  
   }  
-
+//<DashBanner userName={ this.state.displayName }/>
   
   render() {
     if (this.state.tablesExist) {
     return(
 
       <div className='container'>
-        <DashBanner userName={ this.state.displayName }/>
-        <div className='row'> 
+        
+        <div className='row dashTopBorder'> 
           <h4 className="col-md-2  ">CURRENT TABLES</h4>
         </div>   
         <div className ='row'>
@@ -132,14 +132,14 @@ class Homepage extends Component {
   return(
 
     <div className='container'>
-      <DashBanner userName={ this.state.displayName}/>
-        <div className='row'> 
-          <h4 className="col-md-2  ">CURRENT TABLES</h4> 
-          <div className='col-md-12'>
-            <AddTables className={''}nav={this.navigation}/>
-          </div>    
-        </div>
-      </div>   
+      
+      <div className='row'> 
+        <h4 className="col-md-2  ">CURRENT TABLES</h4> 
+        <div className='col-md-12'>
+          <AddTables className={''}nav={this.navigation}/>
+        </div>    
+      </div>
+    </div>   
     )
   }
  }
@@ -149,16 +149,22 @@ class DashTable extends Component {
 
   render() {
     const style = {
-      height: 200,
-      width: 200,
+      height: 300,
+      width: 250,
       margin: 20,
       textAlign: 'center',
-      display: 'inline-block'
+      display: 'inline-block',
+      //border: '1px solid #C5CAD9',
+      //backgroundColor: '#C5CAD9',
     };
 
     const iconStyle = {
-      marginLeft: 160,
-      display: 'inline-block'
+      
+      display: 'inline-block',
+      float: 'right',
+      marginRight: '18px',
+      height: '12px',
+      width: '12px'
     };  
 
     const svgStyle = {
@@ -166,23 +172,25 @@ class DashTable extends Component {
       height: '10px',
       width: '1px'
     }
-
+   const userName = this.props.table.tablename.split("_")[0];
+   const tableName = this.props.table.tablename.split("_")[1]
     return ( 
-        <Paper style={style}  zDepth={5} rounded={false}>
-          <IconButton onClick={()=>this.props.removeTable(this.props.table.id)} style={iconStyle}>
+        <Paper style={style}  zDepth={2} rounded={false}>
+          <IconButton onClick={()=>this.props.removeTable(this.props.table.id)}  style={iconStyle}>
             <Delete style={svgStyle}/>
           </IconButton>
           <h5>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
-          
+          <h6>Endpoint</h6>
+          <div className='dashEndPoint'>sand/{userName}/{tableName}/</div>
           <RaisedButton 
-          label="View Table" 
+          label="View Table" secondary={true} 
           onClick={() => {
             store.dispatch({type: 'adding_vis_table',
                               newTable: this.props.table.tablename.split("_")[1] })
             this.props.nav('/vis')}} 
           style={{margin: 5,
             position: 'relative',
-           bottom: -50}} />
+           bottom: -145}} />
 
        </Paper>
     ) 
@@ -232,11 +240,13 @@ class DeleteOption extends Component {
 class AddTables extends Component {
   render() {
     const style = {
-    height: 200,
-    width: 200,
+    height: 300,
+    width: 250,
     margin: 20,
     textAlign: 'center',
-    display: 'inline-block'
+    display: 'inline-block',
+     border: '2px dashed #C5CAD9'
+      // backgroundColor: '#E7E8EF'
 
 
   };
@@ -252,20 +262,21 @@ class AddTables extends Component {
         width: '1px'
     }
     return ( 
-        <Paper className={this.props.class}  style={style}  zDepth={5} rounded={false}>
+      
+        <div className={this.props.class +' addTable'}  style={style}  zDepth={2} rounded={false}>
          
-          <h5>WANT TO ADD A TABLE?</h5>
+        
           
-          <RaisedButton 
+          <RaisedButton secondary={true}
           label="Create Table" 
           onClick={() => {
           
             this.props.nav('/build')}} 
           style={{margin: 5,
             position: 'relative',
-           bottom: -50, }} />
+           bottom: -222 }} />
 
-       </Paper>
+       </div>
     ) 
   }
 }
