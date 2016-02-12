@@ -48,6 +48,7 @@ dbMethods = {
   // this method creates a new table with generated data
   createUserTable: function(req, res) {
     //retrieve user from session store
+    console.log(req.body)
     var userID = req.user.id;
     var columns = req.body.columns || utils.parseColumnNames(req.body); // custom request have a columns property.
     var tablename = req.user.username + '_' + req.body.tablename;
