@@ -7,6 +7,7 @@ import $ from 'jquery'
 import io from 'socket.io-client'
 import store from '../store'
 import AddNode from './AddNode'
+import Tree from './Tree'
 import Paper from 'material-ui/lib/paper';
 let socket = io();
 
@@ -70,17 +71,11 @@ class DataVis extends Component {
       this.setState({
         data: data
       });
-      showGraph(this.state.data, this.removeNode.bind(this));
     }.bind(this));
 
     socket.on(emitmessage, function(data) {
       this.handleData(data)
     }.bind(this));
-  }
-
-  componentDidUpdate() {
-    // $('#tree-container').empty();
-    // this.componentDidMount();
   }
 
   handleData(data) {
@@ -118,24 +113,12 @@ class DataVis extends Component {
   }
 
   render() {
+    console.log('in datavis render: ', this.state.data)
     return (
 
         <div className="container">
-          <div className="row">
-            <AddNode columns={ this.state.data.columns } addNode={ this.addNode.bind(this) } />
-            <div id="tree-container"></div>
-            { /*<div className='col-md-3 endpoint'>
-              API routes to manipulate your table<br />
-              GET your table:<br />
-              sift.ch/sand/{ this.state.username }/{ this.state.tablename }<br />
-              POST to your table:<br />
-              sift.ch/sand/{ this.state.username }/{ this.state.tablename }<br />
-              PUT a value with a row ID:<br />
-              sift.ch/sand/{ this.state.username }/{ this.state.tablename }/rowID<br />
-              DELETE a value with a row ID:<br />
-              sift.ch/sand/{ this.state.username }/{ this.state.tablename }/rowID<br />
-            </div> */}
-          </div>
+          <AddNode columns={ this.state.data.columns } addNode={ this.addNode.bind(this) } />
+          <Tree data={ this.state.data } removeNode={ this.removeNode.bind(this) } />
         </div>
     )
   }

@@ -36,12 +36,14 @@ let helpers = {
 		_.each(node, function(value, key) {
 			if (key === 'id') {
 				rowObject.id = value;
+				rowObject.name = value.slice(0,4);
 			} else {
 				var object = {};
-				object[key] = value;
+				object.name = value;
 				rowObject.children.push(object);
 			}
 		});
+		console.log('formatted row: ', rowObject)
 		return rowObject;
 	}
 

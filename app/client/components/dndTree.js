@@ -42,6 +42,7 @@ var showGraph = function(treeData, remove){
     // A recursive helper function for performing some setup by walking through all nodes
 
     function visit(parent, visitFn, childrenFn) {
+        console.log('parent: ', parent)
         if (!parent) return;
 
         visitFn(parent);
