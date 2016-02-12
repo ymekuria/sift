@@ -21,6 +21,8 @@ import IconButton from 'material-ui/lib/icon-button';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import swal from 'sweetalert';
 
+require("../../node_modules/sweetalert/themes/google/google.css");
+
 class Homepage extends Component {
   constructor() {
     super();
