@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash';
 import {getTables} from '../utils/utils.js'
-import {deleteTable} from '../utils/utils.js'
+import { deleteTable } from '../utils/utils.js'
 import h from '../config/helpers'
 
 // Material UI components
@@ -100,37 +100,45 @@ class Homepage extends Component {
       showCancelButton: true,  
       confirmButtonColor: "#DD6B55 ",   
       confirmButtonText: "Yes, delete it!",   
-      closeOnConfirm: false };
+      closeOnConfirm: false 
+    };
 
-    var alert = function(){  
-      deleteTable(tableID, function(){
-        console.log('what is going on in this ')
-        // makes a ajax call to update the state with the list of tables
-        getTables(function(res){ 
+    var alert = function() {  
+      deleteTable(tableID, function() {
+        var tables = {
+          active: [],
+          inactive: []
+        };
 
-          if(res[0] === undefined) {
-            console.log('res in removetable', res)
-            that.setState({tablesExist: false})
+        // makes an ajax call to delete the clicked table from the db    
+        getTables(function(res) {
+
+          if(res.length === 0) {
+            that.setState({ tablesExist: false })
           } else {
-            that.setState({userTables: res,
-              tablesExist: true
+            _.each(res, function(table) {
+              if (table.active) {
+                tables.active.push(table);
+              } else {
+                tables.inactive.push(table);
+              }
             })
           }
+          that.setState({
+            userTables: tables,
+            tablesExist: true,
+            userName: res[0].tablename.split("_")[0].toUpperCase()
+          })
         });
       });
+
       swal("Deleted!", 
       "Your imaginary file has been deleted.", 
       "success");
     }
-    
-   
     // makes an ajax call to delete the clicked table from the db
     // if (confirm("Are you sure want to delete all records of this table?") ) {
-
-     swal(alertConfig,alert) 
-      
-     // } 
- 
+     swal(alertConfig, alert)
   }  
 //<DashBanner userName={ this.state.displayName }/>
   
