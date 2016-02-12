@@ -19,6 +19,7 @@ import Delete from 'material-ui/lib/svg-icons/action/highlight-off'
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
 import MenuItem from 'material-ui/lib/menus/menu-item';
+import swal from 'sweetalert';
 
 class Homepage extends Component {
   constructor() {
@@ -92,10 +93,17 @@ class Homepage extends Component {
   }
 
   removeTable (tableID) {
-
     var that = this;
-    // makes an ajax call to delete the clicked table from the db
-    if (confirm("Are you sure want to delete all records of this table?") ) {
+    var alertConfig = {
+      title: "Are you sure?",
+      text: "All records of this table will be deleted?",
+      type: "warning",   
+      showCancelButton: true,  
+      confirmButtonColor: "#DD6B55 ",   
+      confirmButtonText: "Yes, delete it!",   
+      closeOnConfirm: false };
+
+    var alert = function(){  
       deleteTable(tableID, function(){
         console.log('what is going on in this ')
         // makes a ajax call to update the state with the list of tables
@@ -111,7 +119,18 @@ class Homepage extends Component {
           }
         });
       });
-     } 
+      swal("Deleted!", 
+      "Your imaginary file has been deleted.", 
+      "success");
+    }
+    
+   
+    // makes an ajax call to delete the clicked table from the db
+    // if (confirm("Are you sure want to delete all records of this table?") ) {
+
+     swal(alertConfig,alert) 
+      
+     // } 
  
   }  
 //<DashBanner userName={ this.state.displayName }/>
