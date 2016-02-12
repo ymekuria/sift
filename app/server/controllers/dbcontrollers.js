@@ -16,7 +16,7 @@ if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
 
 r.connect(rConnectConfig, function(err, conn) {
 
-  if (err) throw err;
+  if (err) { console.log(err); }
   connection = conn;
   r.dbCreate('apiTables').run(conn, function(err, conn) {
     console.log('Tables DB created in RethinkDB')
@@ -119,7 +119,6 @@ dbMethods = {
     var tablename = req.params.username + '_' + req.params.tablename;
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { console.log(err); }
-      dbMethods.checkandUpdateTimestamp(tablename);
       cursor.toArray(function(err, results) {
         res.status(200).send(results);
       });
@@ -146,7 +145,7 @@ dbMethods = {
           if (passes) {
 
             r.table(tablename).insert(req.body).run(connection, function(err, response) {
-              if (err) { throw err; }
+              if (err) { console.log(err); }
               res.sendStatus(200);
             });
 
@@ -158,7 +157,7 @@ dbMethods = {
 
       } else {
         r.table(tablename).insert(req.body).run(connection, function(err, response) {
-          if (err) { throw err; }
+          if (err) { console.log(err); }
           res.sendStatus(200);
         });
       }
@@ -178,7 +177,7 @@ dbMethods = {
         if (rightNow - lastUpdate > 86400000) {
           var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
           client.query(queryString, [tablename], function(err, results) {
-            if (err) {throw new Erro(err); }
+            if (err) { console.log(err); }
           });
         }
       })
@@ -187,7 +186,7 @@ dbMethods = {
       if (rightNow - lastUpdate > 86400000) {
         var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
         client.query(queryString, [tablename], function(err, results) {
-          if (err) {throw new Erro(err); }
+          if (err) { console.log(err); }
         });
       }
     }
