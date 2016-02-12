@@ -62,7 +62,7 @@ const Dropdown = ({ menuOptions, currentSelections, loading }, { store }) => {
                     category: currentCategory,
                     addition: c
                   })}>
-                    <ContentAdd color="green"/>
+                    <ContentAdd color="#00BCD4"/>
                   </IconButton>
                   <div className='addLabel'>{c}</div>
                 </div>

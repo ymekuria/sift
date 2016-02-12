@@ -42,26 +42,28 @@ class Signin extends Component {
   }
 	
   render() {
-            const style = {
-    height: 400,
-    width: 300,
-    margin: 20,
-    textAlign: 'center',
-    display: 'inline-block'
- };
-     const buttonStyle = {
+    const style = {
+      height: "400px",
+      width: "300px",
+      position: "relative",
+      left: "108px",
+      margin: '0 auto',   
+      textAlign: 'center',
+      display: 'inline-block'
+    };
+    const buttonStyle = {
       'display':'block',
       'width':'60%',
       'position':'relative',
       'left': '20%',
       'color': 'blue',
       'marginTop': '15'
-
     };
+
     return (
       <div className='signupBackground'>
         <div className='col-md-4 col-md-offset-4 signinPaper'>
-          <Paper style={style}  zDepth={5} rounded={true}>
+          <Paper className='sigininContainer' style={style}  zDepth={5} rounded={true}>
             <h2>SIGNIN</h2>
           <div className ="form-group col-md-10 col-md-offset-1">
             <form  action='/auth/github' method='get'>
