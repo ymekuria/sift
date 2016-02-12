@@ -27,19 +27,19 @@ const infoListItem = {
 
 const ApiInfo = () => {
   return (
-  <div className='infoContainer'> 
+  <div className='infoContainer'>
     <div className='infoHeader'>
       <RaisedButton style={apiInfoHeader}>
       API
-      </RaisedButton>  
+      </RaisedButton>
 
       <RaisedButton style={apiInfoHeader}>
       GETTING STARTED
-      </RaisedButton> 
+      </RaisedButton>
 
       <RaisedButton style={apiInfoHeader}>
       GUIDE
-      </RaisedButton> 
+      </RaisedButton>
     </div>
 
     <Paper style={infoDisplay}>
@@ -47,9 +47,9 @@ const ApiInfo = () => {
         <div className='itemContent'>
         <h2>Understanding the API</h2>
         <br/>
-        Once you have created tables, you can begin 
-        interacting with your data with standard CRUD operations.  
-        Below, you will find each of the different operations, the 
+        Once you have created tables, you can begin
+        interacting with your data with standard CRUD operations.
+        Below, you will find each of the different operations, the
         API endpoint pattern to use, and the data that you can expect to
         recieve.
         </div>
@@ -60,7 +60,7 @@ const ApiInfo = () => {
           <h4>/sand/:tablename/:username</h4>
           This endpoint will get you all of the entries from a table that you have created.
           <br/>
-          You can expect to recieve a JSON array - each array value being a single table entry. 
+          You can expect to recieve a JSON array - each array value being a single table entry.
         </div>
       </div>
       <div className='infoListItem' style={infoListItem}>
@@ -69,7 +69,7 @@ const ApiInfo = () => {
           <h4>/sand/:tablename/:username</h4>
           This endpoint will add an entry to an existing table.
           <br/>
-          The request body should be a JSON object that represents the new entry. 
+          The request body should be a JSON object that represents the new entry.
           <br/>
           columnName: value
         </div>
@@ -80,7 +80,7 @@ const ApiInfo = () => {
         <h4>/sand/:tablename/:rowId</h4>
         This endpoint will overwrite an entry to an existing table with a provided value.
         <br/>
-        The request body should be a JSON object that includes the entry to be overwritten, and the new value. 
+        The request body should be a JSON object that includes the entry to be overwritten, and the new value.
         <br/>
         columnName: string, newValue: value
         </div>
@@ -89,7 +89,7 @@ const ApiInfo = () => {
         <div className='itemContent'>
         <h2>DELETE</h2>
         <h4>/sand/:tablename/:rowId</h4>
-        This endpoint will delete an entry in an existing table. 
+        This endpoint will delete an entry in an existing table.
         </div>
       </div>
     </Paper>
@@ -98,5 +98,3 @@ const ApiInfo = () => {
   )
 }
 export default ApiInfo
-
-

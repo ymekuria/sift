@@ -109,7 +109,6 @@ dbMethods = {
         _.each(tableNames.rows, function(row) {
           row.columns = row.columns.split(',')
         })
-        console.log(tableNames.rows);
         res.status(200).json(tableNames.rows);
     });
   },

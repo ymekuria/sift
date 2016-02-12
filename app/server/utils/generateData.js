@@ -3,21 +3,21 @@ var faker = require('faker');
 var _ = require('lodash');
 var dataIndex = require('./dataIndex/write.js');
 
-// req.body will now resemble : 
+// req.body will now resemble :
 //
 // {
-//   name: { 
-//     firstName: true, 
-//     lastName: true}, 
+//   name: {
+//     firstName: true,
+//     lastName: true},
 //   company: {
 //     catchPhrase: true}
 // }
 
-//use req.body as a reference to the index file to 
-//pull out the relevant faker queries ---> insert into 
-//the generate data algorithm below. 
+//use req.body as a reference to the index file to
+//pull out the relevant faker queries ---> insert into
+//the generate data algorithm below.
 
-module.exports = { 
+module.exports = {
 
   parseColumnNames: function(obj) {
     console.log('this is the obj', obj)
@@ -31,14 +31,14 @@ module.exports = {
   },
 
   // this method generates an array of data with the specified fields
-  //use req.body as a reference to the index file to 
-  //pull out the relevant faker queries ---> insert into 
-  //the generate data algorithm below. 
+  //use req.body as a reference to the index file to
+  //pull out the relevant faker queries ---> insert into
+  //the generate data algorithm below.
 	generateData: function(fields, columns, numberOfRows) {
     // var columns = module.exports.parseColumnNames(fields);
-		var data = [];  	
+		var data = [];
 
-    for (var i = 0; i < numberOfRows; i++) { 
+    for (var i = 0; i < numberOfRows; i++) {
       var row = {};
       _.each(fields, function(field, fakerCategory) {
         if (fakerCategory !== 'tableName') {
@@ -47,17 +47,16 @@ module.exports = {
             // generating the fake data from faker and pushing the row into an array
             var ref = dataIndex[fakerCategory][fakerField];
             var value = eval("faker." + ref + "()");
-            console.log('value: ', typeof value);
             if (value.indexOf('\'') > -1) {
               value = eval("faker." + ref + "()");
             } else {
               row[key] = value;
             }
           });
-        } 
+        }
       });
-      data.push(row);			
-		}	
+      data.push(row);
+		}
 		return data;
   },
 
@@ -72,4 +71,3 @@ module.exports = {
     return valueStr;
 	}
 };
-

@@ -14,7 +14,6 @@ var Select = require('react-select');
 import {getTables} from '../utils/utils.js'
 
 
-
 class DataVis extends Component {
   constructor() {
     super()
@@ -49,7 +48,6 @@ class DataVis extends Component {
         data: data,
         updated: true
       });
-    
     }.bind(this));
   }
 
@@ -67,10 +65,6 @@ class DataVis extends Component {
     }
     socket.emit('remove', node);
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   return !this.state.data.children || nextState.data.children.length <= this.state.data.children.length 
-  // }
 
   componentDidMount() {
 
@@ -100,9 +94,11 @@ class DataVis extends Component {
           allUserTables: filteredTableNames
         })
     });
+    
   }
 
   handleData(data) {
+
     var update;
     var tabledata = this.state.data;
     // inserting new data
@@ -115,7 +111,7 @@ class DataVis extends Component {
         return row.id !== data.old_val.id
       })
       tabledata.children = updatedChildren;
-      
+
     // updating existing nodes
     } else {
       tabledata.children.each(function(row) {

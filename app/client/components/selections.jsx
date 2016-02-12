@@ -19,14 +19,10 @@ const progStyle = {
   marginLeft: "70px"
 }
 
-
-
-
 const Selections = ({ selected, loading }, { store }) => {
 
   const hasLoaded = false;
   const load = (loading) => {
-    console.log(loading)
     if (loading) {
       return (
         <CircularProgress style={progStyle} size={.5}/>
@@ -37,7 +33,7 @@ const Selections = ({ selected, loading }, { store }) => {
           <ul className='list'>
             {selected.map((item, i) => {
               return (
-                <li className='listItem' 
+                <li className='listItem'
                   onClick={() => {
                     store.dispatch({
                       type: 'remove_from_list',
@@ -48,7 +44,7 @@ const Selections = ({ selected, loading }, { store }) => {
                     {item}
                   </div>
                 </li>
-              ) 
+              )
             })}
           </ul>
         </div>
@@ -66,7 +62,7 @@ const Selections = ({ selected, loading }, { store }) => {
         onClick={() => {
           store.dispatch({
           type: 'submit_table'
-        })}} 
+        })}}
         tooltip='save'>
       </RaisedButton>
     </div>
@@ -80,5 +76,3 @@ Selections.contextTypes = {
 }
 
 export default Selections
-
-

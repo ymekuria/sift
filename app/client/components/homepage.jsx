@@ -41,7 +41,7 @@ class Homepage extends Component {
     this.removeTable = this.removeTable.bind(this);
   }
   componentWillMount() {
-   // find a better way to bind this//use promises instead 
+   // find a better way to bind this//use promises instead
     var that = this;
     var tables = this.state.userTables;
     getTables(function(res) { // res in an array of table objects
@@ -76,7 +76,7 @@ class Homepage extends Component {
       })
     }
   }
-  
+
   navigation(path) {
     store.dispatch(routeActions.push(path));
   }
@@ -92,21 +92,21 @@ class Homepage extends Component {
     var alertConfig = {
       title: "Are you sure?",
       text: "All records of this table will be deleted?",
-      type: "warning",   
-      showCancelButton: true,  
-      confirmButtonColor: "#DD6B55 ",   
-      confirmButtonText: "Yes, delete it!",   
-      closeOnConfirm: false 
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55 ",
+      confirmButtonText: "Yes, delete it!",
+      closeOnConfirm: false
     };
 
-    var alert = function() {  
+    var alert = function() {
       deleteTable(tableID, function() {
         var tables = {
           active: [],
           inactive: []
         };
 
-        // makes an ajax call to delete the clicked table from the db    
+        // makes an ajax call to delete the clicked table from the db
         getTables(function(res) {
 
           if(res.length === 0) {
@@ -127,8 +127,8 @@ class Homepage extends Component {
           })
         });
         
-        swal("Deleted!", 
-        "Your imaginary file has been deleted.", 
+        swal("Deleted!",
+        "Your table has been deleted.",
         "success");
       });
 
@@ -136,18 +136,18 @@ class Homepage extends Component {
     // makes an ajax call to delete the clicked table from the db
     // if (confirm("Are you sure want to delete all records of this table?") ) {
     swal(alertConfig, alert)
-  } 
+  }
 //<DashBanner userName={ this.state.displayName }/>
-  
+
   render() {
     if (this.state.tablesExist) {
     return(
 
       <div className='container'>
 
-        <div className='row dashTopBorder'> 
-          <h4 className="col-md-2  ">CURRENT TABLES</h4> 
-        </div>   
+        <div className='row dashTopBorder'>
+          <h4 className="col-md-2  ">CURRENT TABLES</h4>
+        </div>
         <div className ='row'>
           <div className='col-md-12'>
 
@@ -156,18 +156,18 @@ class Homepage extends Component {
 
           </div>
         </div>
-        <div className='row'> 
+        <div className='row'>
           <h4 className='col-md-3'>ARCHIVED TABLES</h4>
-        </div>   
+        </div>
         <div className ='row'>
           <div className='col-md-12'>
 
-          { _.map(this.state.userTables.inactive, this.renderDashTable) } 
-            
+          { _.map(this.state.userTables.inactive, this.renderDashTable) }
+
           </div>
         </div>
-        
-      </div>   
+
+      </div>
     )
 
   } else {
@@ -175,14 +175,14 @@ class Homepage extends Component {
   return(
 
     <div className='container'>
-      
-      <div className='row'> 
-        <h4 className="col-md-2  ">CURRENT TABLES</h4> 
+
+      <div className='row'>
+        <h4 className="col-md-2  ">CURRENT TABLES</h4>
         <div className='col-md-12'>
           <AddTables className={''}nav={this.navigation}/>
-        </div>    
+        </div>
       </div>
-    </div>   
+    </div>
     )
   }
  }
@@ -203,13 +203,13 @@ class DashTable extends Component {
     };
 
     const iconStyle = {
-      
+
       display: 'inline-block',
       float: 'right',
       marginRight: '18px',
       height: '12px',
       width: '12px'
-    };  
+    };
 
     const svgStyle = {
       fontSize: '10px',
@@ -218,31 +218,31 @@ class DashTable extends Component {
     }
    const userName = this.props.table.tablename.split("_")[0];
    const tableName = this.props.table.tablename.split("_")[1]
-    return ( 
+    return (
         <Paper style={style}  zDepth={2} rounded={false}>
           <div className='dashCardTop'>
             <IconButton onClick={()=>this.props.removeTable(this.props.table.id)}  style={iconStyle}>
               <Delete style={svgStyle}/>
             </IconButton>
-          
+
             <h5 className='dashCardTableName'>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
             </div>
-           <div className='endPointView'> 
+           <div className='endPointView'>
              <div className='dashEndPointLabel'>Endpoint</div>
              <div className='dashEndPoint'>sand/{userName}/{tableName}/</div>
            </div>
-          <RaisedButton 
-          label="View Table" secondary={true} 
+          <RaisedButton
+          label="View Table" secondary={true}
           onClick={() => {
             store.dispatch({type: 'adding_vis_table',
                               newTable: this.props.table.tablename.split("_")[1] })
-            this.props.nav('/vis')}} 
+            this.props.nav('/vis')}}
           style={{margin: 5,
             position: 'relative',
            bottom: -90}} />
 
        </Paper>
-    ) 
+    )
   }
 }
 
@@ -258,7 +258,7 @@ class DashButtons extends Component {
       </div>
     )
   }
-}  
+}
 
 class DashBanner extends Component {
 
@@ -275,10 +275,10 @@ class DashBanner extends Component {
       <div className='row'>
         <div className='col-md-6 col-md-offset-3'></div>
       </div>
-    </div> 
+    </div>
     )
   }
-} 
+}
 
 class DeleteOption extends Component {
 
@@ -303,33 +303,32 @@ class AddTables extends Component {
     const iconStyle = {
     marginLeft: 160,
      display: 'inline-block',
-     
-    
-  };  
+
+
+  };
     const svgStyle = {
       fontSize: '10px',
        height: '10px',
         width: '1px'
     }
-    return ( 
-      
+    return (
+
         <div className={this.props.class +' addTable'}  style={style}  zDepth={2} rounded={false}>
-         
-        
-          
+
+
+
           <RaisedButton secondary={true}
-          label="Create Table" 
+          label="Create Table"
           onClick={() => {
-          
-            this.props.nav('/build')}} 
+
+            this.props.nav('/build')}}
           style={{margin: 5,
             position: 'relative',
            bottom: -234 }} />
 
        </div>
-    ) 
+    )
   }
 }
 
 export default Homepage
-

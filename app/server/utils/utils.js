@@ -6,11 +6,11 @@ var dataIndex = require('./dataIndex/write.js');
 module.exports = {
 
 	isAuth: function(req, res, next) {
-		if (req.isAuthenticated()) { 
+		if (req.isAuthenticated()) {
 			console.log('Authenticated!')
-			return next(); 
+			return next();
 		}
-		console.log('NOT Authenticated')
+			console.log('NOT Authenticated')
 		res.redirect('/signin');
 	},
 
@@ -47,15 +47,15 @@ module.exports = {
   },
 
   // this method generates an array of data with the specified fields
-  //use req.body as a reference to the index file to 
-  //pull out the relevant faker queries ---> insert into 
-  //the generate data algorithm below. 
+  //use req.body as a reference to the index file to
+  //pull out the relevant faker queries ---> insert into
+  //the generate data algorithm below.
 	generateData: function(fields, columns, numberOfRows, cb) {
     // var columns = module.exports.parseColumnNames(fields);
 		var data = [];
     console.log('Fields: ', fields)
 
-    for (var i = 0; i < numberOfRows; i++) { 
+    for (var i = 0; i < numberOfRows; i++) {
       var row = {};
       _.each(fields, function(field, fakerCategory) {
         if (fakerCategory !== 'tablename') {
@@ -72,9 +72,9 @@ module.exports = {
               row[key] = value;
             }
           });
-        } 
+        }
       });
-      data.push(row);			
+      data.push(row);
 		}
 		cb(data);
   },
@@ -87,6 +87,3 @@ module.exports = {
     return valueStr;
 	}
 };
-
-
-

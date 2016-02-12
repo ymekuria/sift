@@ -11,7 +11,6 @@ import { Provider } from 'react-redux'
 import store from './store.jsx'
 
 require('./css/style.css')
-require('./css/select.css')
 
 //this is for use with the redux dev tools
 // reduxRouterMiddleware.listenForReplays(store)

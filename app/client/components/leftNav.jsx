@@ -71,4 +71,3 @@ LeftNavbar.contextTypes = {
 }
 
 export default LeftNavbar
-

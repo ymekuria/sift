@@ -6,7 +6,7 @@ class Tree extends Component {
 
   render() {
     $('#tree-container').empty();
-    showGraph(this.props.data, this.props.removeNode); 
+    showGraph(this.props.data, this.props.removeNode);
 		return <div id='tree-container'></div>
 	}
 }

@@ -82,8 +82,6 @@ userMethods = {
 
             client.query('INSERT INTO Users (username, displayName, password, email, salt) VALUES ($1, $2, $3, $4, $5)', [user.username, user.displayName, user.password, user.email, user.salt], function(err, response) {
               if (err) { console.log(err); }
-              // var token = jwt.encode(user.username, 'greenVeranda');
-              // res.json = { token: token };
               next();
             })
           })
@@ -97,7 +95,7 @@ userMethods = {
   },
 
   createGitHubUser: function (profile, token, callback) {
-  
+
     var user = {
       username: profile._json.email.replace(/[^a-zA-Z0-9 ]/g, ""),
       displayName: profile._json.name,
@@ -107,8 +105,6 @@ userMethods = {
 
     client.query('INSERT INTO Users (username, displayName, email, githubtoken) VALUES ($1, $2, $3, $4)', [user.username, user.displayName, user.email, user.githubtoken], function(err, res) {
       if (err) { next(err); }
-      // var token = jwt.encode(user.username, 'greenVeranda');
-      // user.token = token;
       callback(null, user);
     })
   },

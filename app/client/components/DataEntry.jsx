@@ -17,10 +17,8 @@ require('../../node_modules/react-select/dist/react-select.css')
 class DataEntry extends Component {
 
   componentDidMount() {
-    //subscribe to the store
     const { store } = this.context;
     this.unsubscribe = store.subscribe(() => {
-      console.log('updatin disptachid');
       this.forceUpdate()
       }
     );

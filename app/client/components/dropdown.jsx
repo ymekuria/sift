@@ -12,18 +12,15 @@ import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import { Menu, MenuItem} from 'material-ui';
 import Paper from 'material-ui/lib/paper'
 
-
-
 const testStyle = {
   width: "40%",
   height: "400px",
 
 }
 
-
 const Dropdown = ({ menuOptions, currentSelections, loading }, { store }) => {
 
-  const { all } = menuOptions;                
+  const { all } = menuOptions;
   const { byItem } = menuOptions;
   const { currentCategory } = menuOptions;
   const { byCategory } = menuOptions;
@@ -71,7 +68,7 @@ const Dropdown = ({ menuOptions, currentSelections, loading }, { store }) => {
         </div>
         <Paper className='selectionList'>
           <div>
-            <Selections loading={loading} selected={currentSelections}/>  
+            <Selections loading={loading} selected={currentSelections}/>
           </div>
         </Paper>
 
