@@ -68,7 +68,7 @@ const Selections = ({ selected, loading }, { store }) => {
         tooltip='save'>
       </RaisedButton>
     </div>
-    {load(loading)}
+      {load(loading)}
     </div>
   )
 }
