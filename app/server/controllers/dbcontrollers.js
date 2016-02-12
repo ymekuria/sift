@@ -134,7 +134,7 @@ dbMethods = {
 
     var queryString = 'SELECT custom, datatypes, columns, last_used FROM tables WHERE tablename = ($1)';
     client.query(queryString, [tablename], function(err, results) {
-      console.log('results: ', results)
+
       var savedTimestamp = results.rows[0].last_used;
       dbMethods.checkandUpdateTimestamp(tablename, savedTimestamp);
 
