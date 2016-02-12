@@ -162,24 +162,11 @@ class Homepage extends Component {
 
           </div>
         </div>
-<<<<<<< b2e0e60294f5e0bf92a712c69fb7f881ef72184c
-        <div className='row'>
-          <h4 className='col-md-3'>ARCHIVED TABLES</h4>
-        </div>
-        <div className ='row'>
-          <div className='col-md-12'>
 
-          { _.map(this.state.userTables.inactive, this.renderDashTable) }
-
-          </div>
-        </div>
-
-      </div>
-=======
 
         
       </div>   
->>>>>>>  fixed delete table bug
+
     )
 
   } else {
@@ -239,13 +226,9 @@ class DashTable extends Component {
 
             <h5 className='dashCardTableName'>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
             </div>
-<<<<<<< b2e0e60294f5e0bf92a712c69fb7f881ef72184c
-           <div className='endPointView'>
-             <div className='dashEndPointLabel'>Endpoint</div>
-=======
+
            <div className='endPointView'> 
              <div className='dashEndPointLabel'>Endpoint</div><br/>
->>>>>>>  fixed delete table bug
              <div className='dashEndPoint'>sand/{userName}/{tableName}/</div>
            </div>
           <RaisedButton
@@ -328,21 +311,13 @@ class AddTables extends Component {
        height: '10px',
         width: '1px'
     }
-<<<<<<< 19a288435698e3d97b3451050bfbfa6c146d94b0
-    return (
 
-        <div className={this.props.class +' addTable'}  style={style}  zDepth={2} rounded={false}>
-
-
-
-=======
     return ( 
       
         <div className={'addTableCardEmpty '+this.props.class }  style={style}  zDepth={2} rounded={false}>
          
         
-          
->>>>>>> trouble shooting delete table bug
+
           <RaisedButton secondary={true}
           label="Create Table"
           onClick={() => {
