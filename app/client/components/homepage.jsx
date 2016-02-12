@@ -118,8 +118,7 @@ class Homepage extends Component {
         </div>   
         <div className ='row'>
           <div className='col-md-12'>
-           
-            <AddTables className='addTableCard'/>
+            <AddTables class={"addTableCard"} nav={this.navigation}/> 
           { _.map(this.state.userTables, this.renderDashTable) } 
             
           </div>
@@ -137,7 +136,7 @@ class Homepage extends Component {
         <div className='row'> 
           <h4 className="col-md-2  ">CURRENT TABLES</h4> 
           <div className='col-md-12'>
-            <AddTables nav={this.navigation}/>
+            <AddTables className={''}nav={this.navigation}/>
           </div>    
         </div>
       </div>   
@@ -253,7 +252,7 @@ class AddTables extends Component {
         width: '1px'
     }
     return ( 
-        <Paper style={style}  zDepth={5} rounded={false}>
+        <Paper className={this.props.class}  style={style}  zDepth={5} rounded={false}>
          
           <h5>WANT TO ADD A TABLE?</h5>
           

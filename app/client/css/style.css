@@ -265,8 +265,8 @@ h3 {
      display: none;
 }
 .addTableCard {
-  position: absolute;
-  top: -100px;
+  position: relative;
+  top: -48px;
 }
  #tree-container {
    width: 500px;
