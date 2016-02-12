@@ -172,14 +172,14 @@ h3 {
   margin-left: 40px;
 }
 .endpoint {
-  /*background: linear-gradient(to right, #2090d2 0%, #4db5f2 100%);*/
   /*padding: 1px;*/
   /*width: 600px;*/
   padding-left: 15px;
   background: linear-gradient(to right, #2090d2 0%, #4db5f2 100%);
   color: #FFF;
   font-family: "Gotham SSm A","Gotham SSm B",proxima-nova,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  height: 100px;
+  height: 50px;
+  font-size: 30px;
   /*margin: 5px;*/
 }
 

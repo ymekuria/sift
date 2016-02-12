@@ -20,8 +20,11 @@ var showGraph = function(treeData, remove){
     var i = 0;
     var duration = 750;
     var root;
-    var viewerWidth = $(document).width() * 5 / 12;
-    // var viewerWidth = 600;
+    // size of the diagram
+    var viewerWidth = $(document).width() * 5 / 12; 
+    // var viewerHeight = 1500;
+    // var viewerWidth = $('#tree-container').width() ;
+    // var viewerWidth = $(document).width() ;
 
     var viewerHeight = $(document).height();
 
@@ -39,6 +42,7 @@ var showGraph = function(treeData, remove){
     // A recursive helper function for performing some setup by walking through all nodes
 
     function visit(parent, visitFn, childrenFn) {
+        console.log('parent: ', parent)
         if (!parent) return;
 
         visitFn(parent);
@@ -286,8 +290,8 @@ var showGraph = function(treeData, remove){
         var scale = zoomListener.scale();
         // var x = -source.y0;
         // var y = -source.x0;
-        var x = (x * scale) + (viewerWidth / 2);
-        var y = (y * scale) + (viewerHeight / 2);
+         var x = x * scale + viewerWidth / 2;
+         var y = y * scale + viewerHeight / 2;
         d3.select('g').transition()
             .duration(duration)
             .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
@@ -314,7 +318,7 @@ var showGraph = function(treeData, remove){
         if (d3.event.defaultPrevented) return; // click suppressed
         d = toggleChildren(d);
         update(d);
-        // centerNode(d);
+        centerNode(d);
     }
 
     function update(source) {
@@ -485,7 +489,7 @@ var showGraph = function(treeData, remove){
 
     // Layout the tree initially and center on the root node.
     update(root);
-    // centerNode(root);
+    centerNode(root);
  };
 
  export default showGraph;
