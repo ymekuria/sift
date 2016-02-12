@@ -1,7 +1,6 @@
 var faker = require('faker');
 
 var _ = require('lodash');
-// var underscore = require('underscore')
 var dataIndex = require('./dataIndex/write.js');
 
 // req.body will now resemble : 

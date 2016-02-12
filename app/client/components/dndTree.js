@@ -144,7 +144,7 @@ var showGraph = function(treeData, remove){
     var duration = 750;
     var root;
     // size of the diagram
-    var viewerWidth = 600;
+    var viewerWidth = 800;
     // var viewerHeight = 1500;
     // var viewerWidth = $('#tree-container').width() ;
     // var viewerWidth = $(document).width() ;

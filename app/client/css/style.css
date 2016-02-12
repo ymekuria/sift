@@ -172,12 +172,13 @@ h3 {
 /*======HomePage View========*/
 
 .dashBanner {
-  height: 250px;
+  height: 5px;
   /*background: linear-gradient(169deg,#0c63aa,#7ac4fa);*/
   background: linear-gradient(to right, #2090d2 0%, #4db5f2 100%);
   color: #FFF;
   margin-left: -50px;
   margin-right: -300px;
+  margin-top: 0px;
   font-family: "Gotham SSm A","Gotham SSm B",proxima-nova,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
 }
 .dashOneliner {
@@ -266,9 +267,22 @@ h3 {
 }
 .addTableCard {
   position: relative;
-  top: -48px;
+  top: -75px;
 }
  #tree-container {
    width: 500px;
    height: 900px;
  }
+ .addTable:hover {
+   background-color: #C5CAD9;   
+ }
+
+.dashEndPoint:hover {
+  color:#4db5f2;
+ }
+.dashTopBorder {
+ /*border-top: 5px solid #4db5f2 ;*/
+  /*background: linear-gradient(169deg,#0c63aa,#7ac4fa);*/
+  /*background: linear-gradient(to right, #2090d2 0%, #4db5f2 100%);*/
+}
+
