@@ -20,8 +20,8 @@ var showGraph = function(treeData, remove){
     var i = 0;
     var duration = 750;
     var root;
-    // var viewerWidth = $(document).width() * 5 / 12;
-    var viewerWidth = 600;
+    var viewerWidth = $(document).width() * 5 / 12;
+    // var viewerWidth = 600;
 
     var viewerHeight = $(document).height();
 
