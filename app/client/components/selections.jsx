@@ -1,13 +1,13 @@
 import React from 'react'
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-import Divider from 'material-ui/lib/divider';
-import IconButton from 'material-ui/lib/icon-button';
-import ContentAdd from 'material-ui/lib/svg-icons/content/save';
-import RaisedButton from 'material-ui/lib/raised-button';
-import TextField from 'material-ui/lib/text-field';
-import _ from 'lodash';
-import CircularProgress from 'material-ui/lib/circular-progress';
+import List from 'material-ui/lib/lists/list'
+import ListItem from 'material-ui/lib/lists/list-item'
+import Divider from 'material-ui/lib/divider'
+import IconButton from 'material-ui/lib/icon-button'
+import ContentAdd from 'material-ui/lib/svg-icons/content/save'
+import RaisedButton from 'material-ui/lib/raised-button'
+import TextField from 'material-ui/lib/text-field'
+import _ from 'lodash'
+import CircularProgress from 'material-ui/lib/circular-progress'
 
 const submitStyle = {
   position: "relative",
@@ -24,6 +24,7 @@ const progStyle = {
 
 const Selections = ({ selected, loading }, { store }) => {
 
+  const hasLoaded = false;
   const load = (loading) => {
     console.log(loading)
     if (loading) {

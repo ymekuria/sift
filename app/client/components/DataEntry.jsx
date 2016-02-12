@@ -11,7 +11,7 @@ import Paper from 'material-ui/lib/paper'
 import { Menu, MenuItem} from 'material-ui'
 
 //refactor into css file
-
+require('../../node_modules/react-select/dist/react-select.css')
 
 
 class DataEntry extends Component {

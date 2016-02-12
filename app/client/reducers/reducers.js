@@ -8,8 +8,10 @@ import Immutable from 'immutable'
 import { createTable } from '../utils/utils.js'
 import store from '../store.jsx'
 import swal from 'sweetalert'
+import { Notification } from 'react-notification'
 
-require("../../node_modules/sweetalert/dist/sweetalert.css") ;
+require("../../node_modules/sweetalert/dist/sweetalert.css");
+require("../../node_modules/sweetalert/themes/google/google.css");
 
 const initialState = {
   MenuOptions: {
@@ -101,7 +103,7 @@ const buildTable = (state = initialState, action) => {
     //======submitting table======//
     case 'submit_table':
       if (state.MenuOptions.tableName === '') {
-        swal('Please enter table name before submitting table!')
+        swal('Enter table name!')
         console.log('nope')
       } else {
         
@@ -109,7 +111,7 @@ const buildTable = (state = initialState, action) => {
         createTable(state.BuildOrder)
         .then(function (res) {
           store.dispatch({type:'toggle_loading'});
-          swal('table saved!')
+          swal('table saved!');
         })
 
         //modify state
