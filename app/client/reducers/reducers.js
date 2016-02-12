@@ -6,6 +6,12 @@ import by_item from '../data/menu_options_by_item.js'
 import db_query_template from '../data/db_query_template.js'
 import Immutable from 'immutable'
 import { createTable } from '../utils/utils.js'
+import store from '../store.jsx'
+import swal from 'sweetalert'
+import { Notification } from 'react-notification'
+
+require("../../node_modules/sweetalert/dist/sweetalert.css");
+require("../../node_modules/sweetalert/themes/google/google.css");
 
 const initialState = {
   MenuOptions: {
@@ -17,7 +23,8 @@ const initialState = {
   },
   CurrentSelections: [],
   BuildOrder: {},
-  dataVisTable: ''
+  dataVisTable: '',
+  loading: false
 }
 
 const buildTable = (state = initialState, action) => {
@@ -71,6 +78,9 @@ const buildTable = (state = initialState, action) => {
 
           obj['tablename'] = action.tablename
           return obj;
+        })
+        .updateIn(['MenuOptions', 'tableName'], tname => {
+          return action.tablename;
         }).toJS() 
         ) 
     case 'adding_vis_table':
@@ -81,13 +91,47 @@ const buildTable = (state = initialState, action) => {
 
         }).toJS()
       )
+    case 'toggle_loading':
+      return (
+        Immutable.fromJS(state)
+        .updateIn(['loading'], loading => {
+          console.log('in loading', loading)
+          return false;
+        }).toJS()
+      )
 
     //======submitting table======//
     case 'submit_table':
-      console.log('submitting table..?', state.BuildOrder)
-      createTable(state.BuildOrder);
-      //hook into backend!
-      //here we handle the post to our database
+      if (state.MenuOptions.tableName === '') {
+        swal('Enter table name!')
+        console.log('nope')
+      } else {
+        
+        //create our table
+        createTable(state.BuildOrder)
+        .then(function (res) {
+          store.dispatch({type:'toggle_loading'});
+          swal('table saved!');
+        })
+
+        //modify state
+        return (
+          Immutable.fromJS(state)
+          .updateIn(['MenuOptions', 'tableName'], tname => {
+            return ''
+          })
+          .updateIn(['BuildOrder'], order => {
+            return {}
+          })
+          .updateIn(['CurrentSelections'], sel => {
+            return [];
+          })
+          .updateIn(['loading'], load => {
+            return true;
+          }).toJS()
+        )
+      }
+
       return state;
 
     //=======default return state======//

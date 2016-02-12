@@ -11,7 +11,7 @@ import Paper from 'material-ui/lib/paper'
 import { Menu, MenuItem} from 'material-ui'
 
 //refactor into css file
-
+require('../../node_modules/react-select/dist/react-select.css')
 
 
 class DataEntry extends Component {
@@ -31,11 +31,11 @@ class DataEntry extends Component {
   }
 
   render () {
-    const { MenuOptions, CurrentSelections } = this.context.store.getState().buildTable;
+    const { MenuOptions, CurrentSelections, loading } = this.context.store.getState().buildTable;
     return (
       <div className='dataEntry'>
         <Paper className='select'>
-          <Dropdown currentSelections={CurrentSelections} menuOptions={MenuOptions} className='dropdown'/>
+          <Dropdown loading={loading} currentSelections={CurrentSelections} menuOptions={MenuOptions} className='dropdown'/>
         </Paper>
       </div>
     )
