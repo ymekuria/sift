@@ -187,9 +187,9 @@ class DashTable extends Component {
 
   render() {
     const style = {
-      height: 300,
-      width: 250,
-      margin: 20,
+      height: '21.3em',
+      width: '19em',
+      margin: '1em',
       textAlign: 'center',
       display: 'inline-block',
       marginBottom: '10px'
@@ -284,9 +284,9 @@ class DeleteOption extends Component {
 class AddTables extends Component {
   render() {
     const style = {
-    height: 300,
-    width: 250,
-    margin: 20,
+    height: '21.3em',
+    width: '19em',
+    margin: '1em',
     textAlign: 'center',
     display: 'inline-block',
      border: '2px dashed #C5CAD9',
