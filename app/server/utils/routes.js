@@ -57,10 +57,10 @@ module.exports = function(app, express, ensureAuth) {
   // app.put('/api/users/tables/:id'); // do we need to have users update their tables?
 
   // external routs for users to access their data
-  app.get('/sand/:tablename/:username', dbController.getOneTable);
-  app.post('/sand/:tablename/:username', dbController.postToTable);
-  app.put('/sand/:tablename/:username/:rowId', dbController.updateValue);
-  app.delete('/sand/:tablename/:username/:rowId', dbController.deleteRow);
+  app.get('/sand/:username/:tablename/', dbController.getOneTable);
+  app.post('/sand/:username/:tablename/', dbController.postToTable);
+  app.put('/sand/:username/:tablename/:rowId', dbController.updateValue);
+  app.delete('/sand/:username/:tablename/:rowId', dbController.deleteRow);
 
 
 }

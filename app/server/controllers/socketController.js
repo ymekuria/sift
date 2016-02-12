@@ -65,6 +65,7 @@ var socketMethods = {
     var emitmessage = 'update ' + tablename;
 
     var data = {
+      columns: [],
       name: tablename.split('_')[1],
       children: []
     };
@@ -72,6 +73,9 @@ var socketMethods = {
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { throw err; }
       cursor.toArray(function(err, results) {
+        _.each(results[0], function(value, key) {
+          data.columns.push(key);
+        })
         _.each(results, function(row) {
       		var rowObject = {
       			children: []
