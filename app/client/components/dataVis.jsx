@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+cd import React, { Component } from 'react'
 import h from '../config/helpers'
 import _ from 'underscore'
 import dndTree from './dndTree.js'
