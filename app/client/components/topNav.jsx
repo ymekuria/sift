@@ -12,22 +12,36 @@ import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
 import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
 
 let styles = {
-  backgroundColor: '#121F1F',
+  backgroundColor: '#333333',
   width: '105%',
   position: 'relative',
   bottom: '8px',
   right: '10px',
   marginLeft: '-5px'
 }
-let buttonStyle = {
-  color: 'white'
-}
 let title = {
   color: '#FDD53C',
-  position: "relative",
+  position: 'relative',
   marginTop: '5px',
-  right: "15px"
+  right: '15px'
+}
+let separator = {
+  backgroundColor: '#FDD53C',
+  position: 'relative',
+  right: '18px',
+  marginTop: '3px'
 
+}
+let user = {
+  color: '#FDD53C',
+  position: 'relative',
+  top: '1px'
+}
+let signout = {
+  color: '#FDD53C'
+}
+let signOutGroup = {
+  paddingRight: '10px'
 }
 
 class TopNav extends Component {
@@ -44,12 +58,16 @@ class TopNav extends Component {
   }
   
   render() {
-    let username = localStorage.getItem('sift-user');
+    let username = JSON.parse(localStorage.getItem('sift-user'));
     return (
       <Toolbar color="#FDD53C" style={styles}>
+        <ToolbarGroup>
           <ToolbarTitle style={title} text='SIFT'/>
-        <ToolbarGroup float="right">
-          <RaisedButton style={buttonStyle} onClick={ this.signout } label="Sign Out"  />
+        </ToolbarGroup>
+        <ToolbarGroup style={signOutGroup} float="right">
+          <ToolbarTitle style={user} text={ username.displayname}/>
+          <ToolbarSeparator className='separator' style={separator}/>
+          <ToolbarTitle style={signout} onClick={ this.signout } text={"Sign out"}/>
         </ToolbarGroup>
       </Toolbar>
     )

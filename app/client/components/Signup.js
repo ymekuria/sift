@@ -58,9 +58,11 @@ class Signup extends Component {
 	
   render() {
     const style = {
-      height: 450,
-      width: 300,
-      margin: 20,
+      height: "450px",
+      width: "300px",
+      position: "relative",
+      left: "108px",
+      margin: '0 auto',   
       textAlign: 'center',
       display: 'inline-block'
     };

@@ -15,7 +15,7 @@ import Colors from 'material-ui/lib/styles/colors'
 //todo for 
 let styles = {
   marginTop: '48px',
-  backgroundColor: '#293535',
+  backgroundColor: '#333333',
   paddingTop: '15px',
   textAlign: 'center',
   position: 'absolute',
