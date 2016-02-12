@@ -124,8 +124,8 @@ class Custom extends Component {
   					{_.map(columns, function (col, val) { 
               return (
                 <TableRow>
-                <TableRowColumn>{col}</TableRowColumn>
                 <TableRowColumn>{val}</TableRowColumn>
+                <TableRowColumn>{col}</TableRowColumn>
                 </TableRow>
               ) 
             })}
