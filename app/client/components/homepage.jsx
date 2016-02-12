@@ -118,7 +118,7 @@ class Homepage extends Component {
         </div>   
         <div className ='row'>
           <div className='col-md-12'>
-            <AddTables class={"addTableCard"}/> 
+            <AddTables class={"addTableCard"} nav={this.navigation}/> 
           { _.map(this.state.userTables, this.renderDashTable) } 
             
           </div>
