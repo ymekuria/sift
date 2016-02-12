@@ -119,6 +119,7 @@ dbMethods = {
     var tablename = req.params.username + '_' + req.params.tablename;
     r.table(tablename).run(connection, function(err, cursor) {
       if (err) { console.log(err); }
+      dbMethods.checkandUpdateTimestamp(tablename); 
       cursor.toArray(function(err, results) {
         res.status(200).send(results);
       });

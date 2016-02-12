@@ -126,16 +126,17 @@ class Homepage extends Component {
             userName: res[0].tablename.split("_")[0].toUpperCase()
           })
         });
+        
+        swal("Deleted!", 
+        "Your imaginary file has been deleted.", 
+        "success");
       });
 
-      swal("Deleted!", 
-      "Your imaginary file has been deleted.", 
-      "success");
     }
     // makes an ajax call to delete the clicked table from the db
     // if (confirm("Are you sure want to delete all records of this table?") ) {
-     swal(alertConfig, alert)
-  }  
+    swal(alertConfig, alert)
+  } 
 //<DashBanner userName={ this.state.displayName }/>
   
   render() {
