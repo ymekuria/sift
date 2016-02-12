@@ -1,9 +1,30 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
-import TextField from 'material-ui/lib/text-field';
-var Select = require('react-select');
-const STATES = require('../data/dataTypes.js').dataTypes;
+import TextField from 'material-ui/lib/text-field'
 import {createTable} from '../utils/utils.js'
+import { Paper } from 'material-ui'
+import _ from 'lodash'
+
+import Table from 'material-ui/lib/table/table';
+import TableHeaderColumn from 'material-ui/lib/table/table-header-column';
+import TableRow from 'material-ui/lib/table/table-row';
+import TableHeader from 'material-ui/lib/table/table-header';
+import TableRowColumn from 'material-ui/lib/table/table-row-column';
+import TableBody from 'material-ui/lib/table/table-body';
+
+const Select = require('react-select');
+const STATES = require('../data/dataTypes.js').dataTypes;
+
+
+const customContainer = {
+  width: '90vw',
+  height: '60vh',
+}
+
+
+
+
+
 
 class Custom extends Component {
 
@@ -66,42 +87,61 @@ class Custom extends Component {
 
 	render () {
 		var options = this.state.country;
-		var columns = [];
-		for (var key in this.state.allColumns ){
-			columns.push("Name : "+ key +" Type: "+ this.state.allColumns[key] );
-		}
+		var columns = this.state.allColumns;
+    console.log(columns)
+
 
 		return (
 
-			<div className="section">
-				<div>
-		      <TextField hintText='Name your table' floatingLabelText='Tablename' onChange={this.updateTable.bind(this)} value={this.state.tableValue}/>
-				</div>
-				<div>
-		      <TextField hintText='Name your column' floatingLabelText='Column name' onChange={this.updateColumn.bind(this)} value={this.state.columnValue}/>
+			<div className="section custom ">
+        <Paper style={customContainer}>
+        <div className='customChoose'>
+  				<div>
+  		      <TextField hintText='Name your table' floatingLabelText='Tablename' onChange={this.updateTable.bind(this)} value={this.state.tableValue}/>
+  				</div>
+  				<div>
+  		      <TextField hintText='Name your column' floatingLabelText='Column name' onChange={this.updateColumn.bind(this)} value={this.state.columnValue}/>
 
-					{/*//////CHOOSE A DATA TYPE////////*/}
-					<h3 className="section-heading">{this.props.label}</h3>
-					<Select ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.dataValue} onChange={this.updateValue.bind(this)} />
-					<br></br>
+  					{/*//////CHOOSE A DATA TYPE////////*/}
+  					<h3 className="section-heading">{this.props.label}</h3>
+  					<Select className='customDropdown' placeholder='Data Type' ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.dataValue} onChange={this.updateValue.bind(this)} />
+  					<br></br>
 
-		 			{/*///////ADD COLUMN BUTTON////////*/}
-					<div style={{ marginTop: 14 }}>
-					<button type="button" onClick={() => this.addColumn({
-						type: 'addColumn',
-					})} >Add Column</button>
-					</div>
+  		 			{/*///////ADD COLUMN BUTTON////////*/}
+  					<div>
+  					<button type="button" onClick={() => this.addColumn({
+  						type: 'addColumn',
+  					})} >Add Column</button>
+  					</div>
+          </div>
+        </div>
 
-					{/*////// LIST OF CREATED COLUMNS////////*/}
-					<h5>Table Name :</h5>
-					<div>{this.state.tableValue}</div>
-					<h5>column Created :</h5>
-					{columns.map(function(a){return <div>{a}</div>})}
+  			{/*////// LIST OF CREATED COLUMNS////////*/}
+        <div className='customSelections clearfix'>
+          <Table className='customTableDisplay'>
+          <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+            <TableRow>
+              <TableHeaderColumn>Name</TableHeaderColumn>
+              <TableHeaderColumn>Data Type</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}>
+  					{_.map(columns, function (col, val) { 
+              return (
+                <TableRow>
+                <TableRowColumn>{col}</TableRowColumn>
+                <TableRowColumn>{val}</TableRowColumn>
+                </TableRow>
+              ) 
+            })}
+          </TableBody>
+          </Table>
 					{/*//////CREATE TABLE BUTTON////////*/}
 					<div style={{ marginTop: 14 }}>
 						<button type="button" onClick={this.postTable.bind(this)}>Create table</button>
 					</div>
-				</div>
+        </div>
+        </Paper>
 			</div>
 		);
 	}
