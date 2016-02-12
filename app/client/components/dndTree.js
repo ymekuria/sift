@@ -121,29 +121,6 @@ var showGraph = function(treeData, remove){
             if (a.id != draggingNode.id) return 1; // a is not the hovered element, send "a" to the back
             else return -1; // a is the hovered element, bring "a" to the front
         });
-        // // if nodes has children, remove the links and nodes
-        // var nodes = tree.nodes
-        //
-        // // var nodes = this.nodes;
-        // console.log("NODES =>",nodes);
-        // if (nodes.length > 1) {
-        //     // remove link paths
-        //     links = tree.links(nodes);
-        //     nodePaths = svgGroup.selectAll("path.link")
-        //         .data(links, function(d) {
-        //             return d.target.id;
-        //         }).remove();
-        //     // remove child nodes
-        //     nodesExit = svgGroup.selectAll("g.node")
-        //         .data(nodes, function(d) {
-        //             return d.id;
-        //         }).filter(function(d, i) {
-        //             if (d.id == draggingNode.id) {
-        //                 return false;
-        //             }
-        //             return true;
-        //         }).remove();
-        // }
 
         // remove parent link
          var parentLink = tree.links(tree.nodes(draggingNode.parent));
@@ -217,8 +194,6 @@ var showGraph = function(treeData, remove){
                 return;
             }
             var domNode = this;
-            // console.log("Node name and rowID" + draggingNode.name +" "+ draggingNode.id);
-
             var index = draggingNode.parent.children.indexOf(draggingNode);
             if (index > -1) {
                 draggingNode.parent.children.splice(index, 1);
@@ -233,17 +208,6 @@ var showGraph = function(treeData, remove){
                 if (index > -1) {
                     draggingNode.parent.children.splice(index, 1);
                 }
-                // if (typeof selectedNode.children !== 'undefined' || typeof selectedNode._children !== 'undefined') {
-                //     if (typeof selectedNode.children !== 'undefined') {
-                //         selectedNode.children.push(draggingNode);
-                //     } else {
-                //         selectedNode._children.push(draggingNode);
-                //     }
-                // } else {
-                //     selectedNode.children = [];
-                //     selectedNode.children.push(draggingNode);
-                // }
-                // Make sure that the node being added to is expanded so user can see added node is correctly moved
                 expand(selectedNode);
                 sortTree();
                 remove(draggingNode.id);
@@ -287,15 +251,6 @@ var showGraph = function(treeData, remove){
             d._children = null;
         }
     }
-
-    // var overCircle = function(d) {
-    //     selectedNode = d;
-    //     updateTempConnector();
-    // };
-    // var outCircle = function(d) {
-    //     selectedNode = null;
-    //     updateTempConnector();
-    // };
 
     // Function to update the temporary connector indicating dragging affiliation
     var updateTempConnector = function() {
@@ -429,20 +384,6 @@ var showGraph = function(treeData, remove){
                 return d.name;
             })
             .style("fill-opacity", 0);
-
-        // phantom node to give us mouseover in a radius around it
-        // nodeEnter.append("circle")
-        //     .attr('class', 'ghostCircle')
-        //     .attr("r", 30)
-        //     .attr("opacity", 0.2) // change this to zero to hide the target area
-        // .style("fill", "red")
-        //     .attr('pointer-events', 'mouseover')
-        //     .on("mouseover", function(node) {
-        //         overCircle(node);
-        //     })
-        //     .on("mouseout", function(node) {
-        //         outCircle(node);
-        //     });
 
         // Update the text to reflect whether node has children or not.
         node.select('text')

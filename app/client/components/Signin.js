@@ -47,7 +47,7 @@ class Signin extends Component {
       width: "300px",
       position: "relative",
       left: "108px",
-      margin: '0 auto',   
+      margin: '0 auto',
       textAlign: 'center',
       display: 'inline-block'
     };

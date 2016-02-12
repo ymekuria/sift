@@ -26,43 +26,31 @@ class Custom extends Component {
 
   ///////UPDATES DATA TYPE ///////
 	updateValue (newValue) {
-		console.log('newValue', newValue);
 		this.setState({
 			dataValue: newValue
 		});
-
-		console.log('this.state.dataValue',this.state);
-
 	}
 
 	///////UPDATES TABLE NAME ///////
   updateTable (event) {
-  	console.log('tableName', event.target.value)
     this.setState({
       tableValue:  event.target.value
     });
-    console.log('TableValue State', this.state.tableValue)
   }
 
 	///////UPDATES COLUMN NAME ///////
   updateColumn (event) {
-  	console.log('columnName', event.target.value)
     this.setState({
       columnValue: event.target.value
     });
   }
 
 	postTable () {
-		//this.refs.stateSelect.focus();
-
 		var selections = {
 			tablename: this.state.tableValue,
             custom: true,
             columns: this.state.allColumns
           }
-
-		console.log('selections', selections);
-		console.log('this.state.allColumns', this.state.allColumns)
 		createTable(selections)
 	}
 

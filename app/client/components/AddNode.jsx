@@ -34,4 +34,4 @@ class AddNode extends Component {
 	}
 }
 
-	export default AddNode;
+export default AddNode;

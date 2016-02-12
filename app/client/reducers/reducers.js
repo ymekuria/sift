@@ -63,7 +63,7 @@ const buildTable = (state = initialState, action) => {
       return (
         Immutable.fromJS(state)
         .updateIn(['CurrentSelections'], list => {
-          return list.splice(action.id, 1)   
+          return list.splice(action.id, 1)
         }).toJS()
       )
 
@@ -75,14 +75,14 @@ const buildTable = (state = initialState, action) => {
         .updateIn(['BuildOrder'], obj => {
           console.log('in here', obj);
           obj = obj.toJS();
-
-          obj['tablename'] = action.tablename
+          var filteredName = action.tablename.replace(/[^a-zA-Z0-9]/g, '')
+          obj['tablename'] = filteredName;
           return obj;
         })
         .updateIn(['MenuOptions', 'tableName'], tname => {
           return action.tablename;
-        }).toJS() 
-        ) 
+        }).toJS()
+        )
     case 'adding_vis_table':
       return (
         Immutable.fromJS(state)
@@ -102,11 +102,13 @@ const buildTable = (state = initialState, action) => {
 
     //======submitting table======//
     case 'submit_table':
+
       if (state.MenuOptions.tableName === '') {
         swal('Enter table name!')
         console.log('nope')
+
       } else {
-        
+
         //create our table
         createTable(state.BuildOrder)
         .then(function (res) {
@@ -135,10 +137,9 @@ const buildTable = (state = initialState, action) => {
       return state;
 
     //=======default return state======//
-    default: 
+    default:
       return state;
   }
-   
+
 }
 export default buildTable;
-

@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import LeftNav from './leftNav.jsx'
 import TopNav from './topNav.jsx'
 
-
 class Nav extends Component {
   constructor() {
     super()
@@ -14,10 +13,8 @@ class Nav extends Component {
         <TopNav/>
         <LeftNav/>
       </div>
-    ) 
+    )
   }
 }
 
-
 export default Nav
-

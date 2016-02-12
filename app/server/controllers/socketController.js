@@ -20,11 +20,6 @@ r.connect(rConnectConfig, function(err, conn) {
 var socketMethods = {
 
   addNode: function(node) {
-    // node = {
-    // 	tablename: String,
-    // 	username: String,
-    // 	values: Object
-    // }
     var tablename = node.username + '_' + node.tablename;
     r.db('apiTables').table(tablename).insert(node.values).run(connection, function(err, response) {
       if (err) { console.log('There was error adding to ' + tablename); }
@@ -33,12 +28,6 @@ var socketMethods = {
   },
 
   editNode: function(node) {
-    // node = {
-    // 	tablename: String,
-    // 	username: String,
-    //  rowId = String,
-    // 	values: Object
-    // }
     var tablename = node.username + '_' + node.tablename;
     r.table(tablename).get(node.rowId).update(node.values).run(connection, function(err, results) {
       if (err) { console.log('There was error updating to ' + tablename); }
@@ -47,11 +36,6 @@ var socketMethods = {
   },
 
   removeNode: function(node) {
-    // node = {
-    // 	tablename: String,
-    // 	username: String,
-    // 	rowId: String
-    // }
     var tablename = node.username + '_' + node.tablename;
     r.table(tablename).get(node.rowId).delete().run(connection, function(err, results) {
       if (err) { console.log('There was error deleting node from ' + tablename); }

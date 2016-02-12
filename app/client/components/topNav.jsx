@@ -58,7 +58,7 @@ class TopNav extends Component {
     })
     .then(() => window.location.assign('/'));
   }
-  
+
   render() {
     let username = JSON.parse(localStorage.getItem('sift-user'));
     return (

@@ -28,7 +28,6 @@ const infoListItem = {
   borderBottom: "1px solid black"
 }
 
-
 class Information extends Component {
   constructor() {
     super();
@@ -37,7 +36,7 @@ class Information extends Component {
       info: {},
       userTables: {}
     }
- 
+
   }
 
   componentWillMount() {

@@ -24,7 +24,6 @@ class Build extends Component {
 		})
 	}
 
-
 	render() {
 		if (this.state.select) {
 			return (
@@ -48,6 +47,7 @@ class Build extends Component {
 		)
 		}
 	}
+
 }
 
 export default Build
