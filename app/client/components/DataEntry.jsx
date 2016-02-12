@@ -31,11 +31,11 @@ class DataEntry extends Component {
   }
 
   render () {
-    const { MenuOptions, CurrentSelections } = this.context.store.getState().buildTable;
+    const { MenuOptions, CurrentSelections, loading } = this.context.store.getState().buildTable;
     return (
       <div className='dataEntry'>
         <Paper className='select'>
-          <Dropdown currentSelections={CurrentSelections} menuOptions={MenuOptions} className='dropdown'/>
+          <Dropdown loading={loading} currentSelections={CurrentSelections} menuOptions={MenuOptions} className='dropdown'/>
         </Paper>
       </div>
     )

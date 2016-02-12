@@ -21,7 +21,7 @@ const testStyle = {
 }
 
 
-const Dropdown = ({ menuOptions, currentSelections }, { store }) => {
+const Dropdown = ({ menuOptions, currentSelections, loading }, { store }) => {
 
   const { all } = menuOptions;                
   const { byItem } = menuOptions;
@@ -71,7 +71,7 @@ const Dropdown = ({ menuOptions, currentSelections }, { store }) => {
         </div>
         <Paper className='selectionList'>
           <div>
-            <Selections selected={currentSelections}/>  
+            <Selections loading={loading} selected={currentSelections}/>  
           </div>
         </Paper>
 

@@ -18,6 +18,7 @@ export const createTable = (selections) => {
   .then((response) => response)
   .then((response) => {
     console.log('response: ', response)
+    return response;
   })
   .catch((err) => console.log(err));
 }

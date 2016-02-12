@@ -73,6 +73,9 @@ const buildTable = (state = initialState, action) => {
 
           obj['tablename'] = action.tablename
           return obj;
+        })
+        .updateIn(['MenuOptions', 'tableName'], tname => {
+          return action.tablename;
         }).toJS() 
         ) 
     case 'adding_vis_table':
@@ -83,11 +86,12 @@ const buildTable = (state = initialState, action) => {
 
         }).toJS()
       )
-    case: 'toggle_loading'
+    case 'toggle_loading':
       return (
         Immutable.fromJS(state)
         .updateIn(['loading'], loading => {
-          return loading!
+          console.log('in loading', loading)
+          return false;
         }).toJS()
       )
 
@@ -99,7 +103,10 @@ const buildTable = (state = initialState, action) => {
       } else {
         createTable(state.BuildOrder)
         .then(function (res) {
-          store.dispatch({type:'toggle_loading'});
+          setTimeout(function () {
+            store.dispatch({type:'toggle_loading'});
+            console.log(res);
+          }, 5000)
         })
         return (
           Immutable.fromJS(state)
@@ -112,6 +119,9 @@ const buildTable = (state = initialState, action) => {
           .updateIn(['CurrentSelections'], sel => {
             return [];
           })
+          .updateIn(['loading'], load => {
+            return true;
+          }).toJS()
         )
       }
 
