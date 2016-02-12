@@ -92,17 +92,9 @@ class DataVis extends Component {
       })
     // updating existing nodes
     } else {
-      update = tabledata.children.each(function(row) {
+      tabledata.children.each(function(row) {
         if (row.name === data.new_val.id) {
-          var newChildren = [];
-          _.each(data.new_val, function(value, key) {
-            if (key !== 'id') {
-              var obj = {};
-              obj[key] = value;
-              newChildren.push(obj);
-            }
-          })
-          row.children = newChildren;
+          row = h.formatData(data.new_val);
         }
       })
     }
