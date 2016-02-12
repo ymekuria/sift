@@ -49,7 +49,7 @@ class DataVis extends Component {
         data: data,
         updated: true
       });
-      console.log("newData",this.state.data.name);
+    
     }.bind(this));
   }
 
@@ -68,8 +68,11 @@ class DataVis extends Component {
     socket.emit('remove', node);
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !this.state.data.children || nextState.data.children.length <= this.state.data.children.length 
+  // }
 
-  componentWillMount() {
+  componentDidMount() {
 
     let username = this.state.username;
     let tablename = username + '_' + this.state.tablename;
@@ -108,22 +111,16 @@ class DataVis extends Component {
       tabledata.children.push(update);
     // deleting data
     } else if (!data.new_val) {
-      tabledata.children = tabledata.children.filter(function(row) {
-        return row.name !== data.old_val.id
+      var updatedChildren = tabledata.children.filter(function(row) {
+        return row.id !== data.old_val.id
       })
+      tabledata.children = updatedChildren;
+      
     // updating existing nodes
     } else {
-      update = tabledata.children.each(function(row) {
-        if (row.name === data.new_val.id) {
-          var newChildren = [];
-          _.each(data.new_val, function(value, key) {
-            if (key !== 'id') {
-              var obj = {};
-              obj[key] = value;
-              newChildren.push(obj);
-            }
-          })
-          row.children = newChildren;
+      tabledata.children.each(function(row) {
+        if (row.id === data.new_val.id) {
+          row = h.formatData(data.new_val);
         }
       })
     }

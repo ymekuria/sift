@@ -71,10 +71,5 @@ module.exports = {
 
     return valueStr;
 	}
-
-
-
-
-
 };
 

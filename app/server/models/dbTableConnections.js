@@ -10,6 +10,6 @@ client.query('CREATE TABLE IF NOT EXISTS Tables (' +
   'columns VARCHAR(200), ' +
   'custom boolean(60'
   'tablename VARCHAR(120) )', function(err, result) {
-    if (err) { throw new Error(err); }
+    if (err) { console.log(err); }
     console.log('"Tables" table created');
 })

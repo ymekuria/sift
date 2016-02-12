@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
-class AddNode extends Component {	
+class AddNode extends Component {
 
 	addNode(e) {
 		e.preventDefault();
@@ -13,7 +13,7 @@ class AddNode extends Component {
 		this.props.columns.map(function(column) {
 			node.values[column] = this.refs[column].getValue();
 		}.bind(this))
-		console.log('Adding node: ', node)
+
 		this.refs.addNodeForm.reset();
 		this.props.addNode(node);
 	}
@@ -21,13 +21,12 @@ class AddNode extends Component {
 	render() {
 		return (
 			<div>
-				<form ref='addNodeForm' onSubmit={ this.addNode.bind(this) }> 
+				<form ref='addNodeForm' onSubmit={ this.addNode.bind(this) }>
 					{ this.props.columns.map(function(column, i) {
-					  	return (
-					  		<TextField hintText='Enter value' ref={ column } key={i} floatingLabelText={ column } />
-					  	)
-						}) 
-					}
+						return (
+							<TextField hintText='Enter value' ref={ column } key={i} floatingLabelText={ column } />
+						)
+					}) }
 					<RaisedButton type='submit' label="Add Node" />
 				</form>
 			</div>
@@ -35,4 +34,4 @@ class AddNode extends Component {
 	}
 }
 
-export default AddNode;
+	export default AddNode;
