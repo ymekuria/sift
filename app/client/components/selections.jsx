@@ -62,6 +62,7 @@ const Selections = ({ selected, loading }, { store }) => {
       <RaisedButton
         style={submitStyle}
         label="Create Table"
+        secondary={true}
         onClick={() => {
           store.dispatch({
           type: 'submit_table'

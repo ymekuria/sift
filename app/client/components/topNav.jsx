@@ -38,7 +38,9 @@ let user = {
   top: '1px'
 }
 let signout = {
-  color: '#FDD53C'
+  color: '#FDD53C',
+  marginTop: '14px',
+  textColor: '#333333'
 }
 let signOutGroup = {
   paddingRight: '10px'
@@ -67,7 +69,7 @@ class TopNav extends Component {
         <ToolbarGroup style={signOutGroup} float="right">
           <ToolbarTitle style={user} text={ username.displayname}/>
           <ToolbarSeparator className='separator' style={separator}/>
-          <ToolbarTitle style={signout} onClick={ this.signout } text={"Sign out"}/>
+          <RaisedButton labelColor='Black' backgroundColor='#FDD53C' style={signout} onClick={ this.signout } label={"Sign out"}/>
         </ToolbarGroup>
       </Toolbar>
     )
