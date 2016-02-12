@@ -82,7 +82,7 @@ var socketMethods = {
 				r.table(tablename).changes().run(connection, function(err, cursor) {
 					if (err) { console.log(err); }
 					cursor.each(function(err, node) {
-            if (node.new_val) {
+            if (node && node.new_val) {
               io.emit(emitmessage, node);
             }
 					})
