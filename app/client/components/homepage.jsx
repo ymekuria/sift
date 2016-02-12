@@ -196,12 +196,17 @@ class DashTable extends Component {
    const tableName = this.props.table.tablename.split("_")[1]
     return ( 
         <Paper style={style}  zDepth={2} rounded={false}>
-          <IconButton onClick={()=>this.props.removeTable(this.props.table.id)}  style={iconStyle}>
-            <Delete style={svgStyle}/>
-          </IconButton>
-          <h5>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
-          <h6>Endpoint</h6>
-          <div className='dashEndPoint'>sand/{userName}/{tableName}/</div>
+          <div className='dashCardTop'>
+            <IconButton onClick={()=>this.props.removeTable(this.props.table.id)}  style={iconStyle}>
+              <Delete style={svgStyle}/>
+            </IconButton>
+          
+            <h5 className='dashCardTableName'>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
+            </div>
+           <div className='endPointView'> 
+             <div className='dashEndPointLabel'>Endpoint</div>
+             <div className='dashEndPoint'>sand/{userName}/{tableName}/</div>
+           </div>
           <RaisedButton 
           label="View Table" secondary={true} 
           onClick={() => {
@@ -210,7 +215,7 @@ class DashTable extends Component {
             this.props.nav('/vis')}} 
           style={{margin: 5,
             position: 'relative',
-           bottom: -145}} />
+           bottom: -90}} />
 
        </Paper>
     ) 
@@ -294,7 +299,7 @@ class AddTables extends Component {
             this.props.nav('/build')}} 
           style={{margin: 5,
             position: 'relative',
-           bottom: -222 }} />
+           bottom: -234 }} />
 
        </div>
     ) 
