@@ -7,6 +7,9 @@ import db_query_template from '../data/db_query_template.js'
 import Immutable from 'immutable'
 import { createTable } from '../utils/utils.js'
 import store from '../store.jsx'
+import swal from 'sweetalert'
+
+require("../../node_modules/sweetalert/dist/sweetalert.css") ;
 
 const initialState = {
   MenuOptions: {
@@ -98,16 +101,18 @@ const buildTable = (state = initialState, action) => {
     //======submitting table======//
     case 'submit_table':
       if (state.MenuOptions.tableName === '') {
-        alert('Please enter table name before submitting table!')
+        swal('Please enter table name before submitting table!')
         console.log('nope')
       } else {
+        
+        //create our table
         createTable(state.BuildOrder)
         .then(function (res) {
-          setTimeout(function () {
-            store.dispatch({type:'toggle_loading'});
-            console.log(res);
-          }, 5000)
+          store.dispatch({type:'toggle_loading'});
+          swal('table saved!')
         })
+
+        //modify state
         return (
           Immutable.fromJS(state)
           .updateIn(['MenuOptions', 'tableName'], tname => {
