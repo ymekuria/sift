@@ -21,11 +21,6 @@ const customContainer = {
   height: '60vh',
 }
 
-
-
-
-
-
 class Custom extends Component {
 
 	getDefaultProps () {
