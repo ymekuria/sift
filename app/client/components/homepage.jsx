@@ -89,6 +89,7 @@ class Homepage extends Component {
 
   removeTable (tableID) {
     var that = this;
+
     var alertConfig = {
       title: "Are you sure?",
       text: "All records of this table will be deleted?",
@@ -118,7 +119,9 @@ class Homepage extends Component {
               } else {
                 tables.inactive.push(table);
               }
+
             })
+            console.log('this.state after delete',that.state)
           }
           that.setState({
             userTables: tables,
@@ -132,11 +135,14 @@ class Homepage extends Component {
         "success");
       });
 
+
     }
     // makes an ajax call to delete the clicked table from the db
     // if (confirm("Are you sure want to delete all records of this table?") ) {
     swal(alertConfig, alert)
+
   }
+
 //<DashBanner userName={ this.state.displayName }/>
 
   render() {
@@ -156,18 +162,11 @@ class Homepage extends Component {
 
           </div>
         </div>
-        <div className='row'>
-          <h4 className='col-md-3'>ARCHIVED TABLES</h4>
-        </div>
-        <div className ='row'>
-          <div className='col-md-12'>
 
-          { _.map(this.state.userTables.inactive, this.renderDashTable) }
 
-          </div>
-        </div>
+        
+      </div>   
 
-      </div>
     )
 
   } else {
@@ -227,8 +226,9 @@ class DashTable extends Component {
 
             <h5 className='dashCardTableName'>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
             </div>
-           <div className='endPointView'>
-             <div className='dashEndPointLabel'>Endpoint</div>
+
+           <div className='endPointView'> 
+             <div className='dashEndPointLabel'>Endpoint</div><br/>
              <div className='dashEndPoint'>sand/{userName}/{tableName}/</div>
            </div>
           <RaisedButton
@@ -311,11 +311,12 @@ class AddTables extends Component {
        height: '10px',
         width: '1px'
     }
-    return (
 
-        <div className={this.props.class +' addTable'}  style={style}  zDepth={2} rounded={false}>
-
-
+    return ( 
+      
+        <div className={'addTableCardEmpty '+this.props.class }  style={style}  zDepth={2} rounded={false}>
+         
+        
 
           <RaisedButton secondary={true}
           label="Create Table"
