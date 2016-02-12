@@ -74,7 +74,9 @@ var socketMethods = {
       if (err) { throw err; }
       cursor.toArray(function(err, results) {
         _.each(results[0], function(value, key) {
-          data.columns.push(key);
+          if (key !== 'id') {
+            data.columns.push(key);
+          }
         })
         _.each(results, function(row) {
       		var rowObject = {

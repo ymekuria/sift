@@ -21,7 +21,6 @@ class DataVis extends Component {
         name: '',
         children: []
       },
-      testData: "INSIDE TEST DATA",
       username: JSON.parse(localStorage.getItem('sift-user')).username
     }
   }
@@ -32,7 +31,7 @@ class DataVis extends Component {
     //     lastName: 'Brown'
     //   }
     // };
-
+    
     node.tablename = this.state.tablename;
     node.username = this.state.username;
     socket.emit('add', node);
@@ -123,8 +122,8 @@ class DataVis extends Component {
 
         <div className="container">
           <div className="row">
+            <AddNode columns={ this.state.data.columns } addNode={ this.addNode.bind(this) } />
             <div id="tree-container"></div>
-            <AddNode />
             { /*<div className='col-md-3 endpoint'>
               API routes to manipulate your table<br />
               GET your table:<br />
