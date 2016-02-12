@@ -61,10 +61,9 @@ class Homepage extends Component {
         tablesExist: true,
         userName: res[0].tablename.split("_")[0].toUpperCase()
       })
-      // console.log('this.state in componentWillMount', this.state.userTables);
     });
-    // console.log('this.state in componentWillMount', this.state.userTables);
   }
+
   componentDidMount() {
     var user = localStorage.getItem('sift-user');
     if (!user) {
@@ -76,11 +75,8 @@ class Homepage extends Component {
         })
       })
     }
-    console.log('this.state.displayName in componentDidMount',this.state.userTables)
   }
   
-
-
   navigation(path) {
     store.dispatch(routeActions.push(path));
   }
@@ -103,7 +99,6 @@ class Homepage extends Component {
       deleteTable(tableID, function() {
         // makes a ajax call to update the state with the list of tables
         getTables(function(res) {
-          console.log('res:', res)
 
           if(res.length === 0) {
             that.setState({ tablesExist: false })
