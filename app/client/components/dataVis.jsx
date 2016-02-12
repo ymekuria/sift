@@ -25,7 +25,8 @@ class DataVis extends Component {
         name: '',
         children: []
       },
-      username: JSON.parse(localStorage.getItem('sift-user')).username
+      username: JSON.parse(localStorage.getItem('sift-user')).username,
+      allUserTables: "",
     }
   }
 
@@ -36,10 +37,9 @@ class DataVis extends Component {
     //   }
     // };
 
-      testData: "INSIDE TEST DATA",
-      allUserTables : "",
-      updated : false,
-    }
+    node.tablename = this.state.tablename;
+    node.username = this.state.username;
+    socket.emit('add', node);
   }
 
   updateValue (newValue) {
@@ -101,8 +101,6 @@ class DataVis extends Component {
       this.setState({
         data: data
       });
-      /////////////////RENDER IS CALLED HERE///////////////
-      this.renderD3(this.state.data, this.removeNode.bind(this));
     }.bind(this));
 
     socket.on(emitmessage, function(data) {
@@ -122,16 +120,6 @@ class DataVis extends Component {
         })
     });
   }
-
-
-  componentDidUpdate() {
-    if (this.state.updated === true){
-    this.renderD3(this.state.data, this.removeNode.bind(this))
-    } else {
-      console.log("not updated");
-    }
-  }
-
 
   handleData(data) {
     var update;
@@ -168,7 +156,7 @@ class DataVis extends Component {
   }
 
   render() {
-    console.log('in datavis render: ', this.state.data)
+    var options = this.state.allUserTables;
     return (
         <div className="container">
         <div>Choose between your tables</div>
