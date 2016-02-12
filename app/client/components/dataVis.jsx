@@ -25,7 +25,7 @@ class DataVis extends Component {
         children: []
       },
       username: JSON.parse(localStorage.getItem('sift-user')).username,
-      allUserTables: "",
+      allUserTables: ""
     }
   }
 
@@ -129,12 +129,20 @@ class DataVis extends Component {
   render() {
     var options = this.state.allUserTables;
     return (
-        <div className="container">
-        <div>Choose between your tables</div>
-        <Select ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.tablename} onChange={this.updateValue.bind(this)} />
-        <AddNode columns={ this.state.data.columns } addNode={ this.addNode.bind(this) } />
-        <Tree data={ this.state.data } removeNode={ this.removeNode.bind(this) } />
+      <div className="container">
+        <div className="row">
+          <div className="col-md-5">
+            Choose between your tables
+            <Select ref="stateSelect" autofocus options={options} simpleValue name="selected-state" value={this.state.tablename} onChange={this.updateValue.bind(this)} />
+          </div>
+          <div className="col-md-5">
+            <AddNode columns={ this.state.data.columns } addNode={ this.addNode.bind(this) } />
+          </div>
         </div>
+        <div className="col-md-7">
+          <Tree data={ this.state.data } removeNode={ this.removeNode.bind(this) } />
+        </div>
+      </div>
     )
   }
 }
