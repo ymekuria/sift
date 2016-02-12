@@ -51,10 +51,6 @@ class LeftNavbar extends Component {
           <Build color='white'/>
         </IconButton>
         <br/>
-        <IconButton onClick={() => this.navigation('/vis')} style={iconStyles}>
-          <Stats color='white'/>
-        </IconButton>
-        <br/>
         <IconButton onClick={() => this.navigation('/info')} style={iconStyles}>
           <Info color='white'/>
         </IconButton>
