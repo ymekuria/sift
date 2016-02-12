@@ -178,7 +178,7 @@ img
 /* start home */       
 #home
     {
-    background: url('../images/home-bg.jpg') no-repeat;
+    background: url('../images/home-bg.png') no-repeat;
     background-size: cover;
     color: #fff;
     margin-top: 70px;
@@ -195,7 +195,7 @@ img
     {
         display: inline-block;
         margin-top: 30px;
-    }
+    }   
 /* end home */
 
 /* start divider */
