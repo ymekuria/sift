@@ -89,6 +89,7 @@ class Homepage extends Component {
 
   removeTable (tableID) {
     var that = this;
+<<<<<<< 864d1b9249a831b07a4192038390d0f5a3345977
     var alertConfig = {
       title: "Are you sure?",
       text: "All records of this table will be deleted?",
@@ -118,7 +119,9 @@ class Homepage extends Component {
               } else {
                 tables.inactive.push(table);
               }
+
             })
+            console.log('this.state after delete',that.state)
           }
           that.setState({
             userTables: tables,
@@ -132,11 +135,14 @@ class Homepage extends Component {
         "success");
       });
 
+
     }
     // makes an ajax call to delete the clicked table from the db
     // if (confirm("Are you sure want to delete all records of this table?") ) {
     swal(alertConfig, alert)
+
   }
+
 //<DashBanner userName={ this.state.displayName }/>
 
   render() {
@@ -311,12 +317,21 @@ class AddTables extends Component {
        height: '10px',
         width: '1px'
     }
+<<<<<<< 19a288435698e3d97b3451050bfbfa6c146d94b0
     return (
 
         <div className={this.props.class +' addTable'}  style={style}  zDepth={2} rounded={false}>
 
 
 
+=======
+    return ( 
+      
+        <div className={this.props.class + }  style={style}  zDepth={2} rounded={false}>
+         
+        
+          
+>>>>>>> trouble shooting delete table bug
           <RaisedButton secondary={true}
           label="Create Table"
           onClick={() => {
