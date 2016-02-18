@@ -19,10 +19,10 @@ var token = require('./auth/authTokens.js');
 
 
 // Middleware. Add below as needed
-// app.use(cors());
-// app.use(morgan('dev'));
+
 var port = process.env.PORT || 5001;
 
+app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true }));
