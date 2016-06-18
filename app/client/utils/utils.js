@@ -54,7 +54,7 @@ export const getTables = (cb) => {
   })
   .then((response) => response.text())
   .then((text) => {
-    console.log('inside get tables', text);
+    // console.log('inside get tables', text);
     cb(JSON.parse(text))
   })
 }

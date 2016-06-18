@@ -6,8 +6,6 @@ import h from '../config/helpers'
 
 import DashTable from './dashTable'
 
-
-
 // Material UI components
 import Paper from 'material-ui/lib/paper';
 import RaisedButton from 'material-ui/lib/raised-button';
@@ -31,7 +29,7 @@ class Homepage extends Component {
   constructor() {
     super();
 
-    this.state={
+    this.state = {
       info: {},
       userTables: {
         active: [],
@@ -49,13 +47,16 @@ class Homepage extends Component {
 
   componentWillMount() {
    // find a better way to bind this//use promises instead
+   console.log('inside Component will mount')
     var that = this;
     var tables = this.state.userTables;
-    getTables(function(res) { // res in an array of table objects
+    getTables((res) => { // res is an array of table objects
       if(res[0] === undefined) {
+        conosle.log('inside componentWillMount')
         that.setState({ tablesExist: false })
       } else {
-        _.each(res, function(table) {
+        _.each(res, (table) => {
+          conosle.log('inside componentWillMount');
           if (table.active) {
             tables.active.push(table);
           } else {
@@ -89,7 +90,6 @@ class Homepage extends Component {
   }
 
   renderDashTable(table) {
-    console.log('render Dash')
     return(
       <DashTable nav={this.navigation} removeTable = {this.removeTable} displayName={this.state.displayName} table={table} index={table} />
     )
@@ -104,7 +104,7 @@ class Homepage extends Component {
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55 ",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, do delete it!",
       closeOnConfirm: false
     };
 
@@ -119,23 +119,25 @@ class Homepage extends Component {
         getTables(function(res) {
 
           if(res.length === 0) {
+            console.log('test');
             that.setState({ tablesExist: false })
           } else {
+            console.log('test');
             _.each(res, function(table) {
               if (table.active) {
                 tables.active.push(table);
               } else {
                 tables.inactive.push(table);
               }
-
-            })
+            });
             console.log('this.state after delete',that.state)
           }
+
           that.setState({
             userTables: tables,
             tablesExist: true,
             userName: res[0].tablename.split("_")[0].toUpperCase()
-          })
+          });
         });
         
         swal("Deleted!",
@@ -148,10 +150,7 @@ class Homepage extends Component {
     // makes an ajax call to delete the clicked table from the db
     // if (confirm("Are you sure want to delete all records of this table?") ) {
     swal(alertConfig, alert)
-
   }
-
-//<DashBanner userName={ this.state.displayName }/>
 
   render() {
     if (this.state.tablesExist) {

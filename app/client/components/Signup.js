@@ -88,20 +88,13 @@ class Signup extends Component {
             </form>
             <span> -- OR -- </span><br/>
               <form className ="form-group col-md-10 col-md-offset-1" action='/api/users' method='post'>
-
                 <input className =" form-control" type='text' ref='first' name='first' placeholder='First Name' /><br/>
-
-                <input className =" form-group form-control" type='text' ref='last' name='last' placeholder='Last Name' />
-                 
+                <input className =" form-group form-control" type='text' ref='last' name='last' placeholder='Last Name' />     
                 <input className =" form-group form-control" type='email' ref='email' name='email' placeholder='email address' />
-
                 <input className =" form-group form-control" type='password' ref='password' name='password' placeholder='password' />
-
                 <input className ="form-group form-control" type='password' ref='confomr' name='confirm' placeholder='Comfirm Password' />
-
                  <RaisedButton secondary={true} label = 'SIGN UP' type='submit'style ={buttonStyle} ></RaisedButton>
-
-                <a href='/signin'>Already have an account?</a>
+                <a href='/signin'>Alr?</a>
            </form>
           </Paper>
         </div>
