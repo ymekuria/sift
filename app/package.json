@@ -1,7 +1,7 @@
 {
   "name": "Sift",
   "version": "1.0.0",
-  "description": "HR Thesis Project",
+  "description": "Backend-as-a service for front end developers",
   "main": "server.js",
   "engines": {
     "node": "4.2.2"
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/verdantveranda/2015-11-thesis.git"
+    "url": "https://github.com/ymekuria/sift"
   },
-  "author": "Erik, John, Yoni, Zack",
+  "author": "Erik, Yoni, John, Zack",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/verdantveranda/2015-11-thesis/issues"
+    "url": "https://github.com/ymekuria/sift/issues"
   },
-  "homepage": "https://github.com/verdantveranda/2015-11-thesis",
+  "homepage": "http://www.sift.pw",
   "dependencies": {
     "autobind-decorator": "^1.3.3",
     "babel-preset-stage-2": "^6.3.13",
@@ -63,7 +63,7 @@
     "redux": "^3.2.1",
     "request": "^2.69.0",
     "request-promise": "^2.0.0",
-    "rethinkdb": "^2.2.1",
+    "rethinkdb": "~2.2.1",
     "sinon": "^1.17.2",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
