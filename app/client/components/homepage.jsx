@@ -170,9 +170,7 @@ class Homepage extends Component {
 
           </div>
         </div>
-
-
-        
+      
       </div>   
 
     )
@@ -195,48 +193,6 @@ class Homepage extends Component {
  }
 }
 
-
-
-class DashButtons extends Component {
-
-  render() {
-    return (
-      <div>
-        <RaisedButton label="QuickStart" style={{margin:12}} />
-        <RaisedButton label="API Docs" style={{margin:12}} />
-        <RaisedButton label="Examples" style={{margin:12}} />
-        <RaisedButton label="Fun" style={{margin:12}} />
-      </div>
-    )
-  }
-}
-
-class DashBanner extends Component {
-
-  render() {
-    return (
-    <div className='dashBanner'>
-      <div className='row'>
-        <h2 className="col-md-6 col-md-offset-3" >
-          Welcome back to SIFT, {this.props.userName}
-        </h2>
-        <h4 className="col-md-4 col-md-offset-4 dashOneliner"></h4>
-      </div>
-    {/*row for buttons*/}
-      <div className='row'>
-        <div className='col-md-6 col-md-offset-3'></div>
-      </div>
-    </div>
-    )
-  }
-}
-
-class DeleteOption extends Component {
-
-  render() {
-    <div>are you sure?</div>
-  }
-}
 class AddTables extends Component {
   render() {
     const style = {
@@ -264,19 +220,12 @@ class AddTables extends Component {
     }
 
     return ( 
-      
         <div className={'addTableCardEmpty '+this.props.class }  style={style}  zDepth={2} rounded={false}>
-         
-        
-
           <RaisedButton secondary={true}
-          label="Create Table"
-          onClick={() => {
-
-            this.props.nav('/build')}}
-          style={{margin: 5,
-            position: 'relative',
-           bottom: -234 }} />
+            label="Create Table"
+            onClick={() => {
+              this.props.nav('/build')}}
+              style={{margin: 5, position: 'relative', bottom: -234 }} />
 
        </div>
     )
