@@ -60,14 +60,15 @@ class Homepage extends Component {
             } else {
               tables.inactive.push(table);
             }
-          })
+          });
         }
         that.setState({
           userTables: tables,
           tablesExist: true,
           userName: response[0].tablename.split("_")[0].toUpperCase()
         })
-      });
+      })
+      .catch((err) => console.log(error));
   }
 
   componentDidMount() {
@@ -114,29 +115,29 @@ class Homepage extends Component {
         };
 
         // makes an ajax call to delete the clicked table from the db
-        getTables(function(res) {
+        getTables()
+          .then((response) => {
+            if(response.length === 0) {
+              that.setState({ tablesExist: false })
+            } else {
+              console.log('test');
+              _.each(response, function(table) {
+                if (table.active) {
+                  tables.active.push(table);
+                } else {
+                  tables.inactive.push(table);
+                }
+              });
+            }
 
-          if(res.length === 0) {
-            console.log('test');
-            that.setState({ tablesExist: false })
-          } else {
-            console.log('test');
-            _.each(res, function(table) {
-              if (table.active) {
-                tables.active.push(table);
-              } else {
-                tables.inactive.push(table);
-              }
+            that.setState({
+              userTables: tables,
+              tablesExist: true,
+              userName: response[0].tablename.split("_")[0].toUpperCase()
             });
-            console.log('this.state after delete',that.state)
-          }
 
-          that.setState({
-            userTables: tables,
-            tablesExist: true,
-            userName: res[0].tablename.split("_")[0].toUpperCase()
-          });
-        });
+          })
+          .catch((error) => console.log(error));
         
         swal("Deleted!",
         "Your table has been deleted.",
