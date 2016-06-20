@@ -3,13 +3,12 @@ import Paper from 'material-ui/lib/paper';
 
 import RaisedButton from 'material-ui/lib/raised-button';
 import IconButton from 'material-ui/lib/icon-button';
+import Delete from 'material-ui/lib/svg-icons/action/highlight-off';
 
 
 class DashTable extends Component {
-
-
   render() {
-    
+
     const style = {
       height: '21.3em',
       width: '19em',

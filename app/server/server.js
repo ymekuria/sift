@@ -33,7 +33,7 @@ app.use(passport.session());
 require('./utils/routes.js')(app, express, utils.isAuth);
 
 //===========uncomment this middleware for production=========
-app.use(express.static(path.join(__dirname, '../build')));
+// app.use(express.static(path.join(__dirname, '../build')));
 
 
 var server = http.createServer(app).listen(process.env.PORT || 5001, function() {
@@ -110,10 +110,10 @@ passport.use(new LocalStrategy(
 		})
 }))
 
-//===========//uncomment below for production//==========
-  app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
-})
+// //===========//uncomment below for production//==========
+//   app.get('*', function(req, res) {
+//   res.sendFile(path.join(__dirname, '../build/index.html'));
+// })
 
 
 module.exports = {

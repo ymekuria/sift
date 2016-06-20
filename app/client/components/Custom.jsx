@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import TextField from 'material-ui/lib/text-field'
-import {createTable} from '../utils/utils.js'
+import { createTable } from '../utils/utils.js'
 import { Paper } from 'material-ui'
 import _ from 'lodash'
 
@@ -14,7 +14,6 @@ import TableBody from 'material-ui/lib/table/table-body';
 
 const Select = require('react-select');
 const STATES = require('../data/dataTypes.js').dataTypes;
-
 
 const customContainer = {
   width: '90vw',

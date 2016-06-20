@@ -46,30 +46,28 @@ class Homepage extends Component {
   }
 
   componentWillMount() {
-   // find a better way to bind this//use promises instead
-   console.log('inside Component will mount')
+   // find a better way to bind this
     var that = this;
     var tables = this.state.userTables;
-    getTables((res) => { // res is an array of table objects
-      if(res[0] === undefined) {
-        conosle.log('inside componentWillMount')
-        that.setState({ tablesExist: false })
-      } else {
-        _.each(res, (table) => {
-          conosle.log('inside componentWillMount');
-          if (table.active) {
-            tables.active.push(table);
-          } else {
-            tables.inactive.push(table);
-          }
+    getTables()
+      .then((response) => {
+        if(response[0] === undefined) {
+          that.setState({ tablesExist: false })
+        } else {
+          _.each(response, (table) => {
+            if (table.active) {
+              tables.active.push(table);
+            } else {
+              tables.inactive.push(table);
+            }
+          })
+        }
+        that.setState({
+          userTables: tables,
+          tablesExist: true,
+          userName: response[0].tablename.split("_")[0].toUpperCase()
         })
-      }
-      that.setState({
-        userTables: tables,
-        tablesExist: true,
-        userName: res[0].tablename.split("_")[0].toUpperCase()
-      })
-    });
+      });
   }
 
   componentDidMount() {
@@ -155,18 +153,14 @@ class Homepage extends Component {
   render() {
     if (this.state.tablesExist) {
     return(
-
       <div className='container'>
-
         <div className='row dashTopBorder'>
           <h4 className="col-md-2  ">CURRENT TABLES</h4>
         </div>
         <div className ='row'>
           <div className='col-md-12'>
-
             <AddTables class={'addTableCard'} nav={ this.navigation } />
-          { _.map(this.state.userTables.active, this.renderDashTable) }
-
+            { _.map(this.state.userTables.active, this.renderDashTable) }
           </div>
         </div>
       
@@ -203,31 +197,27 @@ class AddTables extends Component {
      border: '2px dashed #C5CAD9',
     marginBottom: '10px'
       // backgroundColor: '#E7E8EF'
-
-
-  };
+    };
     const iconStyle = {
     marginLeft: 160,
      display: 'inline-block',
+    };
 
-
-  };
     const svgStyle = {
       fontSize: '10px',
        height: '10px',
         width: '1px'
-    }
+    };
 
     return ( 
-        <div className={'addTableCardEmpty '+this.props.class }  style={style}  zDepth={2} rounded={false}>
-          <RaisedButton secondary={true}
-            label="Create Table"
-            onClick={() => {
-              this.props.nav('/build')}}
-              style={{margin: 5, position: 'relative', bottom: -234 }} />
-
-       </div>
-    )
+      <div className={'addTableCardEmpty '+this.props.class }  style={style}  zDepth={2} rounded={false}>
+        <RaisedButton secondary={true}
+          label="Create Table"
+          onClick={() => {
+            this.props.nav('/build')}}
+            style={{margin: 5, position: 'relative', bottom: -234 }} />
+      </div>
+    );
   }
 }
 

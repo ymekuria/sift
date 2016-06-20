@@ -8,7 +8,7 @@ import h from '../config/helpers'
   == Material UI componenets ==
 */
 import Paper from 'material-ui/lib/paper'
-import { Menu, MenuItem} from 'material-ui'
+import { Menu, MenuItem } from 'material-ui'
 
 //refactor into css file
 require('../../node_modules/react-select/dist/react-select.css')

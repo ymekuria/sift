@@ -42,7 +42,7 @@ const createCustomTable = (username, selections) => {
   .catch((err) => console.log(err));
 }
 
-export const getTables = (cb) => {
+export const getTables = () => {
   //retrieve all table names for a specific user
   let url = '/api/users/tables'
   return fetch(url, {
@@ -55,7 +55,7 @@ export const getTables = (cb) => {
   .then((response) => response.text())
   .then((text) => {
     // console.log('inside get tables', text);
-    cb(JSON.parse(text))
+    return JSON.parse(text);
   })
 }
 
