@@ -4,7 +4,7 @@ import { getTables } from '../utils/utils'
 import { deleteTable } from '../utils/utils'
 import h from '../config/helpers'
 
-import DashTable from './dashTable'
+import DashTable from './DashTable'
 
 // Material UI components
 import Paper from 'material-ui/lib/paper';
@@ -138,7 +138,7 @@ class Homepage extends Component {
 
           })
           .catch((error) => console.log(error));
-        
+
         swal("Deleted!",
         "Your table has been deleted.",
         "success");
@@ -164,8 +164,8 @@ class Homepage extends Component {
             { _.map(this.state.userTables.active, this.renderDashTable) }
           </div>
         </div>
-      
-      </div>   
+
+      </div>
 
     )
 
@@ -210,7 +210,7 @@ class AddTables extends Component {
         width: '1px'
     };
 
-    return ( 
+    return (
       <div className={'addTableCardEmpty '+this.props.class }  style={style}  zDepth={2} rounded={false}>
         <RaisedButton secondary={true}
           label="Create Table"

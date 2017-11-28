@@ -8,36 +8,12 @@ import Delete from 'material-ui/lib/svg-icons/action/highlight-off';
 
 class DashTable extends Component {
   render() {
+    const { paperStyle, svgStyle, iconStyle } = styles;
+    const userName = this.props.table.tablename.split("_")[0];
+    const tableName = this.props.table.tablename.split("_")[1]
 
-    const style = {
-      height: '21.3em',
-      width: '19em',
-      margin: '1em', 
-      textAlign: 'center',
-      display: 'inline-block',
-      marginBottom: '10px'
-      //border: '1px solid #C5CAD9',
-      //backgroundColor: '#C5CAD9',
-    };
-
-    const iconStyle = {
-
-      display: 'inline-block',
-      float: 'right',
-      marginRight: '18px',
-      height: '12px',
-      width: '12px'
-    };
-
-    const svgStyle = {
-      fontSize: '10px',
-      height: '10px',
-      width: '1px'
-    }
-   const userName = this.props.table.tablename.split("_")[0];
-   const tableName = this.props.table.tablename.split("_")[1]
     return (
-        <Paper style={style}  zDepth={2} rounded={false}>
+        <Paper style={paperStyle}  zDepth={2} rounded={false}>
           <div className='dashCardTop'>
             <IconButton onClick={()=>this.props.removeTable(this.props.table.id)}  style={iconStyle}>
               <Delete style={svgStyle}/>
@@ -46,7 +22,7 @@ class DashTable extends Component {
             <h5 className='dashCardTableName'>{this.props.table.tablename.split("_")[1].toUpperCase()}</h5>
             </div>
 
-           <div className='endPointView'> 
+           <div className='endPointView'>
              <div className='dashEndPointLabel'>Endpoint</div><br/>
              <div className='dashEndPoint'>sand/{userName}/{tableName}/</div>
            </div>
@@ -59,11 +35,33 @@ class DashTable extends Component {
           style={{margin: 5,
             position: 'relative',
            bottom: -90}} />
-
        </Paper>
     )
   }
 }
+const styles = {
+  paperStyle: {
+    height: '21.3em',
+    width: '19em',
+    margin: '1em',
+    textAlign: 'center',
+    display: 'inline-block',
+    marginBottom: '10px'
+    //border: '1px solid #C5CAD9',
+    //backgroundColor: '#C5CAD9',
+  },
+  iconStyle: {
+    display: 'inline-block',
+    float: 'right',
+    marginRight: '18px',
+    height: '12px',
+    width: '12px'
+  },
+  svgStyle: {
+    fontSize: '10px',
+    height: '10px',
+    width: '1px'
+  }
+},
 
 export default DashTable;
-
