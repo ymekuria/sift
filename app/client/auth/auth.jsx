@@ -1,16 +1,12 @@
-
-import React from 'react'
-import { routeActions } from 'react-router-redux'
-import store from '../store.jsx'
-
+import React from 'react';
+import { routeActions } from 'react-router-redux';
+import store from '../store.jsx';
 
 //here we are goin to be creating the function that will be used
 //to conditionally render our view based on
 //whether or not the user is authenticated
 
-
 export function requireAuth(Component) {
-
   class AuthenticatedComponent extends React.Component {
     constructor() {
       super();
@@ -28,9 +24,9 @@ export function requireAuth(Component) {
       //check local storage
       var user = JSON.parse(localStorage.getItem('sift-user'));
       if (user) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     }
     navigation(path) {
@@ -38,19 +34,14 @@ export function requireAuth(Component) {
       store.dispatch(routeActions.push(path));
     }
 
-    render () {
+    render() {
       return (
         <div>
-          {
-            this.checkAuth() ? <Component/> : this.navigation('/signin')
-          }
-
+          {this.checkAuth() ? <Component /> : this.navigation('/signin')}
         </div>
-        
-      )
+      );
     }
-  } 
-
+  }
 
   return AuthenticatedComponent;
 }

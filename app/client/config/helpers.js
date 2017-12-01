@@ -43,7 +43,6 @@ let helpers = {
 				rowObject.children.push(object);
 			}
 		});
-		console.log('formatted row: ', rowObject)
 		return rowObject;
 	}
 
