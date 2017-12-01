@@ -1,6 +1,6 @@
 var client = require('../utils/dbconnect').client;
 var r = require('rethinkdb');
-var socketController = require('./socketController')
+var socketController = require('./socketController');
 var faker = require('faker');
 var _ = require('lodash');
 var utils = require('../utils/utils.js');
@@ -9,26 +9,26 @@ var connection = null;
 var rConnectConfig;
 
 if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
-  rConnectConfig = { host: 'rethink', db: 'apiTables' }
+  rConnectConfig = { host: 'rethink', db: 'apiTables' };
 } else {
-  rConnectConfig =  { host: 'localhost', db: 'apiTables' }
+  rConnectConfig = { host: 'localhost', db: 'apiTables' };
 }
 
 r.connect(rConnectConfig, function(err, conn) {
-
-  if (err) { console.log(err); }
+  if (err) {
+    console.log(err);
+  }
   connection = conn;
   r.dbCreate('apiTables').run(conn, function(err, conn) {
-    console.log('Tables DB created in RethinkDB')
+    console.log('Tables DB created in RethinkDB');
   });
 });
 
 dbMethods = {
+  /////////POST///////////
 
-/////////POST///////////
-
-///SAMPLE QUERY///
-/*
+  ///SAMPLE QUERY///
+  /*
 {"tableName": "mytable",
     "Name.firstName": "yes",
     "Name.lastName": "yes",
@@ -56,60 +56,99 @@ dbMethods = {
     // create the table in RethinkDB
 
     // check postgres first to see if tablename exists
-    client.query('SELECT tablename FROM tables WHERE userid = ($1) AND tablename = ($2)', [userID, tablename], function(err, response) {
-      if (response.rows.length > 0) {
-        res.status(400).send({ message: 'Table already exists' }) // table already exists
-
-      } else {
-        r.db('apiTables').tableCreate(tablename).run(connection, function(err, result) {
-          // handle custom table
-          if (custom) {
-            columnsString = Object.keys(columns).join(',');
-            dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
-              if (err) { utils.handleError(err); }
-              res.sendStatus(200);
-            })
-          // create table and add generated data
-          } else {
-            fakeData = utils.generateData(req.body, columns, 20, function(data) {
-              columnsString = columns.join(',');
-              dbMethods.addToPostgresTables(userID, tablename, columnsString, custom, function(err) {
-                if (err) { utils.handleError(err); }
-                dbMethods.addFakeData(tablename, data, function(err) { // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
-                  if (err) { utils.handleError(err); }
-                  res.sendStatus(200);
-                })
-              });
+    client.query(
+      'SELECT tablename FROM tables WHERE userid = ($1) AND tablename = ($2)',
+      [userID, tablename],
+      function(err, response) {
+        if (response.rows.length > 0) {
+          res.status(400).send({ message: 'Table already exists' }); // table already exists
+        } else {
+          r
+            .db('apiTables')
+            .tableCreate(tablename)
+            .run(connection, function(err, result) {
+              // handle custom table
+              if (custom) {
+                columnsString = Object.keys(columns).join(',');
+                dbMethods.addToPostgresTables(
+                  userID,
+                  tablename,
+                  columnsString,
+                  custom,
+                  function(err) {
+                    if (err) {
+                      utils.handleError(err);
+                    }
+                    res.sendStatus(200);
+                  }
+                );
+                // create table and add generated data
+              } else {
+                fakeData = utils.generateData(req.body, columns, 20, function(
+                  data
+                ) {
+                  columnsString = columns.join(',');
+                  dbMethods.addToPostgresTables(
+                    userID,
+                    tablename,
+                    columnsString,
+                    custom,
+                    function(err) {
+                      if (err) {
+                        utils.handleError(err);
+                      }
+                      dbMethods.addFakeData(tablename, data, function(err) {
+                        // returns an array of 20 JSONs [{ firstname: "Erik", lastname: "Brown", catchPhrase: "Verdant Veranda FTW"}, ...];
+                        if (err) {
+                          utils.handleError(err);
+                        }
+                        res.sendStatus(200);
+                      });
+                    }
+                  );
+                });
+              }
             });
-          }
-        });
+        }
       }
-    })
+    );
   },
 
   addToPostgresTables: function(userID, tablename, columns, custom, cb) {
-    client.query('INSERT INTO Tables (userID, tablename, columns, custom) VALUES ($1, $2, $3, $4)', [userID, tablename, columns, custom], function(err, response){
-      cb(err);
-    })
+    client.query(
+      'INSERT INTO Tables (userID, tablename, columns, custom) VALUES ($1, $2, $3, $4)',
+      [userID, tablename, columns, custom],
+      function(err, response) {
+        cb(err);
+      }
+    );
   },
 
   addFakeData: function(tablename, fakeData, cb) {
-    r.db('apiTables').table(tablename).insert(fakeData).run(connection, function(err, response) {
-      cb(err);
-    });
+    r
+      .db('apiTables')
+      .table(tablename)
+      .insert(fakeData)
+      .run(connection, function(err, response) {
+        cb(err);
+      });
   },
 
   // this method retrieves all the tableNames associated with the passed in username
   getTables: function(req, res) {
     var userID = req.user.id;
 
-    var queryString = 'SELECT id, tablename, columns, active FROM tables WHERE userID = ' + userID;
-    client.query(queryString, function(err, tableNames){
-        if (err) { console.log(err); }
-        _.each(tableNames.rows, function(row) {
-          row.columns = row.columns.split(',')
-        })
-        res.status(200).json(tableNames.rows);
+    var queryString =
+      'SELECT id, tablename, columns, active FROM tables WHERE userID = ' +
+      userID;
+    client.query(queryString, function(err, tableNames) {
+      if (err) {
+        console.log(err);
+      }
+      _.each(tableNames.rows, function(row) {
+        row.columns = row.columns.split(',');
+      });
+      res.status(200).json(tableNames.rows);
     });
   },
 
@@ -117,23 +156,24 @@ dbMethods = {
   getOneTable: function(req, res) {
     var tablename = req.params.username + '_' + req.params.tablename;
     r.table(tablename).run(connection, function(err, cursor) {
-      if (err) { console.log(err); }
-      dbMethods.checkandUpdateTimestamp(tablename); 
+      if (err) {
+        console.log(err);
+      }
+      dbMethods.checkandUpdateTimestamp(tablename);
       cursor.toArray(function(err, results) {
         res.status(200).send(results);
       });
     });
   },
 
- // this posts to a users tables. The front-end sends a post request with the columns and new values
- // {columnName: value, column2Name: value, ...}
+  // this posts to a users tables. The front-end sends a post request with the columns and new values
+  // {columnName: value, column2Name: value, ...}
   postToTable: function(req, res) {
-
     var tablename = req.params.username + '_' + req.params.tablename;
     var columns;
-    var queryString = 'SELECT custom, datatypes, columns, last_used FROM tables WHERE tablename = ($1)';
+    var queryString =
+      'SELECT custom, datatypes, columns, last_used FROM tables WHERE tablename = ($1)';
     client.query(queryString, [tablename], function(err, results) {
-
       var savedTimestamp = results.rows[0].last_used;
       dbMethods.checkandUpdateTimestamp(tablename, savedTimestamp);
 
@@ -141,28 +181,43 @@ dbMethods = {
         var dbColumns = results.rows[0].columns;
         var dbDataTypes = results.rows[0].datatypes;
 
-        dbMethods.matchDataTypes(req.body, dbColumns, dbDataTypes, function(err, passes) {
+        dbMethods.matchDataTypes(req.body, dbColumns, dbDataTypes, function(
+          err,
+          passes
+        ) {
           if (passes) {
-
-            r.table(tablename).insert(req.body).run(connection, function(err, response) {
-              if (err) { console.log(err); }
-              res.sendStatus(200);
-            });
-
+            r
+              .table(tablename)
+              .insert(req.body)
+              .run(connection, function(err, response) {
+                if (err) {
+                  console.log(err);
+                }
+                res.sendStatus(200);
+              });
           } else {
-            var errorMessage = 'Incorrect data type for ' + err.column + '. Expected: ' + err.expected + '. Received: ' + err.received;
+            var errorMessage =
+              'Incorrect data type for ' +
+              err.column +
+              '. Expected: ' +
+              err.expected +
+              '. Received: ' +
+              err.received;
             res.status(400).send(errorMessage);
           }
         });
-
       } else {
-        r.table(tablename).insert(req.body).run(connection, function(err, response) {
-          if (err) { console.log(err); }
-          res.sendStatus(200);
-        });
+        r
+          .table(tablename)
+          .insert(req.body)
+          .run(connection, function(err, response) {
+            if (err) {
+              console.log(err);
+            }
+            res.sendStatus(200);
+          });
       }
-    })
-
+    });
   },
 
   checkandUpdateTimestamp: function(tablename, savedTimestamp) {
@@ -170,23 +225,29 @@ dbMethods = {
     var rightNow = new Date();
 
     if (!savedTimestamp) {
-      var queryString = 'SELECT last_used FROM tables WHERE tablename = ($1)'
+      var queryString = 'SELECT last_used FROM tables WHERE tablename = ($1)';
       client.query(queryString, [tablename], function(err, results) {
         lastUpdate = results.rows[0].last_used;
 
         if (rightNow - lastUpdate > 86400000) {
-          var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
+          var queryString =
+            'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
           client.query(queryString, [tablename], function(err, results) {
-            if (err) { console.log(err); }
+            if (err) {
+              console.log(err);
+            }
           });
         }
-      })
+      });
     } else {
       lastUpdate = new Date(savedTimestamp);
       if (rightNow - lastUpdate > 86400000) {
-        var queryString = 'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
+        var queryString =
+          'UPDATE tables SET last_used = current_date WHERE tablename = ($1)';
         client.query(queryString, [tablename], function(err, results) {
-          if (err) { console.log(err); }
+          if (err) {
+            console.log(err);
+          }
         });
       }
     }
@@ -194,7 +255,7 @@ dbMethods = {
 
   matchDataTypes: function(reqColumns, columns, datatypes, callback) {
     columns = columns.split(',');
-    datatypes = datatypes.split(',')
+    datatypes = datatypes.split(',');
     var columns_types = {};
 
     _.each(columns, function(column, index) {
@@ -208,15 +269,21 @@ dbMethods = {
     var rowId = req.params.rowId;
 
     var columnName = req.body.columnName;
-    var newValue = req.body.newValue
+    var newValue = req.body.newValue;
     var update = {};
     update[columnName] = newValue;
 
-    r.table(tablename).get(rowId).update(update).run(connection, function(err, results) {
-      if (err) { console.log(err); }
-      dbMethods.checkandUpdateTimestamp(tablename);
-      res.sendStatus(200);
-    })
+    r
+      .table(tablename)
+      .get(rowId)
+      .update(update)
+      .run(connection, function(err, results) {
+        if (err) {
+          console.log(err);
+        }
+        dbMethods.checkandUpdateTimestamp(tablename);
+        res.sendStatus(200);
+      });
   },
 
   ///////////DELETE//////////
@@ -227,11 +294,17 @@ dbMethods = {
     var tablename = req.params.username + '_' + req.params.tablename;
     var rowId = req.params.rowId;
 
-    r.table(tablename).get(rowId).delete().run(connection, function(err, results) {
-      if (err) { console.log(err); }
-      dbMethods.checkandUpdateTimestamp(tablename)
-      res.sendStatus(200);
-    })
+    r
+      .table(tablename)
+      .get(rowId)
+      .delete()
+      .run(connection, function(err, results) {
+        if (err) {
+          console.log(err);
+        }
+        dbMethods.checkandUpdateTimestamp(tablename);
+        res.sendStatus(200);
+      });
   },
 
   // deletes a users table. Needs the tableName eg {"tableName": "yoni_test"}
@@ -240,23 +313,38 @@ dbMethods = {
     // hardcoded for testing
     var username = req.user.username;
     var userId = req.user.id;
-    var tableId = req.params.id
+    var tableId = req.params.id;
 
-    client.query('SELECT tablename FROM Tables WHERE id = ' + tableId, function(err, results) {
-      if (err) { console.log(err); }
+    client.query('SELECT tablename FROM Tables WHERE id = ' + tableId, function(
+      err,
+      results
+    ) {
+      if (err) {
+        console.log(err);
+      }
       if (results.rows.length === 0) {
         res.sendStatus(404);
       }
       tablename = results.rows[0].tablename;
-      client.query('DELETE FROM Tables WHERE userID = ' + userId + ' AND id = ' + tableId, function(err, entireTable) {
-        if (err) { console.log(err); }
-        var deletedTable = entireTable.rows;
+      client.query(
+        'DELETE FROM Tables WHERE userID = ' + userId + ' AND id = ' + tableId,
+        function(err, entireTable) {
+          if (err) {
+            console.log(err);
+          }
+          var deletedTable = entireTable.rows;
 
-        r.db('apiTables').tableDrop(tablename).run(connection, function(err, results) {
-          if (err) { console.log(err); }
-          res.sendStatus(200);
-        });
-      });
+          r
+            .db('apiTables')
+            .tableDrop(tablename)
+            .run(connection, function(err, results) {
+              if (err) {
+                console.log(err);
+              }
+              res.sendStatus(200);
+            });
+        }
+      );
     });
   }
 };

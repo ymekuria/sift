@@ -1,27 +1,27 @@
-import React from 'react'
+import React from 'react';
 
 //db call helpers
 //zen - 'https://api.github.com/zen'
-export const createTable = (selections) => {
+export const createTable = selections => {
   //post data to db
-  let url = '/api/users/tables'
+  let url = '/api/users/tables';
 
   return fetch(url, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     },
     credentials: 'same-origin',
     body: JSON.stringify(selections)
   })
-  .then((response) => response)
-  .then((response) => {
-    console.log('response: ', response)
-    return response;
-  })
-  .catch((err) => console.log(err));
-}
+    .then(response => response)
+    .then(response => {
+      console.log('response: ', response);
+      return response;
+    })
+    .catch(err => console.log(err));
+};
 
 const createCustomTable = (username, selections) => {
   //post data to db
@@ -30,34 +30,33 @@ const createCustomTable = (username, selections) => {
     method: 'POST',
     credentials: 'same-origin',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(selections)
   })
-  .then((response) => response.text())
-  .then((text) => {
-    console.log(text);
-  })
-  .catch((err) => console.log(err));
-}
+    .then(response => response.text())
+    .then(text => {
+      console.log(text);
+    })
+    .catch(err => console.log(err));
+};
 
 export const getTables = () => {
   //retrieve all table names for a specific user
-  let url = '/api/users/tables'
+  let url = '/api/users/tables';
   return fetch(url, {
     credentials: 'same-origin',
     method: 'GET',
-    headers: {
-    },
+    headers: {},
     body: {}
   })
-  .then((response) => response.text())
-  .then((text) => {
-    // console.log('inside get tables', text);
-    return JSON.parse(text);
-  })
-}
+    .then(response => response.text())
+    .then(text => {
+      // console.log('inside get tables', text);
+      return JSON.parse(text);
+    });
+};
 
 export const deleteTable = (tableId, cb) => {
   //api/deleteTable:?usr=<username>
@@ -68,8 +67,8 @@ export const deleteTable = (tableId, cb) => {
     headers: {},
     body: {}
   })
-  .then((response) => response.text())
-  .then((text) => {
-    cb();
-  })
-}
+    .then(response => response.text())
+    .then(text => {
+      cb();
+    });
+};
