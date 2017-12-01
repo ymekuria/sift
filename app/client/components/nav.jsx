@@ -1,20 +1,20 @@
-import React, {Component} from 'react'
-import LeftNav from './leftNav.jsx'
-import TopNav from './topNav.jsx'
+import React, { Component } from 'react';
+import LeftNav from './LeftNav.jsx';
+import TopNav from './TopNav.jsx';
 
 class Nav extends Component {
   constructor() {
-    super()
+    super();
   }
 
   render() {
     return (
-      <div className='nav'>
-        <TopNav/>
-        <LeftNav/>
+      <div className="nav">
+        <TopNav />
+        <LeftNav />
       </div>
-    )
+    );
   }
 }
 
-export default Nav
+export default Nav;
