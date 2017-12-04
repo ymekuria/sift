@@ -5,10 +5,10 @@ import { deleteTable } from '../utils/utils';
 import h from '../config/helpers';
 
 import DashTable from './DashTable';
+import AddTable from './AddTable';
 
 // Material UI components
-import Paper from 'material-ui/lib/paper';
-import RaisedButton from 'material-ui/lib/raised-button';
+
 
 import { router } from 'react-router';
 import { routeActions } from 'react-router-redux';
@@ -180,49 +180,6 @@ class Homepage extends Component {
         </div>
       );
     }
-  }
-}
-
-class AddTables extends Component {
-  render() {
-    const style = {
-      height: '21.3em',
-      width: '19em',
-      margin: '1em',
-      textAlign: 'center',
-      display: 'inline-block',
-      border: '2px dashed #C5CAD9',
-      marginBottom: '10px'
-      // backgroundColor: '#E7E8EF'
-    };
-    const iconStyle = {
-      marginLeft: 160,
-      display: 'inline-block'
-    };
-
-    const svgStyle = {
-      fontSize: '10px',
-      height: '10px',
-      width: '1px'
-    };
-
-    return (
-      <div
-        className={'addTableCardEmpty ' + this.props.class}
-        style={style}
-        zDepth={2}
-        rounded={false}
-      >
-        <RaisedButton
-          secondary={true}
-          label="Create Table"
-          onClick={() => {
-            this.props.nav('/build');
-          }}
-          style={{ margin: 5, position: 'relative', bottom: -234 }}
-        />
-      </div>
-    );
   }
 }
 
