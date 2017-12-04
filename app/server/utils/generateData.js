@@ -18,9 +18,8 @@ var dataIndex = require('./dataIndex/write.js');
 //the generate data algorithm below.
 
 module.exports = {
-
   parseColumnNames: function(obj) {
-    console.log('this is the obj', obj)
+    console.log('this is the obj', obj);
     var results = [];
     for (key in obj) {
       if (key !== 'tableName') {
@@ -34,21 +33,21 @@ module.exports = {
   //use req.body as a reference to the index file to
   //pull out the relevant faker queries ---> insert into
   //the generate data algorithm below.
-	generateData: function(fields, columns, numberOfRows) {
+  generateData: function(fields, columns, numberOfRows) {
     // var columns = module.exports.parseColumnNames(fields);
-		var data = [];
+    var data = [];
 
     for (var i = 0; i < numberOfRows; i++) {
       var row = {};
       _.each(fields, function(field, fakerCategory) {
         if (fakerCategory !== 'tableName') {
-          _.each(field, function (fakerVal, fakerField) {
+          _.each(field, function(fakerVal, fakerField) {
             var key = fakerField;
             // generating the fake data from faker and pushing the row into an array
             var ref = dataIndex[fakerCategory][fakerField];
-            var value = eval("faker." + ref + "()");
-            if (value.indexOf('\'') > -1) {
-              value = eval("faker." + ref + "()");
+            var value = eval('faker.' + ref + '()');
+            if (value.indexOf("'") > -1) {
+              value = eval('faker.' + ref + '()');
             } else {
               row[key] = value;
             }
@@ -56,18 +55,17 @@ module.exports = {
         }
       });
       data.push(row);
-		}
-		return data;
+    }
+    return data;
   },
 
-
-	generateValueString: function(n) {
-		var valueStr = '';
+  generateValueString: function(n) {
+    var valueStr = '';
 
     for (var i = 1; i <= n; i++) {
       valueStr += i < n ? '$' + i + ',' : '$' + i;
     }
 
     return valueStr;
-	}
+  }
 };

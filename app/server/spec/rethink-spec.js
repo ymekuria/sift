@@ -6,38 +6,37 @@ var utils = require('../utils/generateData.js');
 //connection
 var rConnectConfig;
 if (process.env.RETHINK_PORT_8080_TCP_ADDR) {
-  rConnectConfig = { host: 'rethink', db: 'apiTables' }
+  rConnectConfig = { host: 'rethink', db: 'apiTables' };
 } else {
-  rConnectConfig =  { host: 'localhost', db: 'apiTables' }
+  rConnectConfig = { host: 'localhost', db: 'apiTables' };
 }
-
 
 var host = rConnectConfig.host;
 
-describe("rethinkDB", function() {
+describe('rethinkDB', function() {
   var connection = null;
 
   beforeEach(function(done) {
-
-    r.connect(rConnectConfig, function (err, conn) {
-      if ( err ) throw err;
+    r.connect(rConnectConfig, function(err, conn) {
+      if (err) throw err;
       connection = conn;
 
-
-      r.tableList().run(conn)
-      .then(function (result){
-        if ( result.indexOf('yoni_testTable') > -1 ){
-          r.tableDrop('yoni_testTable').run(conn)
-          .then(function(result) {
-            console.log('before each', result)
-          })
-        }
-        done();
-      });
-    })
-
+      r
+        .tableList()
+        .run(conn)
+        .then(function(result) {
+          if (result.indexOf('yoni_testTable') > -1) {
+            r
+              .tableDrop('yoni_testTable')
+              .run(conn)
+              .then(function(result) {
+                console.log('before each', result);
+              });
+          }
+          done();
+        });
+    });
   });
-
 
   afterEach(function() {
     //drop all tables from test
@@ -48,19 +47,18 @@ describe("rethinkDB", function() {
     // .catch(function(err) {
     //   throw err;
     // })
-
   });
 
-  it("should create a table", function(done) {
+  it('should create a table', function(done) {
     this.timeout(5000);
 
     var newTable = {
-      tableName : 'testTable',
+      tableName: 'testTable',
       name: {
         firstName: true,
         lastName: true
       }
-    }
+    };
 
     var uri = 'http://localhost:5001/api/users/tables';
 
@@ -69,38 +67,31 @@ describe("rethinkDB", function() {
       uri: uri,
       body: newTable,
       json: true
-    }
+    };
 
-      rp(options)
-      .then(function (response) {
-        r.tableList().run(connection)
-        .then(function(result) {
-          expect(result.indexOf('yoni_testTable')).to.not.equal(-1);
-          done();
-        })
+    rp(options)
+      .then(function(response) {
+        r
+          .tableList()
+          .run(connection)
+          .then(function(result) {
+            expect(result.indexOf('yoni_testTable')).to.not.equal(-1);
+            done();
+          });
       })
       .catch(function(err) {
         console.log('ERROR', err);
         done();
-      })
-
+      });
   });
 
+  xit('should get all tables ', function(done) {});
 
-  xit("should get all tables ", function(done) {
-  });
-
-
-  xit("should delete a table", function(done) {
-    
+  xit('should delete a table', function(done) {
     done();
   });
 
-
-  xit("should post to a table", function(done) {
-    
+  xit('should post to a table', function(done) {
     done();
   });
-
-
 });
