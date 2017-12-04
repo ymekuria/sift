@@ -44,9 +44,6 @@ class TopNav extends Component {
   }
 }
 
-TopNav.contextTypes = {
-  router: React.PropTypes.object.isRequired
-};
 
 styles = {
   toolbarStyle: {
@@ -84,4 +81,7 @@ styles = {
   };
 }
 
+TopNav.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
 export default TopNav;

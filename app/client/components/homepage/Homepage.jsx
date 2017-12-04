@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { router } from 'react-router';
+import { routeActions } from 'react-router-redux';
 import _ from 'lodash';
 import { getTables } from '../utils/utils';
 import { deleteTable } from '../utils/utils';
@@ -7,20 +9,8 @@ import h from '../config/helpers';
 import DashTable from './DashTable';
 import AddTable from './AddTable';
 
-// Material UI components
-
-
-import { router } from 'react-router';
-import { routeActions } from 'react-router-redux';
 //import { FontIcon, IconButton, LeftNav} from 'material-ui'
 import store from '../store.jsx';
-
-import Settings from 'material-ui/lib/svg-icons/action/settings';
-import Delete from 'material-ui/lib/svg-icons/action/highlight-off';
-
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import IconButton from 'material-ui/lib/icon-button';
-import MenuItem from 'material-ui/lib/menus/menu-item';
 import swal from 'sweetalert';
 
 require('../../node_modules/sweetalert/themes/google/google.css');

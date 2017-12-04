@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { routeActions } from 'react-router-redux';
 import router from 'react-router';
-import Nav from './Nav';
-import Homepage from './Homepage';
+import Nav from './nav/Nav';
+import Homepage from './homepage/xHomepage';
 import store from '../store';
 
 require('../css/style.css');

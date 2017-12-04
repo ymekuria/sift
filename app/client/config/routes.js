@@ -6,7 +6,7 @@ import Build from '../components/Build';
 import { Landing } from '../landingPage/landingPage';
 import dataEntry from '../components/DataEntry';
 import Info from '../components/Info.jsx';
-import homepage from '../components/Homepage.jsx';
+import homepage from '../components/homepage/Homepage.jsx';
 import DataVis from '../components/DataVis.jsx';
 
 import Signin from '../components/Signin';

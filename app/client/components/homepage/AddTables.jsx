@@ -1,34 +1,15 @@
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/lib/raised-button';
+import { router } from 'react-router';
+import { routeActions } from 'react-router-redux';
 
 class AddTables extends Component {
 
   render() {
-    const style = {
-      height: '21.3em',
-      width: '19em',
-      margin: '1em',
-      textAlign: 'center',
-      display: 'inline-block',
-      border: '2px dashed #C5CAD9',
-      marginBottom: '10px'
-      // backgroundColor: '#E7E8EF'
-    };
-    const iconStyle = {
-      marginLeft: 160,
-      display: 'inline-block'
-    };
-
-    const svgStyle = {
-      fontSize: '10px',
-      height: '10px',
-      width: '1px'
-    };
-
     return (
       <div
         className={'addTableCardEmpty ' + this.props.class}
-        style={style}
+        style={styles.addTablestyle}
         zDepth={2}
         rounded={false}
       >
@@ -42,6 +23,19 @@ class AddTables extends Component {
         />
       </div>
     );
+  }
+}
+
+const styles = {
+  addTableStyl:{
+    height: '21.3em',
+    width: '19em',
+    margin: '1em',
+    textAlign: 'center',
+    display: 'inline-block',
+    border: '2px dashed #C5CAD9',
+    marginBottom: '10px'
+    // backgroundColor: '#E7E8EF'
   }
 }
 

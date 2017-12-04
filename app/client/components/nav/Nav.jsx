@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import LeftNav from './LeftNav.jsx';
-import TopNav from './TopNav.jsx';
+import LeftNav from './LeftNav';
+import TopNav from './TopNav';
 
 class Nav extends Component {
   constructor() {

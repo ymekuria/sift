@@ -1,10 +1,11 @@
 import React, { Component } from 'React';
+import store from '../../store';
+import { router } from 'react-router';
+import { routeActions } from 'react-router-redux';
 import Paper from 'material-ui/lib/paper';
-
 import RaisedButton from 'material-ui/lib/raised-button';
 import IconButton from 'material-ui/lib/icon-button';
 import Delete from 'material-ui/lib/svg-icons/action/highlight-off';
-
 
 class DashTable extends Component {
   render() {
