@@ -24,7 +24,7 @@ r.connect(rConnectConfig, function(err, conn) {
   });
 });
 
-dbMethods = {
+var dbMethods = {
   /////////POST///////////
 
   ///SAMPLE QUERY///

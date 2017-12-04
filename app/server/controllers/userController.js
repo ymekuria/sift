@@ -5,7 +5,7 @@ var SALT_WORK_FACTOR = 10;
 var jwt = require('jwt-simple');
 var client = require('../utils/dbconnect').client;
 
-userMethods = {
+var userMethods = {
   isUserInDB: function(user, callback) {
     client.query(
       'SELECT username FROM Users WHERE username=($1)',
