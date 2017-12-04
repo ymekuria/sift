@@ -6,9 +6,6 @@ var passport = require('passport');
 var path = require('path');
 
 module.exports = function(app, express, ensureAuth) {
-
-
-
   // local authentication
   app.post('/api/users', userController.createLocalUser, function(req, res) {
     res.redirect('/signin');
@@ -18,14 +15,21 @@ module.exports = function(app, express, ensureAuth) {
     res.sendFile(path.join(__dirname, '../../build/landingPage/landing.html'));
   });
 
-  app.post('/signin', passport.authenticate('local', { session: true, failureRedirect: '/signin' }), function(req, res) {
-    var user = {
-      id: req.user.id,
-      username: req.user.username,
-      displayname: req.user.displayname
+  app.post(
+    '/signin',
+    passport.authenticate('local', {
+      session: true,
+      failureRedirect: '/signin'
+    }),
+    function(req, res) {
+      var user = {
+        id: req.user.id,
+        username: req.user.username,
+        displayname: req.user.displayname
+      };
+      res.json(user);
     }
-    res.json(user);
-  });
+  );
 
   // user objet pass-through
   app.get('/user', ensureAuth, function(req, res) {
@@ -33,20 +37,27 @@ module.exports = function(app, express, ensureAuth) {
       id: req.user.id,
       username: req.user.username,
       displayname: req.user.displayname
-    }
+    };
     res.json(user);
-  })
+  });
 
   // GitHub authentication
   app.get('/auth/github', passport.authenticate('github'));
-  app.get('/auth/github/callback', passport.authenticate('github', { session: true, failureRedirect: '/signin' }), function(req, res) {
-    var user = {
-      id: req.user.id,
-      username: req.user.username,
-      displayname: req.user.displayname
+  app.get(
+    '/auth/github/callback',
+    passport.authenticate('github', {
+      session: true,
+      failureRedirect: '/signin'
+    }),
+    function(req, res) {
+      var user = {
+        id: req.user.id,
+        username: req.user.username,
+        displayname: req.user.displayname
+      };
+      res.redirect('/home');
     }
-    res.redirect('/home');
-  });
+  );
 
   //logout
   app.get('/signout', ensureAuth, function(req, res) {
@@ -57,7 +68,10 @@ module.exports = function(app, express, ensureAuth) {
   // endpoints for creating, receiving, and deleting tables // put back ensurAuth
   app.get('/api/users/tables', ensureAuth, dbController.getTables);
   app.post('/api/users/tables', ensureAuth, dbController.createUserTable);
-  app.get('/api/users/tables/:tablename', socketController.getTableAndOpenConnection);
+  app.get(
+    '/api/users/tables/:tablename',
+    socketController.getTableAndOpenConnection
+  );
   app.delete('/api/users/tables/:id', ensureAuth, dbController.deleteTable);
   // app.put('/api/users/tables/:id'); // do we need to have users update their tables?
 
@@ -66,6 +80,4 @@ module.exports = function(app, express, ensureAuth) {
   app.post('/sand/:username/:tablename/', dbController.postToTable);
   app.put('/sand/:username/:tablename/:rowId', dbController.updateValue);
   app.delete('/sand/:username/:tablename/:rowId', dbController.deleteRow);
-
-
-}
+};

@@ -1,5 +1,4 @@
 var faker = require('faker');
-
 var _ = require('lodash');
 var dataIndex = require('./dataIndex/write.js');
 
